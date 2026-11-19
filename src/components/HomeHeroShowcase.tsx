@@ -8,11 +8,18 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { formatDualDate, formatSyncedAt, getWeekdayZh } from "@/lib/date";
+import { useEffect, useRef, useState } from "react";
+import {
+  formatDualDate,
+  formatSyncedAt,
+  getHearingLiveStatus,
+  getWeekdayZh,
+} from "@/lib/date";
 import { generateHearingIcs } from "@/lib/ics";
 import { downloadTextFile } from "@/lib/storage";
 import type { Hearing, HearingsMeta } from "@/lib/types";
+import { useNowMs } from "@/lib/use-now";
+import { HearingLiveStatusBadge } from "./HearingLiveStatusBadge";
 
 interface HomeHeroShowcaseProps {
   meta: HearingsMeta;
@@ -24,6 +31,19 @@ export function HomeHeroShowcase({
   spotlightHearings,
 }: HomeHeroShowcaseProps) {
   const [index, setIndex] = useState(0);
+  const userInteractedRef = useRef(false);
+  const nowMs = useNowMs();
+
+  useEffect(() => {
+    if (nowMs === null || userInteractedRef.current) return;
+    const activeIdx = spotlightHearings.findIndex(
+      (h) => getHearingLiveStatus(h, nowMs).kind !== "ended",
+    );
+    if (activeIdx >= 0 && activeIdx !== index) {
+      setIndex(activeIdx);
+    }
+  }, [nowMs, spotlightHearings, index]);
+
   const current = spotlightHearings[index] ?? spotlightHearings[0];
 
   const today = meta.todayDate;
@@ -35,12 +55,14 @@ export function HomeHeroShowcase({
   const weekday = getWeekdayZh(current?.date ?? today);
 
   const handlePrev = () => {
+    userInteractedRef.current = true;
     setIndex(
       (i) => (i - 1 + spotlightHearings.length) % spotlightHearings.length,
     );
   };
 
   const handleNext = () => {
+    userInteractedRef.current = true;
     setIndex((i) => (i + 1) % spotlightHearings.length);
   };
 
@@ -162,6 +184,13 @@ export function HomeHeroShowcase({
                 <div className="flex min-w-0 flex-1 flex-col justify-between p-4">
                   <div>
                     <div className="flex flex-wrap items-center gap-2 text-xs">
+                      <HearingLiveStatusBadge
+                        date={current.date}
+                        time={current.time}
+                        category={current.category}
+                        isLayJudge={current.isLayJudge}
+                        nowMs={nowMs}
+                      />
                       {current.isLayJudge && (
                         <span className="border border-[#8f2d1c] px-1.5 py-0.5 font-medium text-[#8f2d1c]">
                           國民法官

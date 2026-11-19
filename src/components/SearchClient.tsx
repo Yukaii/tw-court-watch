@@ -24,6 +24,7 @@ import {
 import {
   addDaysIso,
   formatCompactDualDate,
+  getHearingLiveStatus,
   isoToRoc,
   parseUserDateInput,
 } from "@/lib/date";
@@ -43,6 +44,7 @@ import type {
   HighlightsData,
   SysCode,
 } from "@/lib/types";
+import { useNowMs } from "@/lib/use-now";
 import { HearingCard } from "./HearingCard";
 
 const ALL_LEVELS: CourtLevel[] = ["district", "high", "admin_ip", "supreme"];
@@ -64,6 +66,7 @@ export function SearchClient({
 }: SearchClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const nowMs = useNowMs();
 
   const today = meta.todayDate;
   const maxDate = meta.dateRange.end;
@@ -212,7 +215,7 @@ export function SearchClient({
     const q = keyword.trim().toLowerCase();
     const activeSys = selectedSys.filter((s) => availableSys.includes(s));
 
-    return hearings.filter((h) => {
+    const matched = hearings.filter((h) => {
       if (startDate && h.date < startDate) return false;
       if (endDate && h.date > endDate) return false;
       if (activeSys.length > 0 && !activeSys.includes(h.sysCode)) return false;
@@ -237,6 +240,19 @@ export function SearchClient({
       }
       return true;
     });
+
+    if (nowMs === null) return matched;
+
+    const activeOrUpcoming: Hearing[] = [];
+    const ended: Hearing[] = [];
+    for (const h of matched) {
+      if (getHearingLiveStatus(h, nowMs).kind === "ended") {
+        ended.push(h);
+      } else {
+        activeOrUpcoming.push(h);
+      }
+    }
+    return [...activeOrUpcoming, ...ended];
   }, [
     hearings,
     startDate,
@@ -247,7 +263,19 @@ export function SearchClient({
     onlyLayJudge,
     courtroomFilter,
     keyword,
+    nowMs,
   ]);
+
+  const inProgressCount = useMemo(() => {
+    if (nowMs === null) return 0;
+    let count = 0;
+    for (const h of filtered) {
+      if (getHearingLiveStatus(h, nowMs).kind === "in_progress") {
+        count += 1;
+      }
+    }
+    return count;
+  }, [filtered, nowMs]);
 
   const filteredCourtsForPicker = useMemo(() => {
     const q = courtSearch.trim().toLowerCase();
@@ -777,6 +805,15 @@ export function SearchClient({
                 {filtered.length.toLocaleString("zh-TW")}
               </span>{" "}
               場可旁聽庭期
+              {inProgressCount > 0 && (
+                <span className="ml-2 inline-flex items-center gap-1.5 border border-[#1b382f] bg-[#1b382f] px-1.5 py-0.5 text-xs font-medium text-[#fcfbf8]">
+                  <span
+                    aria-hidden="true"
+                    className="h-1.5 w-1.5 rounded-full bg-[#fcfbf8] motion-safe:animate-pulse"
+                  />
+                  {inProgressCount} 場開庭中
+                </span>
+              )}
               <span className="ml-2 text-xs font-normal text-stone-500">
                 （{formatCompactDualDate(startDate)}
                 {endDate !== startDate
@@ -873,6 +910,7 @@ export function SearchClient({
               key={h.id}
               hearing={h}
               showCourt={mode === "layjudge"}
+              nowMs={nowMs}
             />
           ))}
 

@@ -3,7 +3,13 @@
 import { ArrowRight, Calendar, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { addDaysIso, getWeekdayZh } from "@/lib/date";
+import {
+  addDaysIso,
+  getHearingLiveStatus,
+  getHearingLiveStatusRank,
+  getTaipeiTodayIso,
+  getWeekdayZh,
+} from "@/lib/date";
 import { hydrateHearing } from "@/lib/hydrate";
 import type {
   CourtHearingsFile,
@@ -11,6 +17,7 @@ import type {
   HearingsMeta,
   HighlightsData,
 } from "@/lib/types";
+import { useNowMs } from "@/lib/use-now";
 import { CalendarEventCard } from "./CalendarEventCard";
 
 const QUICK_TABS = [
@@ -34,6 +41,9 @@ export function HomeCalendarExplorer({
   highlights,
 }: HomeCalendarExplorerProps) {
   const today = meta.todayDate;
+  const nowMs = useNowMs();
+  const liveTodayIso = nowMs !== null ? getTaipeiTodayIso(new Date(nowMs)) : today;
+
   const days = useMemo(() => {
     const arr: Array<{
       iso: string;
@@ -95,26 +105,43 @@ export function HomeCalendarExplorer({
   }, [activeTab, courtCache]);
 
   const visibleHearings = useMemo(() => {
+    const prioritizeByLiveTime = (list: Hearing[]): Hearing[] => {
+      if (nowMs === null) return list;
+      return [...list].sort((a, b) => {
+        const ra = getHearingLiveStatusRank(getHearingLiveStatus(a, nowMs).kind);
+        const rb = getHearingLiveStatusRank(getHearingLiveStatus(b, nowMs).kind);
+        return ra - rb;
+      });
+    };
+
     if (activeTab === "ALL") {
       const dayMatches = highlights.featuredTrials.filter(
         (h) => h.date === selectedDate,
       );
-      if (dayMatches.length > 0) return dayMatches.slice(0, 4);
+      if (dayMatches.length > 0) {
+        return prioritizeByLiveTime(dayMatches).slice(0, 4);
+      }
       const ljMatches = highlights.layJudgeHearings.filter(
         (h) => h.date === selectedDate,
       );
-      return ljMatches.slice(0, 4);
+      return prioritizeByLiveTime(ljMatches).slice(0, 4);
     }
 
     const courtData = courtCache[activeTab];
     if (!courtData) {
-      return highlights.featuredTrials
-        .filter((h) => h.crtid === activeTab && h.date === selectedDate)
-        .slice(0, 4);
+      const fallback = highlights.featuredTrials.filter(
+        (h) => h.crtid === activeTab && h.date === selectedDate,
+      );
+      return prioritizeByLiveTime(fallback).slice(0, 4);
     }
 
     const onDay = courtData.filter((h) => h.date === selectedDate);
     const sorted = [...onDay].sort((a, b) => {
+      if (nowMs !== null) {
+        const ra = getHearingLiveStatusRank(getHearingLiveStatus(a, nowMs).kind);
+        const rb = getHearingLiveStatusRank(getHearingLiveStatus(b, nowMs).kind);
+        if (ra !== rb) return ra - rb;
+      }
       const score = (h: Hearing) =>
         (h.isLayJudge ? 4 : 0) +
         (h.category === "trial" ? 2 : 0) +
@@ -123,7 +150,7 @@ export function HomeCalendarExplorer({
       return diff !== 0 ? diff : a.time.localeCompare(b.time);
     });
     return sorted.slice(0, 4);
-  }, [activeTab, selectedDate, highlights, courtCache]);
+  }, [activeTab, selectedDate, highlights, courtCache, nowMs]);
 
   const searchHref =
     activeTab === "ALL"
@@ -181,7 +208,7 @@ export function HomeCalendarExplorer({
                   active ? "text-[#fcfbf8]/80" : "text-[#5c574f]"
                 }`}
               >
-                {d.iso === today ? "今天" : `${d.month}月 週${d.weekday}`}
+                {d.iso === liveTodayIso ? "今天" : `${d.month}月 週${d.weekday}`}
               </span>
               <span className="mt-1 font-editorial text-[26px] leading-none font-semibold">
                 {d.day}
@@ -253,6 +280,7 @@ export function HomeCalendarExplorer({
                 key={hearing.id}
                 hearing={hearing}
                 showCourt={activeTab === "ALL"}
+                nowMs={nowMs}
               />
             ))}
           </div>

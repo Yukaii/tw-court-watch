@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getWeekdayZh } from "@/lib/date";
+import { getHearingLiveStatus, getWeekdayZh } from "@/lib/date";
 import { generateHearingIcs } from "@/lib/ics";
 import {
   downloadTextFile,
@@ -16,19 +16,27 @@ import {
   toggleSaveHearing,
 } from "@/lib/storage";
 import type { Hearing } from "@/lib/types";
+import { useNowMs } from "@/lib/use-now";
+import { HearingLiveStatusBadge } from "./HearingLiveStatusBadge";
 
 interface CalendarEventCardProps {
   hearing: Hearing;
   variant?: "paper" | "dark";
   showCourt?: boolean;
+  /** Optional externally shared clock (UTC ms) to avoid per-card timers in lists */
+  nowMs?: number | null;
 }
 
 export function CalendarEventCard({
   hearing,
   variant = "paper",
   showCourt = true,
+  nowMs: externalNowMs,
 }: CalendarEventCardProps) {
   const [saved, setSaved] = useState(false);
+  const internalNowMs = useNowMs(60_000, externalNowMs === undefined);
+  const resolvedNowMs =
+    externalNowMs !== undefined ? externalNowMs : internalNowMs;
 
   useEffect(() => {
     const sync = () => setSaved(isHearingSaved(hearing.id));
@@ -44,6 +52,9 @@ export function CalendarEventCard({
   const weekday = getWeekdayZh(hearing.date);
 
   const isDark = variant === "dark";
+  const isEnded =
+    resolvedNowMs !== null &&
+    getHearingLiveStatus(hearing, resolvedNowMs).kind === "ended";
 
   const handleSave = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -64,11 +75,11 @@ export function CalendarEventCard({
 
   return (
     <article
-      className={`group relative flex flex-col overflow-hidden rounded-[2px] border transition-colors sm:flex-row ${
+      className={`group relative flex flex-col overflow-hidden rounded-[2px] border transition-[border-color,opacity] sm:flex-row ${
         isDark
           ? "border-[#fcfbf8]/22 bg-[#1c322b] text-[#fcfbf8] hover:border-[#fcfbf8]/55"
           : "border-[#191816]/20 bg-[#fcfbf8] text-[#191816] hover:border-[#191816]/60"
-      }`}
+      } ${isEnded ? "opacity-70 hover:opacity-100" : ""}`}
     >
       {/* Left Calendar Date Spine — Priority 1: When */}
       <div
@@ -119,6 +130,14 @@ export function CalendarEventCard({
           {/* Top quiet context line + bookmark */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-2 text-xs">
+              <HearingLiveStatusBadge
+                date={hearing.date}
+                time={hearing.time}
+                category={hearing.category}
+                isLayJudge={hearing.isLayJudge}
+                variant={variant}
+                nowMs={resolvedNowMs}
+              />
               {hearing.isLayJudge && (
                 <span
                   className={`border px-1.5 py-0.5 font-medium ${

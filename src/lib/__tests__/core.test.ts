@@ -1,12 +1,16 @@
 import { describe, expect, it } from "bun:test";
 import { COURT_BY_ID, resolveCampusLocation } from "../courts";
 import {
+  estimateHearingDurationMinutes,
   formatCompactDualDate,
   formatDualDate,
   formatHearingTime,
+  getHearingLiveStatus,
+  getHearingLiveStatusRank,
   isoToRoc,
   parseUserDateInput,
   rocToIso,
+  taipeiDateTimeToUtcMs,
 } from "../date";
 import {
   buildHearingId,
@@ -58,6 +62,81 @@ describe("ROC <-> Gregorian date conversion", () => {
     );
     expect(formatHearingTime("0929")).toBe("09:29");
     expect(formatHearingTime("930")).toBe("09:30");
+  });
+
+  it("computes Taipei UTC timestamps and live hearing status accurately", () => {
+    // 2026-11-19 09:30 Asia/Taipei (UTC+8) == 2026-11-19T01:30:00Z
+    const startUtc = taipeiDateTimeToUtcMs("2026-11-19", "09:30");
+    expect(startUtc).toBe(Date.UTC(2026, 10, 19, 1, 30, 0));
+    expect(taipeiDateTimeToUtcMs("invalid", "09:30")).toBeNull();
+
+    expect(estimateHearingDurationMinutes("verdict")).toBe(15);
+    expect(estimateHearingDurationMinutes("prep")).toBe(30);
+    expect(estimateHearingDurationMinutes("trial", false)).toBe(90);
+    expect(estimateHearingDurationMinutes("trial", true)).toBe(120);
+
+    const hearing = {
+      date: "2026-11-19",
+      time: "09:30",
+      category: "trial" as const,
+      isLayJudge: false,
+    };
+
+    // 2 hours before -> upcoming (no badge label)
+    const twoHoursBefore = Date.UTC(2026, 10, 18, 23, 30, 0);
+    expect(getHearingLiveStatus(hearing, twoHoursBefore)).toEqual({
+      kind: "upcoming",
+      label: "",
+    });
+
+    // 25 minutes before -> soon with countdown
+    const twentyFiveMinBefore = Date.UTC(2026, 10, 19, 1, 5, 0);
+    expect(getHearingLiveStatus(hearing, twentyFiveMinBefore)).toEqual({
+      kind: "soon",
+      label: "25 分後開庭",
+      minutesUntilStart: 25,
+    });
+
+    // 3 minutes before -> soon ("即將開庭")
+    const threeMinBefore = Date.UTC(2026, 10, 19, 1, 27, 0);
+    expect(getHearingLiveStatus(hearing, threeMinBefore)).toEqual({
+      kind: "soon",
+      label: "即將開庭",
+      minutesUntilStart: 3,
+    });
+
+    // 20 minutes after start (within 90m trial window) -> in_progress
+    const duringTrial = Date.UTC(2026, 10, 19, 1, 50, 0);
+    expect(getHearingLiveStatus(hearing, duringTrial)).toEqual({
+      kind: "in_progress",
+      label: "開庭中",
+    });
+
+    // 95 minutes after start -> ended ("已過表定時間")
+    const afterTrial = Date.UTC(2026, 10, 19, 3, 5, 0);
+    expect(getHearingLiveStatus(hearing, afterTrial)).toEqual({
+      kind: "ended",
+      label: "已過表定時間",
+    });
+
+    // Lay judge trial lasts 120m -> still in_progress at +95m
+    expect(
+      getHearingLiveStatus({ ...hearing, isLayJudge: true }, afterTrial),
+    ).toEqual({
+      kind: "in_progress",
+      label: "開庭中",
+    });
+
+    // Rank ordering: in_progress < soon < upcoming < ended
+    expect(getHearingLiveStatusRank("in_progress")).toBeLessThan(
+      getHearingLiveStatusRank("soon"),
+    );
+    expect(getHearingLiveStatusRank("soon")).toBeLessThan(
+      getHearingLiveStatusRank("upcoming"),
+    );
+    expect(getHearingLiveStatusRank("upcoming")).toBeLessThan(
+      getHearingLiveStatusRank("ended"),
+    );
   });
 });
 

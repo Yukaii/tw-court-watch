@@ -7,13 +7,13 @@ import {
   Info,
   MapPin,
   ShieldAlert,
-  Sparkles,
   Train,
 } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { HearingActions } from "@/components/HearingActions";
+import { HearingLiveStatusBadge } from "@/components/HearingLiveStatusBadge";
 import { getGoogleMapsUrl } from "@/lib/courts";
 import { getHearingById, getHearingsMeta } from "@/lib/data-server";
 import { formatDualDate, formatSyncedAt } from "@/lib/date";
@@ -61,40 +61,43 @@ export default async function HearingDetailPage({ params }: HearingPageProps) {
       <div className="flex items-center justify-between gap-2">
         <Link
           href={`/search?court=${hearing.crtid}&start=${hearing.date}&end=${hearing.date}`}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-stone-600 hover:text-stone-900"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-[#5c574f] hover:text-[#191816]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           回到{hearing.courtShortName}庭期列表
         </Link>
         {meta && (
-          <span className="text-xs text-stone-400">
+          <span className="font-tabular text-xs text-[#706b62]">
             同步時間：{formatSyncedAt(meta.syncedAt)}
           </span>
         )}
       </div>
 
       {/* Main hearing info card */}
-      <article className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-2xs sm:p-6">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-1.5">
+      <article className="space-y-5 rounded-[2px] border border-[#191816]/25 bg-[#fcfbf8] p-5 sm:p-7">
+        <div className="space-y-2.5">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <HearingLiveStatusBadge
+              date={hearing.date}
+              time={hearing.time}
+              category={hearing.category}
+              isLayJudge={hearing.isLayJudge}
+            />
             {hearing.isLayJudge && (
-              <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-900">
-                <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+              <span className="border border-[#8f2d1c] px-2 py-0.5 font-medium text-[#8f2d1c]">
                 國民法官案件
               </span>
             )}
-            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-900">
+            <span className="border border-[#191816]/25 bg-[#efece4] px-2 py-0.5 font-medium text-[#191816]">
               {hearing.dukd}
             </span>
-            <span className="rounded-full border border-stone-200 bg-stone-50 px-2.5 py-0.5 text-xs text-stone-700">
-              {hearing.sysLabel}
-            </span>
+            <span className="text-[#5c574f]">{hearing.sysLabel}</span>
           </div>
 
-          <h1 className="text-xl font-bold leading-snug text-stone-900 sm:text-2xl">
+          <h1 className="font-editorial text-2xl font-semibold leading-snug text-[#191816] sm:text-[28px]">
             {hearing.reason || `${hearing.sysLabel}${hearing.dukd}`}
           </h1>
-          <p className="text-sm font-medium text-stone-600">
+          <p className="font-tabular text-sm font-medium text-[#5c574f]">
             {hearing.caseNo}
             {hearing.division ? ` · ${hearing.division}股` : ""}
           </p>

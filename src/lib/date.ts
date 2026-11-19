@@ -187,3 +187,111 @@ export function rocYearToGregorian(rocYear: number): number {
 export function gregorianYearToRoc(year: number): number {
   return year - 1911;
 }
+
+export type HearingLiveStatusKind = "in_progress" | "soon" | "ended" | "upcoming";
+
+export interface HearingLiveStatus {
+  kind: HearingLiveStatusKind;
+  label: string;
+  minutesUntilStart?: number;
+}
+
+/**
+ * Convert a Taiwan local date (YYYY-MM-DD) & time (HH:mm) to UTC epoch ms
+ * (Asia/Taipei is fixed UTC+8 with no DST).
+ */
+export function taipeiDateTimeToUtcMs(isoDate: string, hhmm: string): number | null {
+  const dateMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate.trim());
+  const timeMatch = /^(\d{1,2}):(\d{2})$/.exec(hhmm.trim());
+  if (!dateMatch || !timeMatch) return null;
+
+  const year = Number(dateMatch[1]);
+  const month = Number(dateMatch[2]);
+  const day = Number(dateMatch[3]);
+  const hour = Number(timeMatch[1]);
+  const minute = Number(timeMatch[2]);
+  if (month < 1 || month > 12 || day < 1 || day > 31 || hour > 23 || minute > 59) {
+    return null;
+  }
+
+  return Date.UTC(year, month - 1, day, hour - 8, minute, 0, 0);
+}
+
+/**
+ * Estimated hearing duration in minutes used to indicate likely in-progress status.
+ */
+export function estimateHearingDurationMinutes(
+  category: "trial" | "prep" | "verdict" | "other",
+  isLayJudge = false,
+): number {
+  switch (category) {
+    case "verdict":
+      return 15;
+    case "prep":
+      return 30;
+    case "trial":
+      return isLayJudge ? 120 : 90;
+    default:
+      return 45;
+  }
+}
+
+/**
+ * Compute live hearing status relative to current system time (UTC ms).
+ */
+export function getHearingLiveStatus(
+  hearing: {
+    date: string;
+    time: string;
+    category: "trial" | "prep" | "verdict" | "other";
+    isLayJudge?: boolean;
+  },
+  nowMs: number,
+): HearingLiveStatus {
+  const startMs = taipeiDateTimeToUtcMs(hearing.date, hearing.time);
+  if (startMs === null) {
+    return { kind: "upcoming", label: "" };
+  }
+
+  const durationMs =
+    estimateHearingDurationMinutes(hearing.category, hearing.isLayJudge) *
+    60_000;
+  const endMs = startMs + durationMs;
+
+  if (nowMs >= startMs && nowMs < endMs) {
+    return { kind: "in_progress", label: "開庭中" };
+  }
+
+  if (nowMs < startMs) {
+    const diffMs = startMs - nowMs;
+    if (diffMs <= 60 * 60_000) {
+      const mins = Math.max(1, Math.ceil(diffMs / 60_000));
+      return {
+        kind: "soon",
+        label: mins <= 5 ? "即將開庭" : `${mins} 分後開庭`,
+        minutesUntilStart: mins,
+      };
+    }
+    return { kind: "upcoming", label: "" };
+  }
+
+  return { kind: "ended", label: "已過表定時間" };
+}
+
+/**
+ * Ordering priority for live hearing status:
+ * in_progress (0) -> soon (1) -> upcoming (2) -> ended (3).
+ */
+export function getHearingLiveStatusRank(kind: HearingLiveStatusKind): number {
+  switch (kind) {
+    case "in_progress":
+      return 0;
+    case "soon":
+      return 1;
+    case "upcoming":
+      return 2;
+    case "ended":
+      return 3;
+  }
+}
+
