@@ -16,9 +16,9 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-noto-sans), -apple-system, BlinkMacSystemFont,
+  --font-sans: "Noto Sans TC", -apple-system, BlinkMacSystemFont,
     "PingFang TC", "Microsoft JhengHei", sans-serif;
-  --font-serif: var(--font-noto-serif), "Songti TC", "PMingLiU", Georgia, serif;
+  --font-serif: "Noto Serif TC", "Songti TC", "PMingLiU", Georgia, serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo,
     monospace;
 }

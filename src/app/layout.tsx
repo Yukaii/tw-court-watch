@@ -1,22 +1,8 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Noto_Sans_TC, Noto_Serif_TC } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
-
-const notoSans = Noto_Sans_TC({
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-noto-sans",
-  display: "swap",
-  preload: false,
-});
-
-const notoSerif = Noto_Serif_TC({
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-noto-serif",
-  display: "swap",
-  preload: false,
-});
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -40,10 +26,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="zh-Hant-TW"
-      className={`${notoSans.variable} ${notoSerif.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="zh-Hant-TW" className={jetbrainsMono.variable}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
+        />
+      </head>
       <body className="flex min-h-dvh flex-col font-sans text-[#191816]">
         <SiteHeader />
         <main className="mx-auto w-full max-w-[1120px] flex-1 px-4 pb-24 pt-8 sm:px-6 lg:px-8">
