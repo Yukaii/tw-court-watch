@@ -686,6 +686,18 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
             aria-label="臺灣主要法院互動地圖"
           />
 
+          {!mapLoaded && (
+            <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-[#f3efe6]/80 text-sm text-[#5c574f]">
+              <span className="inline-flex items-center gap-2 border border-[#191816]/20 bg-[#fcfbf8] px-3.5 py-2">
+                <Loader2
+                  className="h-4 w-4 animate-spin text-[#1b382f]"
+                  aria-hidden="true"
+                />
+                <span>載入法院地圖中…</span>
+              </span>
+            </div>
+          )}
+
           {/* Custom flat architectural zoom/reset controls */}
           <div className="absolute right-3 top-3 z-10 flex flex-col divide-y divide-[#d6d0c4] border border-[#191816]/25 bg-[#fcfbf8]">
             <button
