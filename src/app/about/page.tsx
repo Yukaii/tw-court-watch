@@ -29,36 +29,36 @@ export default async function AboutPage() {
   const meta = await getHearingsMeta();
 
   return (
-    <div className="space-y-6">
-      <header className="space-y-1.5 border-b border-[#1c1a17]/15 pb-5">
-        <p className="font-tabular text-[11px] font-semibold uppercase tracking-widest text-[#1f4b3b]">
-          ABOUT & DATA TRANSPARENCY
+    <div className="space-y-8">
+      <header className="legal-rule-bottom space-y-1.5 pb-5">
+        <p className="text-xs font-medium tracking-[0.08em] text-[#8f2d1c]">
+          專案說明與資料透明度
         </p>
-        <h1 className="font-editorial text-3xl font-bold tracking-tight text-[#1c1a17]">
+        <h1 className="font-editorial text-3xl font-semibold text-[#191816]">
           資料來源、過濾規則與免責聲明
         </h1>
-        <p className="text-sm text-[#5c564c]">
-          本網站為民間製作之非官方旁聽輔助工具，旨在讓公開審判資訊更易讀、好查。
+        <p className="text-sm text-[#524e47]">
+          本網站為民間製作之非官方旁聽輔助工具，旨在使公開審判資訊更為清楚、易於檢索。
         </p>
       </header>
 
       {/* Credit & Inspiration */}
-      <section className="space-y-2.5 rounded-2xl border border-[#1c1a17]/15 bg-[#efe8d8] p-5 sm:p-6">
-        <p className="font-tabular text-[11px] font-semibold uppercase tracking-widest text-[#8c381d]">
-          CREDIT & INSPIRATION · 專案靈感致謝
+      <section className="space-y-2.5 rounded-[2px] border border-[#191816]/25 bg-[#efece4] p-6">
+        <p className="text-xs font-medium tracking-[0.08em] text-[#8f2d1c]">
+          專案靈感致謝
         </p>
-        <h2 className="font-editorial text-lg font-bold text-[#1c1a17]">
-          致謝法律百科 @legispedia_tw 的旁聽攻略整理
+        <h2 className="font-editorial text-lg font-semibold text-[#191816]">
+          致謝法律百科 @legispedia_tw 之旁聽攻略整理
         </h2>
-        <p className="text-sm leading-relaxed text-[#4a453c]">
-          這個專案的起點與網站中的旁聽入門守則，受到法律百科（Legispedia）在
-          Threads 上整理分享的「法院旁聽指南」貼文以及《法科！輕鬆點》節目啟發。特別在此標註出處並推薦閱讀原始貼文。
+        <p className="text-sm leading-relaxed text-[#524e47]">
+          本專案之發想與站內旁聽入門守則，受到法律百科（Legispedia）於 Threads
+          整理發表之「法院旁聽指南」貼文與《法科！輕鬆點》節目啟發。特此標註出處並推薦閱讀原文。
         </p>
         <a
           href={LEGISPEDIA_THREAD_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 font-medium text-[#1f4b3b] underline decoration-[#1f4b3b]/40 underline-offset-4 hover:text-[#16362b]"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
         >
           <span>法律百科 @legispedia_tw — Threads 原文貼文</span>
           <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -66,48 +66,49 @@ export default async function AboutPage() {
       </section>
 
       {/* Data source & sync status */}
-      <section className="space-y-3 rounded-2xl border border-[#1c1a17]/15 bg-[#fffdf8] p-5 sm:p-6">
-        <h2 className="font-editorial text-lg font-bold text-[#1c1a17]">
+      <section className="space-y-4 rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8] p-6">
+        <h2 className="border-b border-[#d6d0c4] pb-2.5 font-editorial text-lg font-semibold text-[#191816]">
           資料來源與更新機制
         </h2>
-        <p className="text-sm leading-relaxed text-[#4a453c]">
-          庭期資料來自司法院「庭期表查詢系統」（
+        <p className="text-sm leading-relaxed text-[#3a3630]">
+          庭期資料取自司法院「庭期表查詢系統」（
           <a
             href={OFFICIAL_QUERY_BASE}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#1f4b3b] underline underline-offset-2"
+            className="text-[#1b382f] underline underline-offset-4"
           >
             csdi3.judicial.gov.tw
           </a>
-          ）之公開庭期資訊，透過每日 2 次低頻靜態同步（台灣時間 06:30 與 18:30）更新未來 14 天全台主要法院之尚未開庭庭期。
+          ）公開庭期資訊，每日兩次低頻定時靜態同步（臺灣時間 06:30 與
+          18:30），收錄未來十四日全台主要法院尚未開庭之公開庭期。
         </p>
 
         {meta && (
-          <div className="grid gap-3 rounded-xl border border-[#1c1a17]/10 bg-[#f8f5ee] p-4 text-sm sm:grid-cols-2">
-            <div>
-              <p className="text-xs text-[#6b6458]">最近同步時間</p>
-              <p className="font-tabular font-semibold text-[#1c1a17]">
+          <div className="grid gap-px border border-[#d6d0c4] bg-[#d6d0c4] text-sm sm:grid-cols-2">
+            <div className="bg-[#f7f5f0] p-3.5">
+              <p className="text-xs text-[#706b62]">最近同步時間</p>
+              <p className="mt-0.5 font-tabular font-medium text-[#191816]">
                 {formatSyncedAt(meta.syncedAt)}
               </p>
             </div>
-            <div>
-              <p className="text-xs text-[#6b6458]">收錄日期區間</p>
-              <p className="font-semibold text-[#1c1a17]">
+            <div className="bg-[#f7f5f0] p-3.5">
+              <p className="text-xs text-[#706b62]">收錄日期區間</p>
+              <p className="mt-0.5 font-medium text-[#191816]">
                 {formatDualDate(meta.dateRange.start)} ～{" "}
                 {formatDualDate(meta.dateRange.end)}
               </p>
             </div>
-            <div>
-              <p className="text-xs text-[#6b6458]">收錄法院數／可旁聽筆數</p>
-              <p className="font-semibold text-[#1c1a17]">
+            <div className="bg-[#f7f5f0] p-3.5">
+              <p className="text-xs text-[#706b62]">收錄法院數／可旁聽筆數</p>
+              <p className="mt-0.5 font-medium text-[#191816]">
                 全台 {meta.courts.length} 所主要法院 ·{" "}
                 {meta.totalHearings.toLocaleString("zh-TW")} 場公開庭期
               </p>
             </div>
-            <div>
-              <p className="text-xs text-[#6b6458]">本次同步已自動濾除</p>
-              <p className="font-semibold text-[#8c381d]">
+            <div className="bg-[#f7f5f0] p-3.5">
+              <p className="text-xs text-[#706b62]">本次同步已自動排除</p>
+              <p className="mt-0.5 font-medium text-[#8f2d1c]">
                 {meta.filterStats.filteredTotal.toLocaleString("zh-TW")}{" "}
                 場不公開／調解庭期
               </p>
@@ -115,9 +116,9 @@ export default async function AboutPage() {
           </div>
         )}
 
-        <p className="text-xs leading-relaxed text-[#6b6458]">
-          為尊重司法院不長期留存庭期索引的立場，本工具不保存已過期庭期，並於個別庭期頁設定{" "}
-          <code className="rounded bg-[#efe8d8] px-1 py-0.5 font-tabular">
+        <p className="text-xs leading-relaxed text-[#706b62]">
+          為尊重司法院不長期留存庭期索引之立場，本工具不保存已過期庭期，並於個別庭期頁設定{" "}
+          <code className="border border-[#d6d0c4] bg-[#efece4] px-1 py-0.5 font-tabular">
             noindex, nofollow
           </code>
           ，亦絕不蒐集或顯示任何當事人姓名與個資。
@@ -126,25 +127,25 @@ export default async function AboutPage() {
 
       {/* Transparent filter stats */}
       {meta && (
-        <section className="space-y-3 rounded-2xl border border-[#1c1a17]/15 bg-[#fffdf8] p-5 sm:p-6">
-          <h2 className="flex items-center gap-2 font-editorial text-lg font-bold text-[#1c1a17]">
+        <section className="space-y-3 rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8] p-6">
+          <h2 className="flex items-center gap-2 border-b border-[#d6d0c4] pb-2.5 font-editorial text-lg font-semibold text-[#191816]">
             <ShieldCheck
-              className="h-5 w-5 text-[#1f4b3b]"
+              className="h-4 w-4 text-[#1b382f]"
               aria-hidden="true"
             />
             不公開案件自動過濾明細
           </h2>
-          <p className="text-sm text-[#5c564c]">
+          <p className="text-sm text-[#524e47]">
             官方民事與刑事庭期表會混入調解、家事與不公開程序。本工具在同步時依以下規則自動排除：
           </p>
-          <ul className="divide-y divide-[#1c1a17]/10 rounded-xl border border-[#1c1a17]/10 text-sm">
+          <ul className="divide-y divide-[#d6d0c4] border border-[#d6d0c4] text-sm">
             {(Object.keys(REASON_LABELS) as NonPublicReason[]).map((key) => (
               <li
                 key={key}
                 className="flex items-center justify-between gap-2 px-4 py-2.5"
               >
-                <span className="text-[#4a453c]">{REASON_LABELS[key]}</span>
-                <span className="font-tabular text-xs font-semibold text-[#1c1a17]">
+                <span className="text-[#3a3630]">{REASON_LABELS[key]}</span>
+                <span className="font-tabular text-xs font-medium text-[#191816]">
                   {meta.filterStats.byReason[key].toLocaleString("zh-TW")} 筆
                 </span>
               </li>
@@ -154,8 +155,8 @@ export default async function AboutPage() {
       )}
 
       {/* Disclaimers & legal red lines */}
-      <section className="space-y-3 rounded-2xl border border-[#b85432]/30 bg-[#fbf2ee] p-5 text-sm leading-relaxed text-[#432318] sm:p-6">
-        <h2 className="font-editorial text-base font-bold text-[#8c381d]">
+      <section className="space-y-3 rounded-[2px] border-l-2 border-[#8f2d1c] bg-[#f9f3f1] p-6 text-sm leading-relaxed text-[#3a3630]">
+        <h2 className="font-editorial text-base font-semibold text-[#8f2d1c]">
           免責聲明與原則
         </h2>
         <ol className="list-decimal space-y-1.5 pl-5">
@@ -175,8 +176,8 @@ export default async function AboutPage() {
       </section>
 
       {/* Official resources */}
-      <section className="space-y-2 rounded-2xl border border-[#1c1a17]/15 bg-[#fffdf8] p-5 sm:p-6">
-        <h2 className="font-editorial text-base font-bold text-[#1c1a17]">
+      <section className="space-y-3 rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8] p-6">
+        <h2 className="border-b border-[#d6d0c4] pb-2.5 font-editorial text-base font-semibold text-[#191816]">
           司法院官方查詢管道
         </h2>
         <ul className="space-y-2 text-sm">
@@ -197,7 +198,7 @@ export default async function AboutPage() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-medium text-[#1f4b3b] underline decoration-[#1f4b3b]/40 underline-offset-4 hover:text-[#16362b]"
+                className="inline-flex items-center gap-1.5 font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
               >
                 <span>{item.label}</span>
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />

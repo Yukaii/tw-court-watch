@@ -805,12 +805,12 @@ export function SearchClient({
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-[#1f4b3b]/30 bg-[#f2f7f4] px-2.5 py-1 text-xs font-semibold text-[#1f4b3b] transition-colors hover:bg-[#1f4b3b] hover:text-[#f6f2e9]"
+            className="inline-flex items-center gap-1.5 rounded-[2px] border border-[#1b382f] bg-[#f4f7f5] px-2.5 py-1 text-xs font-medium text-[#1b382f] transition-colors hover:bg-[#1b382f] hover:text-[#fcfbf8]"
           >
             <CalendarPlus className="h-3.5 w-3.5" aria-hidden="true" />
             <span>
               訂閱{mode === "layjudge" ? "國民法官" : currentCourtInfo.shortName}
-              到 Google 日曆
+              至 Google 日曆
             </span>
           </a>
 
@@ -818,9 +818,9 @@ export function SearchClient({
             href={officialConfirmUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs font-medium text-emerald-900 underline decoration-emerald-700/40 underline-offset-2 hover:text-emerald-700"
+            className="inline-flex items-center gap-1 text-xs font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
           >
-            <span>到司法院官方系統查詢</span>
+            <span>司法院官方系統查詢</span>
             <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
           </a>
         </div>

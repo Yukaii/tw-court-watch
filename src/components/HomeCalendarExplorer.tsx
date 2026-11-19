@@ -35,7 +35,13 @@ export function HomeCalendarExplorer({
 }: HomeCalendarExplorerProps) {
   const today = meta.todayDate;
   const days = useMemo(() => {
-    const arr: Array<{ iso: string; count: number; weekday: string; day: number; month: number }> = [];
+    const arr: Array<{
+      iso: string;
+      count: number;
+      weekday: string;
+      day: number;
+      month: number;
+    }> = [];
     for (let i = 0; i < 14; i++) {
       const iso = addDaysIso(today, i);
       const [, mStr, dStr] = iso.split("-");
@@ -50,8 +56,7 @@ export function HomeCalendarExplorer({
     return arr;
   }, [today, meta.countsByDate]);
 
-  const firstActiveDay =
-    days.find((d) => d.count > 0)?.iso ?? today;
+  const firstActiveDay = days.find((d) => d.count > 0)?.iso ?? today;
 
   const [selectedDate, setSelectedDate] = useState(firstActiveDay);
   const [activeTab, setActiveTab] = useState<string>("ALL");
@@ -59,7 +64,6 @@ export function HomeCalendarExplorer({
   const loadingRef = useRef<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
 
-  // Fetch specific court JSON on demand when selecting a specific court tab
   useEffect(() => {
     if (activeTab === "ALL") return;
     if (courtCache[activeTab]) return;
@@ -70,7 +74,9 @@ export function HomeCalendarExplorer({
     setLoading(true);
 
     fetch(`/data/hearings/by-court/${activeTab}.json`)
-      .then((res) => (res.ok ? (res.json() as Promise<CourtHearingsFile>) : null))
+      .then((res) =>
+        res.ok ? (res.json() as Promise<CourtHearingsFile>) : null,
+      )
       .then((file) => {
         if (cancelled || !file) return;
         const hydrated = file.rows.map((row) =>
@@ -94,7 +100,6 @@ export function HomeCalendarExplorer({
         (h) => h.date === selectedDate,
       );
       if (dayMatches.length > 0) return dayMatches.slice(0, 6);
-      // Fallback: also include lay-judge hearings on that date if any
       const ljMatches = highlights.layJudgeHearings.filter(
         (h) => h.date === selectedDate,
       );
@@ -109,7 +114,6 @@ export function HomeCalendarExplorer({
     }
 
     const onDay = courtData.filter((h) => h.date === selectedDate);
-    // Prioritize trial/debate hearings with human-readable reasons
     const sorted = [...onDay].sort((a, b) => {
       const score = (h: Hearing) =>
         (h.isLayJudge ? 4 : 0) +
@@ -128,31 +132,31 @@ export function HomeCalendarExplorer({
 
   return (
     <section className="space-y-5">
-      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#1c1a17]/15 pb-3">
+      <div className="legal-rule-bottom flex flex-wrap items-end justify-between gap-3 pb-3">
         <div>
-          <p className="font-tabular text-[11px] font-semibold uppercase tracking-widest text-[#b85432]">
-            14-DAY COURT SCHEDULE
+          <p className="text-xs font-medium tracking-[0.08em] text-[#8f2d1c]">
+            壹、未來十四日開庭日曆
           </p>
-          <h2 className="mt-0.5 font-editorial text-2xl font-bold text-[#1c1a17] sm:text-3xl">
-            翻開這兩週的公開開庭日曆
+          <h2 className="mt-1 font-editorial text-2xl font-semibold text-[#191816] sm:text-[28px]">
+            按日期與法院檢視公開開庭
           </h2>
         </div>
         <Link
           href={searchHref}
-          className="inline-flex items-center gap-1 text-sm font-semibold text-[#1f4b3b] hover:text-[#b85432]"
+          className="inline-flex items-center gap-1 text-sm font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
         >
-          <span>進階篩選全部庭期</span>
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          <span>進階條件檢索</span>
+          <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
         </Link>
       </div>
 
-      {/* 14-day horizontal calendar strip */}
+      {/* Architectural 14-day connected date ledger */}
       <div
         role="tablist"
         aria-label="選擇未來 14 天開庭日期"
-        className="no-scrollbar flex gap-2 overflow-x-auto pb-1"
+        className="no-scrollbar flex overflow-x-auto border border-[#191816]/25 bg-[#fcfbf8]"
       >
-        {days.map((d) => {
+        {days.map((d, idx) => {
           const active = d.iso === selectedDate;
           const isQuiet = d.count === 0;
           return (
@@ -162,31 +166,33 @@ export function HomeCalendarExplorer({
               role="tab"
               aria-selected={active}
               onClick={() => setSelectedDate(d.iso)}
-              className={`flex w-[74px] shrink-0 flex-col items-center rounded-xl border px-2 py-2.5 text-center transition-all ${
+              className={`flex w-[78px] shrink-0 flex-col items-center px-2 py-2.5 text-center transition-colors ${
+                idx > 0 ? "border-l border-[#d6d0c4]" : ""
+              } ${
                 active
-                  ? "border-[#1f4b3b] bg-[#1f4b3b] text-[#f6f2e9] shadow-sm"
+                  ? "bg-[#1b382f] text-[#fcfbf8]"
                   : isQuiet
-                    ? "border-[#1c1a17]/10 bg-[#efe9dc]/60 text-[#928a7c] hover:border-[#1c1a17]/25"
-                    : "border-[#1c1a17]/15 bg-[#fffdf8] text-[#1c1a17] hover:border-[#1f4b3b]/50"
+                    ? "bg-[#efece4]/70 text-[#8a8478] hover:bg-[#efece4]"
+                    : "bg-[#fcfbf8] text-[#191816] hover:bg-[#f2efe8]"
               }`}
             >
               <span
-                className={`text-[10px] font-semibold ${
-                  active ? "text-[#e9b949]" : "text-[#6b6458]"
+                className={`text-[10px] font-medium tracking-[0.04em] ${
+                  active ? "text-[#d4b06a]" : "text-[#706b62]"
                 }`}
               >
-                {d.iso === today ? "今天" : `${d.month}月 週${d.weekday}`}
+                {d.iso === today ? "今日" : `${d.month}月 週${d.weekday}`}
               </span>
-              <span className="mt-0.5 font-editorial text-2xl leading-none font-bold">
+              <span className="mt-0.5 font-editorial text-2xl leading-none font-semibold">
                 {d.day}
               </span>
               <span
                 className={`mt-1.5 font-tabular text-[10px] ${
                   active
-                    ? "text-[#f6f2e9]/85"
+                    ? "text-[#fcfbf8]/85"
                     : isQuiet
-                      ? "text-[#a49c8f]"
-                      : "text-[#1f4b3b]"
+                      ? "text-[#9a9387]"
+                      : "text-[#1b382f]"
                 }`}
               >
                 {isQuiet ? "休庭" : `${d.count} 場`}
@@ -196,8 +202,8 @@ export function HomeCalendarExplorer({
         })}
       </div>
 
-      {/* Court filter strip */}
-      <div className="flex flex-wrap items-center gap-1.5">
+      {/* Formal structural tab bar for courts */}
+      <div className="flex flex-wrap items-center border-b border-[#d6d0c4]">
         {QUICK_TABS.map((tab) => {
           const active = activeTab === tab.id;
           return (
@@ -205,10 +211,10 @@ export function HomeCalendarExplorer({
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+              className={`-mb-px border-b-2 px-3.5 py-2 text-xs tracking-[0.04em] transition-colors ${
                 active
-                  ? "border-[#1c1a17] bg-[#1c1a17] text-[#f6f2e9]"
-                  : "border-[#1c1a17]/15 bg-[#fffdf8] text-[#5c564c] hover:border-[#1c1a17]/40 hover:text-[#1c1a17]"
+                  ? "border-[#191816] font-semibold text-[#191816]"
+                  : "border-transparent font-normal text-[#524e47] hover:border-[#d6d0c4] hover:text-[#191816]"
               }`}
             >
               {tab.label}
@@ -219,27 +225,27 @@ export function HomeCalendarExplorer({
 
       {/* Calendar Event Cards Grid */}
       {loading && visibleHearings.length === 0 ? (
-        <div className="flex items-center justify-center gap-2 rounded-xl border border-[#1c1a17]/12 bg-[#fffdf8] py-12 text-sm text-[#5c564c]">
-          <Loader2 className="h-4 w-4 animate-spin text-[#1f4b3b]" aria-hidden="true" />
-          載入該法院庭期票卡中…
-        </div>
-      ) : visibleHearings.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-[#1c1a17]/20 bg-[#fffdf8] px-6 py-10 text-center">
-          <Calendar
-            className="mx-auto h-6 w-6 text-[#8c8477]"
+        <div className="flex items-center justify-center gap-2 border border-[#d6d0c4] bg-[#fcfbf8] py-12 text-sm text-[#524e47]">
+          <Loader2
+            className="h-4 w-4 animate-spin text-[#1b382f]"
             aria-hidden="true"
           />
-          <p className="mt-2 font-editorial text-lg font-bold text-[#1c1a17]">
-            這一天目前沒有精選公開開庭
+          <span>載入該法院庭期資料中…</span>
+        </div>
+      ) : visibleHearings.length === 0 ? (
+        <div className="border border-dashed border-[#191816]/25 bg-[#fcfbf8] px-6 py-10 text-center">
+          <Calendar
+            className="mx-auto h-5 w-5 text-[#706b62]"
+            aria-hidden="true"
+          />
+          <p className="mt-2 font-editorial text-lg font-semibold text-[#191816]">
+            此日期目前無精選公開開庭
           </p>
-          <p className="mt-1 text-sm text-[#6b6458]">
-            週末與國定假日法院通常休庭；你也可以點上方其他平日日期，或切換特定法院查看完整列表。
+          <p className="mt-1 text-sm text-[#524e47]">
+            週末與國定假日法院通常休庭；請改選其他平日日期，或切換特定法院查閱完整名冊。
           </p>
-          <Link
-            href={searchHref}
-            className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-[#1f4b3b] px-4 py-2 text-xs font-semibold text-[#f6f2e9] hover:bg-[#16362b]"
-          >
-            前往完整找庭頁查看
+          <Link href={searchHref} className="btn-formal-primary mt-4">
+            <span>前往完整檢索頁</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>

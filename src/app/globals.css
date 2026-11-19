@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --bg-paper: #f6f2e9;
-  --bg-card: #fffdf8;
-  --bg-spine: #ede6d6;
-  --ink: #1c1a17;
-  --ink-muted: #5c564c;
-  --pine: #1f4b3b;
-  --pine-dark: #16362b;
-  --terracotta: #b85432;
-  --ochre: #c78a1f;
-  --rule: rgba(28, 26, 23, 0.13);
+  --bg-paper: #f7f5f0;
+  --bg-surface: #fcfbf8;
+  --bg-tint: #efece4;
+  --ink: #191816;
+  --ink-secondary: #524e47;
+  --ink-muted: #706b62;
+  --robe: #1b382f;
+  --robe-hover: #132922;
+  --seal: #8f2d1c;
+  --brass: #8a6216;
+  --rule: #d6d0c4;
+  --rule-strong: #191816;
 }
 
 @theme inline {
@@ -25,31 +27,104 @@ html {
   background-color: var(--bg-paper);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background-color: var(--bg-paper);
-  background-image: radial-gradient(
-    rgba(28, 26, 23, 0.035) 0.75px,
-    transparent 0.75px
-  );
-  background-size: 20px 20px;
   color: var(--ink);
   font-size: 16px;
-  line-height: 1.7;
+  line-height: 1.75;
   min-height: 100dvh;
 }
 
+/* Formal Ming/Song editorial serif for court titles, dates, and legal headings */
 .font-editorial {
   font-family: var(--font-serif);
+  letter-spacing: 0.015em;
 }
 
+/* Crisp tabular figures for docket numbers, ROC dates, times, and counts */
 .font-tabular {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 
-/* Subtle hairline scrollbars for horizontal date strip */
+/* Classic judicial gazette double horizontal rule */
+.legal-rule-bottom {
+  border-bottom: 1px solid var(--rule-strong);
+  box-shadow: 0 3px 0 0 var(--bg-paper), 0 4px 0 0 var(--rule);
+}
+
+.legal-rule-top {
+  border-top: 2px solid var(--rule-strong);
+}
+
+/* Architectural formal buttons — flat, crisp 2px corners, no SaaS glow */
+.btn-formal-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 2px;
+  border: 1px solid var(--robe);
+  background-color: var(--robe);
+  color: #fcfbf8;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 0.5625rem 1.05rem;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.btn-formal-primary:hover {
+  background-color: var(--robe-hover);
+  border-color: var(--robe-hover);
+}
+
+.btn-formal-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 2px;
+  border: 1px solid rgba(25, 24, 22, 0.32);
+  background-color: var(--bg-surface);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 0.5625rem 1.05rem;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.btn-formal-secondary:hover {
+  border-color: var(--ink);
+  background-color: var(--bg-tint);
+}
+
+.btn-formal-ink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 2px;
+  border: 1px solid var(--ink);
+  background-color: var(--ink);
+  color: #fcfbf8;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 0.95rem;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.btn-formal-ink:hover {
+  background-color: var(--robe);
+  border-color: var(--robe);
+}
+
+/* Subtle hairline scrollbars for horizontal date ledger */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

@@ -1,9 +1,4 @@
-import {
-  ArrowRight,
-  ArrowUpRight,
-  ExternalLink,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { CalendarEventCard } from "@/components/CalendarEventCard";
 import { CalendarSubscribeCard } from "@/components/CalendarSubscribeCard";
@@ -18,50 +13,45 @@ import type { CourtLevel, Hearing } from "@/lib/types";
 
 const SIX_RULES = [
   {
-    num: "01",
-    title: "免預約、免門票，提早過安檢",
-    body: "一般公開法庭直接走進去即可。進法院大門需過金屬探測門與 X 光機，建議比預定時間提早 15 分鐘抵達。",
+    clause: "第一條",
+    title: "免預約、免門票，提早通過安檢",
+    body: "一般公開法庭無須事先預約。進入法院大門須通過金屬探測門與隨身物品 X 光檢查，建議於開庭前 15 分鐘抵達。",
     alert: false,
   },
   {
-    num: "02",
-    title: "門開著就能安靜走進旁聽席",
-    body: "先看門外電子看板確認案號，只要沒標示「不公開」或「需領旁聽證」，輕推開門坐進後方旁聽席即可。",
+    clause: "第二條",
+    title: "庭門敞開即可靜步入座旁聽席",
+    body: "先確認門外電子看板案號；凡未標示「不公開審理」或「須領旁聽證」者，輕推開門坐入後方旁聽席即可。",
     alert: false,
   },
   {
-    num: "03",
-    title: "法官進場、退庭與宣判請起立",
-    body: "聽到通譯或法警喊「起立」時跟著現場起身致意即可，不用緊張，坐下後靜心聽審。",
+    clause: "第三條",
+    title: "法官入庭、退庭及宣判時起立",
+    body: "聽聞通譯或法警宣示「起立」時，隨現場人員一同起身致意，隨後靜坐聽審即可。",
     alert: false,
   },
   {
-    num: "04",
-    title: "庭內嚴禁錄音、錄影、拍照",
-    body: "依《法院組織法》這是絕對紅線——開庭中不可拍攝或錄音（沒開閃光燈也不行），進庭前請直接收起手機。",
+    clause: "第四條",
+    title: "庭內嚴禁錄音、錄影及拍照",
+    body: "依《法院組織法》及法庭旁聽規則，開庭期間一律禁止任何攝影與錄音行為（未開閃光燈亦同），入庭前請妥善收起手機。",
     alert: true,
   },
   {
-    num: "05",
+    clause: "第五條",
     title: "手機靜音、禁飲食、禁喧嘩鼓掌",
-    body: "手機請關靜音（連震動一併關閉），庭內不得飲食、交談、鼓掌或出聲評論，維持莊重審理秩序。",
+    body: "入庭前請將手機切換為完全靜音；庭內不得飲食、交談、鼓掌或出聲評論，以維法庭莊重與審理秩序。",
     alert: false,
   },
   {
-    num: "06",
-    title: "可以帶紙本筆記本與筆做筆記",
-    body: "旁聽席歡迎手寫記錄爭點與問答順序！觀庭後也能回到本網站寫下只存本機的個人觀庭筆記。",
+    clause: "第六條",
+    title: "得攜帶紙本筆記本與筆記錄",
+    body: "旁聽席可自由手寫記錄程序進行與爭點脈絡；散庭後亦可於本網站撰寫僅留存於本機之個人觀庭筆記。",
     alert: false,
   },
 ] as const;
 
 const LEVEL_ORDER: CourtLevel[] = ["supreme", "high", "admin_ip", "district"];
 
-/**
- * Pick up to 6 diverse spotlight hearings for the hero Calendar Event Card:
- * prefer non-empty human-readable `reason`, include at least 1–2 upcoming
- * 國民法官 hearings, and spread across major courts.
- */
 function pickSpotlightHearings(
   featuredTrials: Hearing[],
   layJudgeHearings: Hearing[],
@@ -79,19 +69,16 @@ function pickSpotlightHearings(
     return true;
   };
 
-  // 1. Up to 2 upcoming 國民法官 hearings with clear reasons
   for (const h of layJudgeHearings) {
     if (picked.length >= 2) break;
     if (h.reason) pushIfNew(h);
   }
 
-  // 2. Diverse popular trial/debate hearings with non-empty reasons
   for (const h of featuredTrials) {
     if (picked.length >= 6) break;
     if (h.reason) pushIfNew(h);
   }
 
-  // 3. Fill remaining slots if needed (allow same court or fallback reason)
   for (const h of [...layJudgeHearings, ...featuredTrials]) {
     if (picked.length >= 6) break;
     pushIfNew(h, true);
@@ -108,13 +95,13 @@ export default async function HomePage() {
 
   if (!meta || !highlights) {
     return (
-      <div className="rounded-2xl border border-[#1c1a17]/15 bg-[#fffdf8] p-8 text-center">
-        <h1 className="font-editorial text-xl font-bold text-[#1c1a17]">
+      <div className="rounded-[2px] border border-[#191816]/25 bg-[#fcfbf8] p-8 text-center">
+        <h1 className="font-editorial text-xl font-semibold text-[#191816]">
           尚未同步庭期資料
         </h1>
-        <p className="mt-2 text-sm text-[#5c564c]">
+        <p className="mt-2 text-sm text-[#524e47]">
           請先執行{" "}
-          <code className="rounded bg-[#efe8d8] px-1.5 py-0.5 font-tabular text-xs">
+          <code className="border border-[#d6d0c4] bg-[#efece4] px-1.5 py-0.5 font-tabular text-xs">
             bun run sync
           </code>{" "}
           同步司法院公開庭期表。
@@ -139,38 +126,37 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-16">
-      {/* Band 1: Editorial Hero + Huge Courtroom Illustration + Floating Calendar Event Card */}
+      {/* Masthead + Editorial Plate + Anchored Docket Pass */}
       <HomeHeroShowcase meta={meta} spotlightHearings={spotlightHearings} />
 
-      {/* Band 2: Interactive 14-Day Calendar Strip & Calendar Event Cards */}
+      {/* 壹、未來十四日開庭日曆 */}
       <HomeCalendarExplorer meta={meta} highlights={highlights} />
 
-      {/* Band 2.5: Subscribe via Google Calendar / Apple Calendar / iCal feed */}
+      {/* 貳、行事曆訂閱服務 */}
       <CalendarSubscribeCard meta={meta} />
 
-      {/* Band 3: Contrasting Forest-Ink Editorial Band — 國民法官專區 */}
+      {/* 參、國民法官審理專區（深墨法袍色對比區塊） */}
       {upcomingLayJudge.length > 0 && (
-        <section className="rounded-2xl border border-[#1c1a17]/15 bg-[#173026] px-5 py-8 text-[#f6f2e9] shadow-[0_24px_50px_-28px_rgba(23,48,38,0.55)] sm:px-8 sm:py-10">
-          <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#f6f2e9]/15 pb-5">
+        <section className="rounded-[2px] border border-[#191816] bg-[#162822] px-5 py-8 text-[#fcfbf8] sm:px-8 sm:py-10">
+          <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#fcfbf8]/20 pb-5">
             <div className="space-y-1.5">
-              <p className="inline-flex items-center gap-1.5 font-tabular text-[11px] font-semibold uppercase tracking-widest text-[#e9b949]">
-                <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-                CITIZEN JUDGE SPOTLIGHT · 國民法官專區
+              <p className="text-xs font-medium tracking-[0.08em] text-[#d4b06a]">
+                參、國民法官審理專區
               </p>
-              <h2 className="font-editorial text-2xl font-bold text-[#fffdf8] sm:text-3xl">
-                最適合第一次走進法院的國民法官審理
+              <h2 className="font-editorial text-2xl font-semibold text-[#fcfbf8] sm:text-[28px]">
+                最適合初次旁聽的國民法官法庭
               </h2>
-              <p className="max-w-2xl text-sm leading-relaxed text-[#f6f2e9]/75">
-                為了讓素人民眾能理解案情，檢辯雙方在國民法官法庭會大量使用白話簡報與清晰爭點整理。熱門場次可能需要現場領取旁聽證，建議提早確認該法院公告。
+              <p className="max-w-2xl text-sm leading-relaxed text-[#fcfbf8]/75">
+                國民法官制度強調審理集中與程序透明，檢辯雙方均以白話簡報說明爭點，極適合一般公民實地觀摩。熱門場次或須現場領取旁聽證，請於出發前留意該管法院公告。
               </p>
             </div>
 
             <Link
               href={`/search?mode=layjudge&start=${today}&end=${meta.dateRange.end}`}
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-[#e9b949] px-4 py-2.5 text-sm font-semibold text-[#152d24] transition-colors hover:bg-[#f2ca68]"
+              className="inline-flex shrink-0 items-center gap-2 rounded-[2px] border border-[#d4b06a] bg-[#d4b06a] px-4 py-2 text-sm font-medium tracking-[0.03em] text-[#13241e] transition-colors hover:bg-[#e3c381]"
             >
-              <span>查看全部 {meta.layJudgeCount} 場</span>
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <span>查閱全部 {meta.layJudgeCount} 場</span>
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </div>
 
@@ -187,54 +173,54 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Band 4: Editorial Numbered 01–06 旁聽守則 + Procedure Guide + @legispedia_tw Credit */}
+      {/* 肆、法庭旁聽守則 + 庭類辨識 + 致謝來源 */}
       <section className="space-y-8">
-        <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#1c1a17]/15 pb-3">
+        <div className="legal-rule-bottom flex flex-wrap items-end justify-between gap-3 pb-3">
           <div>
-            <p className="font-tabular text-[11px] font-semibold uppercase tracking-widest text-[#b85432]">
-              COURTROOM CODE · 旁聽守則
+            <p className="text-xs font-medium tracking-[0.08em] text-[#8f2d1c]">
+              肆、法庭旁聽守則
             </p>
-            <h2 className="mt-0.5 font-editorial text-2xl font-bold text-[#1c1a17] sm:text-3xl">
-              第一次走進法庭？記住這 6 條守則就夠了
+            <h2 className="mt-1 font-editorial text-2xl font-semibold text-[#191816] sm:text-[28px]">
+              初次進入法庭須知六則
             </h2>
           </div>
           <Link
             href="/guide"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-[#1f4b3b] hover:text-[#b85432]"
+            className="inline-flex items-center gap-1 text-sm font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
           >
-            <span>完整 3 分鐘旁聽指南</span>
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <span>閱讀完整旁聽指南</span>
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
 
-        {/* 01–06 Hairline Editorial Grid */}
-        <div className="grid gap-px overflow-hidden rounded-xl border border-[#1c1a17]/15 bg-[#1c1a17]/12 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Formal 6-clause hairline grid */}
+        <div className="grid gap-px border border-[#191816]/25 bg-[#d6d0c4] sm:grid-cols-2 lg:grid-cols-3">
           {SIX_RULES.map((rule) => (
             <div
-              key={rule.num}
+              key={rule.clause}
               className={`flex flex-col justify-between p-5 ${
-                rule.alert ? "bg-[#fbf2ee]" : "bg-[#fffdf8]"
+                rule.alert ? "bg-[#f9f3f1]" : "bg-[#fcfbf8]"
               }`}
             >
               <div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between border-b border-[#d6d0c4] pb-2">
                   <span
-                    className={`font-tabular text-xs font-bold tracking-widest ${
-                      rule.alert ? "text-[#b85432]" : "text-[#1f4b3b]"
+                    className={`font-editorial text-xs font-semibold tracking-[0.08em] ${
+                      rule.alert ? "text-[#8f2d1c]" : "text-[#1b382f]"
                     }`}
                   >
-                    RULE {rule.num}
+                    {rule.clause}
                   </span>
                   {rule.alert && (
-                    <span className="rounded-sm bg-[#b85432] px-1.5 py-0.5 text-[10px] font-bold text-[#fffdf8]">
-                      絕對紅線
+                    <span className="border border-[#8f2d1c] px-1.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] text-[#8f2d1c]">
+                      法定紅線
                     </span>
                   )}
                 </div>
-                <h3 className="mt-2 font-editorial text-lg font-bold text-[#1c1a17]">
+                <h3 className="mt-3 font-editorial text-[17px] font-semibold text-[#191816]">
                   {rule.title}
                 </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-[#5c564c]">
+                <p className="mt-1.5 text-sm leading-relaxed text-[#524e47]">
                   {rule.body}
                 </p>
               </div>
@@ -242,32 +228,31 @@ export default async function HomePage() {
           ))}
         </div>
 
-        {/* Procedure Decoder + Dedicated Attribution Card */}
+        {/* Procedure Decoder + Attribution Colophon */}
         <div className="grid gap-4 lg:grid-cols-12">
-          {/* 3-tier procedure decoder */}
-          <div className="rounded-xl border border-[#1c1a17]/15 bg-[#fffdf8] p-5 lg:col-span-7">
-            <p className="font-tabular text-[11px] font-semibold uppercase tracking-widest text-[#1f4b3b]">
-              HOW TO PICK A HEARING · 看懂庭類不踩雷
+          <div className="rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8] p-5 lg:col-span-7">
+            <p className="border-b border-[#d6d0c4] pb-2 font-editorial text-sm font-semibold text-[#191816]">
+              如何辨識開庭性質（庭類說明）
             </p>
-            <div className="mt-3.5 grid gap-3 sm:grid-cols-3">
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
               {(["trial", "prep", "verdict"] as const).map((key) => {
                 const info = HEARING_CATEGORY_META[key];
                 return (
                   <div
                     key={key}
-                    className={`rounded-lg border p-3.5 ${
+                    className={`border p-3.5 ${
                       info.recommended
-                        ? "border-[#1f4b3b]/35 bg-[#f2f7f4]"
-                        : "border-[#1c1a17]/12 bg-[#f8f5ee]"
+                        ? "border-[#1b382f]/40 bg-[#f4f7f5]"
+                        : "border-[#d6d0c4] bg-[#f7f5f0]"
                     }`}
                   >
-                    <p className="font-editorial text-sm font-bold text-[#1c1a17]">
+                    <p className="font-editorial text-sm font-semibold text-[#191816]">
                       {info.label}
                     </p>
-                    <p className="mt-0.5 font-tabular text-[11px] font-semibold text-[#1f4b3b]">
+                    <p className="mt-0.5 font-tabular text-[11px] font-medium text-[#1b382f]">
                       {info.durationHint}
                     </p>
-                    <p className="mt-1.5 text-xs leading-relaxed text-[#5c564c]">
+                    <p className="mt-1.5 text-xs leading-relaxed text-[#524e47]">
                       {info.beginnerHint}
                     </p>
                   </div>
@@ -276,40 +261,40 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Dedicated Credit / Attribution Card to @legispedia_tw Threads post */}
-          <aside className="flex flex-col justify-between rounded-xl border border-[#1c1a17]/15 bg-[#efe8d8] p-5 lg:col-span-5">
+          {/* Formal Attribution Block */}
+          <aside className="flex flex-col justify-between rounded-[2px] border border-[#191816]/25 bg-[#efece4] p-5 lg:col-span-5">
             <div className="space-y-2">
-              <p className="font-tabular text-[11px] font-semibold uppercase tracking-widest text-[#8c381d]">
-                CREDIT & INSPIRATION · 致謝與靈感來源
+              <p className="text-xs font-medium tracking-[0.08em] text-[#8f2d1c]">
+                參考來源與致謝
               </p>
-              <h3 className="font-editorial text-lg font-bold text-[#1c1a17]">
-                感謝法律百科{" "}
-                <span className="font-tabular text-base text-[#1f4b3b]">
+              <h3 className="font-editorial text-lg font-semibold text-[#191816]">
+                致謝法律百科{" "}
+                <span className="font-tabular text-sm font-medium text-[#1b382f]">
                   @legispedia_tw
                 </span>{" "}
-                整理旁聽入門指南
+                整理旁聽指南
               </h3>
-              <p className="text-sm leading-relaxed text-[#4a453c]">
-                本專案的發想與上方旁聽基本守則，源自法律百科在 Threads
-                上整理的旁聽攻略貼文（及《法科！輕鬆點》節目分享）。推薦讀讀原文串文與底下的實戰討論！
+              <p className="text-sm leading-relaxed text-[#524e47]">
+                本專案之發想與前揭法庭旁聽守則，取材並致謝法律百科於 Threads
+                發表之旁聽實務整理貼文及《法科！輕鬆點》節目分享。歡迎閱讀原文與討論串。
               </p>
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-[#1c1a17]/12 pt-3.5">
+            <div className="mt-4 flex flex-wrap items-center gap-4 border-t border-[#d6d0c4] pt-3.5">
               <a
                 href={LEGISPEDIA_THREAD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-[#1c1a17] px-3.5 py-2 text-xs font-semibold text-[#f6f2e9] transition-colors hover:bg-[#1f4b3b]"
+                className="btn-formal-ink"
               >
                 <span>閱讀 Threads 原文</span>
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-[#1f4b3b] hover:text-[#b85432]"
+                className="inline-flex items-center gap-0.5 text-xs font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
               >
-                <span>過濾原則與免責聲明</span>
+                <span>資料來源與免責聲明</span>
                 <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
               </Link>
             </div>
@@ -317,30 +302,30 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Band 5: Compact 38-Court Typographic Directory */}
+      {/* 伍、全台法院庭期索引 */}
       <section className="space-y-5">
-        <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#1c1a17]/15 pb-3">
+        <div className="legal-rule-bottom flex flex-wrap items-end justify-between gap-3 pb-3">
           <div>
-            <p className="font-tabular text-[11px] font-semibold uppercase tracking-widest text-[#1f4b3b]">
-              COURT DIRECTORY · 全台法院索引
+            <p className="text-xs font-medium tracking-[0.08em] text-[#8f2d1c]">
+              伍、全台主要法院名錄
             </p>
-            <h2 className="mt-0.5 font-editorial text-2xl font-bold text-[#1c1a17]">
-              全台 {meta.courts.length} 所主要法院未來 7 天庭期入口
+            <h2 className="mt-1 font-editorial text-2xl font-semibold text-[#191816]">
+              全台 {meta.courts.length} 所主要法院未來七日庭期入口
             </h2>
           </div>
           <Link
             href="/search"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-[#1f4b3b] hover:text-[#b85432]"
+            className="inline-flex items-center gap-1 text-sm font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
           >
-            <span>開啟完整搜尋頁</span>
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <span>開啟完整條件檢索</span>
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
 
-        <div className="space-y-5 rounded-xl border border-[#1c1a17]/15 bg-[#fffdf8] p-5 sm:p-6">
+        <div className="divide-y divide-[#d6d0c4] rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8]">
           {courtsByLevel.map((group) => (
-            <div key={group.level} className="space-y-2">
-              <h3 className="font-tabular text-[11px] font-semibold uppercase tracking-wider text-[#6b6458]">
+            <div key={group.level} className="space-y-2.5 p-5 sm:px-6">
+              <h3 className="text-xs font-medium tracking-[0.06em] text-[#524e47]">
                 {group.label}（{group.courts.length}）
               </h3>
               <div className="flex flex-wrap gap-1.5">
@@ -348,7 +333,7 @@ export default async function HomePage() {
                   <Link
                     key={court.crtid}
                     href={`/search?court=${court.crtid}&start=${today}&end=${weekEnd}`}
-                    className="inline-flex items-center gap-1.5 rounded-md border border-[#1c1a17]/12 bg-[#f8f5ee] px-2.5 py-1 text-xs font-medium text-[#1c1a17] transition-colors hover:border-[#1f4b3b] hover:bg-[#1f4b3b] hover:text-[#f6f2e9]"
+                    className="inline-flex items-center gap-1.5 rounded-[2px] border border-[#d6d0c4] bg-[#f7f5f0] px-2.5 py-1 text-xs font-medium text-[#191816] transition-colors hover:border-[#1b382f] hover:bg-[#1b382f] hover:text-[#fcfbf8]"
                   >
                     <span>{court.shortName}</span>
                     <span className="font-tabular text-[10px] opacity-65">
