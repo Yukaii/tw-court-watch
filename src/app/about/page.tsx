@@ -1,6 +1,9 @@
 import { ExternalLink, ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
-import { LEGISPEDIA_THREAD_URL } from "@/components/SiteFooter";
+import {
+  GITHUB_REPO_URL,
+  LEGISPEDIA_THREAD_URL,
+} from "@/components/SiteFooter";
 import {
   OFFICIAL_LAY_JUDGE_URL,
   OFFICIAL_LIVE_STATUS_URL,
@@ -203,6 +206,26 @@ export default async function AboutPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      {/* Open source & MIT license */}
+      <section className="space-y-2.5 rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8] p-6">
+        <h2 className="border-b border-[#d6d0c4] pb-2.5 font-editorial text-base font-semibold text-[#191816]">
+          開放原始碼與授權
+        </h2>
+        <p className="text-sm leading-relaxed text-[#524e47]">
+          本網站所有前端介面、資料過濾規則與同步腳本皆以 MIT License
+          開放原始碼，歡迎檢視程式、回報問題或協助補充各法院院區與交通資訊。
+        </p>
+        <a
+          href={GITHUB_REPO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
+        >
+          <span>GitHub 儲存庫：Yukaii/tw-court-watch（MIT）</span>
+          <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+        </a>
       </section>
     </div>
   );

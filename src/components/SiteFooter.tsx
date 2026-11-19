@@ -4,6 +4,8 @@ import { OFFICIAL_LIVE_STATUS_URL, OFFICIAL_QUERY_BASE } from "@/lib/courts";
 export const LEGISPEDIA_THREAD_URL =
   "https://www.threads.com/@legispedia_tw/post/DO3XNWvD8ku";
 
+export const GITHUB_REPO_URL = "https://github.com/Yukaii/tw-court-watch";
+
 export function SiteFooter() {
   return (
     <footer className="border-t-2 border-[#191816] bg-[#efece4] text-sm text-[#524e47]">
@@ -61,6 +63,14 @@ export function SiteFooter() {
             >
               資料來源與免責聲明
             </Link>
+            <a
+              href={GITHUB_REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-[#191816]/30 underline-offset-4 hover:text-[#191816]"
+            >
+              GitHub 原始碼（MIT）
+            </a>
           </div>
         </div>
       </div>
