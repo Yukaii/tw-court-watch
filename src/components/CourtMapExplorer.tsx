@@ -50,7 +50,7 @@ const REGION_PRESETS: Array<{
   zoom: number;
   crtids?: string[];
 }> = [
-  { id: "all", label: "全臺", center: [120.98, 23.75], zoom: 6.6 },
+  { id: "all", label: "全臺", center: [120.85, 23.62], zoom: 6.45 },
   {
     id: "taipei",
     label: "北北基",
@@ -286,8 +286,8 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
       mapInstance = new maplibregl.Map({
         container: mapContainerRef.current,
         style: JUDICIAL_MAP_STYLE,
-        center: [120.98, 23.75],
-        zoom: 6.6,
+        center: [120.85, 23.62],
+        zoom: 6.45,
         minZoom: 5.5,
         maxZoom: 17,
         attributionControl: false,
@@ -603,8 +603,8 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
   const handleResetView = () => {
     setRegionFilter("all");
     mapRef.current?.flyTo({
-      center: [120.98, 23.75],
-      zoom: 6.6,
+      center: [120.85, 23.62],
+      zoom: 6.45,
       duration: 600,
     });
   };

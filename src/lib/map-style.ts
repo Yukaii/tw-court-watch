@@ -278,13 +278,13 @@ export const JUDICIAL_MAP_STYLE: StyleSpecification = {
         "text-halo-width": 1.5,
       },
     },
-    // City labels
+    // City labels (revealed when zoomed into regions so island-wide view stays uncluttered)
     {
       id: "place-city",
       type: "symbol",
       source: "openmaptiles",
       "source-layer": "place",
-      minzoom: 5,
+      minzoom: 9.5,
       filter: ["==", ["get", "class"], "city"],
       layout: {
         "text-field": ZH_LABEL,
