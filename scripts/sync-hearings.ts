@@ -426,8 +426,10 @@ async function main() {
       }
       if (
         h.category === "trial" &&
-        h.date <= addDaysIso(todayIso, 3) &&
-        (court.popular || court.level === "supreme" || court.level === "admin_ip")
+        (court.popular ||
+          court.level === "supreme" ||
+          court.level === "admin_ip" ||
+          h.isLayJudge)
       ) {
         featuredCandidates.push(h);
       }
@@ -450,22 +452,38 @@ async function main() {
     );
   }
 
-  // Sort & cap featured trials so highlights.json stays lightweight and diverse across courts
-  featuredCandidates.sort((a, b) => {
-    if (a.date !== b.date) return a.date.localeCompare(b.date);
-    if (a.isLayJudge !== b.isLayJudge) return a.isLayJudge ? -1 : 1;
-    return a.time.localeCompare(b.time);
-  });
+  // Spread featured trials evenly across every date in the 14-day window,
+  // prioritizing non-empty `reason` and 國民法官 hearings, max 3 per court per date.
+  const candidatesByDate = new Map<string, Hearing[]>();
+  for (const h of featuredCandidates) {
+    const list = candidatesByDate.get(h.date) ?? [];
+    list.push(h);
+    candidatesByDate.set(h.date, list);
+  }
 
   const featuredTrials: Hearing[] = [];
-  const perCourtDateCounter = new Map<string, number>();
-  for (const h of featuredCandidates) {
-    const key = `${h.crtid}-${h.date}`;
-    const count = perCourtDateCounter.get(key) ?? 0;
-    if (count >= 12) continue;
-    perCourtDateCounter.set(key, count + 1);
-    featuredTrials.push(h);
-    if (featuredTrials.length >= 160) break;
+  const sortedDates = Array.from(candidatesByDate.keys()).sort();
+  for (const date of sortedDates) {
+    const dayList = candidatesByDate.get(date) ?? [];
+    dayList.sort((a, b) => {
+      const score = (h: Hearing) =>
+        (h.reason ? 8 : 0) +
+        (h.isLayJudge ? 4 : 0) +
+        (COURT_BY_ID[h.crtid]?.popular ? 2 : 0);
+      const diff = score(b) - score(a);
+      return diff !== 0 ? diff : a.time.localeCompare(b.time);
+    });
+
+    const perCourtCount = new Map<string, number>();
+    let addedForDay = 0;
+    for (const h of dayList) {
+      const cCount = perCourtCount.get(h.crtid) ?? 0;
+      if (cCount >= 3) continue;
+      perCourtCount.set(h.crtid, cCount + 1);
+      featuredTrials.push(h);
+      addedForDay++;
+      if (addedForDay >= 18) break;
+    }
   }
 
   allLayJudge.sort((a, b) =>
