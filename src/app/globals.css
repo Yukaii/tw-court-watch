@@ -19,7 +19,7 @@
   --font-sans: "Noto Sans TC", -apple-system, BlinkMacSystemFont,
     "PingFang TC", "Microsoft JhengHei", sans-serif;
   --font-serif: "Noto Serif TC", "Songti TC", "PMingLiU", Georgia, serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo,
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
     monospace;
 }
 
