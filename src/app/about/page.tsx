@@ -44,15 +44,12 @@ export default async function AboutPage() {
 
       {/* Credit & Inspiration */}
       <section className="space-y-2.5 rounded-[2px] border border-[#191816]/25 bg-[#efece4] p-6">
-        <p className="text-xs font-medium tracking-[0.08em] text-[#8f2d1c]">
-          專案靈感致謝
-        </p>
         <h2 className="font-editorial text-lg font-semibold text-[#191816]">
-          致謝法律百科 @legispedia_tw 之旁聽攻略整理
+          致謝法律百科 @legispedia_tw 的旁聽指南整理
         </h2>
         <p className="text-sm leading-relaxed text-[#524e47]">
-          本專案之發想與站內旁聽入門守則，受到法律百科（Legispedia）於 Threads
-          整理發表之「法院旁聽指南」貼文與《法科！輕鬆點》節目啟發。特此標註出處並推薦閱讀原文。
+          這個專案的起點與站內的旁聽入門守則，受到法律百科在 Threads
+          整理分享的「法院旁聽指南」貼文與《法科！輕鬆點》節目啟發。特別在此標註出處並推薦閱讀原文。
         </p>
         <a
           href={LEGISPEDIA_THREAD_URL}

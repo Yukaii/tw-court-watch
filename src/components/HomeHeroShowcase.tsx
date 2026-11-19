@@ -31,11 +31,14 @@ export function HomeHeroShowcase({
   const [, mStr, dStr] = (current?.date ?? today).split("-");
   const mNum = Number.parseInt(mStr ?? "1", 10);
   const dNum = Number.parseInt(dStr ?? "1", 10);
-  const rocYear = Number.parseInt((current?.date ?? today).slice(0, 4), 10) - 1911;
+  const rocYear =
+    Number.parseInt((current?.date ?? today).slice(0, 4), 10) - 1911;
   const weekday = getWeekdayZh(current?.date ?? today);
 
   const handlePrev = () => {
-    setIndex((i) => (i - 1 + spotlightHearings.length) % spotlightHearings.length);
+    setIndex(
+      (i) => (i - 1 + spotlightHearings.length) % spotlightHearings.length,
+    );
   };
 
   const handleNext = () => {
@@ -54,34 +57,26 @@ export function HomeHeroShowcase({
 
   return (
     <section className="space-y-6">
-      {/* Formal Gazette Masthead Header */}
-      <div className="legal-rule-bottom grid gap-6 pb-6 lg:grid-cols-12 lg:items-end">
+      {/* Clean Gazette Header */}
+      <div className="legal-rule-bottom grid gap-5 pb-6 lg:grid-cols-12 lg:items-end">
         <div className="space-y-3 lg:col-span-8">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs tracking-[0.04em] text-[#524e47]">
-            <span className="font-medium text-[#1b382f]">公開審判庭期表</span>
-            <span aria-hidden="true" className="text-[#a8a093]">
-              ｜
-            </span>
-            <span className="font-tabular text-[#191816]">
-              {formatDualDate(today)}
-            </span>
-          </div>
+          <p className="font-tabular text-xs tracking-[0.04em] text-[#524e47]">
+            {formatDualDate(today)}
+          </p>
 
-          <h1 className="font-editorial text-3xl leading-[1.28] font-semibold text-[#191816] sm:text-[42px]">
+          <h1 className="font-editorial text-3xl leading-[1.3] font-semibold text-[#191816] sm:text-[40px]">
             走進法院旁聽席，
             <br />
-            今日全台共{" "}
+            今天全台有{" "}
             <span className="font-tabular font-semibold text-[#1b382f]">
               {meta.todayCount.toLocaleString("zh-TW")}
             </span>{" "}
-            場公開開庭。
+            場公開開庭
           </h1>
 
-          <p className="max-w-2xl text-[15px] leading-relaxed text-[#524e47]">
-            免預約、免門票。每日同步全台 {meta.courts.length}{" "}
-            所主要法院庭期，自動排除{" "}
-            {meta.filterStats.filteredTotal.toLocaleString("zh-TW")}{" "}
-            場調解與依法不公開程序，將開庭資訊整理為清楚的日曆票卡，亦支援直接訂閱至個人行事曆。
+          <p className="max-w-xl text-[15px] leading-relaxed text-[#524e47]">
+            免預約、免門票。每日整理全台 {meta.courts.length}{" "}
+            所主要法院公開庭期，並自動排除調解與不公開案件。
           </p>
         </div>
 
@@ -90,46 +85,41 @@ export function HomeHeroShowcase({
             href={`/search?court=TPD&start=${today}&end=${today}&category=trial`}
             className="btn-formal-primary"
           >
-            <span>檢索今日審理庭</span>
+            <span>找今天可旁聽的庭</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
           <a href="#subscribe-calendar" className="btn-formal-secondary">
-            <CalendarPlus className="h-3.5 w-3.5 text-[#1b382f]" aria-hidden="true" />
+            <CalendarPlus
+              className="h-3.5 w-3.5 text-[#1b382f]"
+              aria-hidden="true"
+            />
             <span>訂閱開庭日曆</span>
           </a>
         </div>
       </div>
 
-      {/* Archival Illustration Plate + Anchored Formal Docket Pass */}
+      {/* Hero Illustration Plate + Floating Calendar Event Card */}
       <div className="relative">
         <div className="relative overflow-hidden rounded-[2px] border border-[#191816]/25 bg-[#efece4]">
-          <div className="relative aspect-[16/10] w-full sm:aspect-[16/9] lg:aspect-[16/8.6]">
+          <div className="relative aspect-[16/10] w-full sm:aspect-[16/9] lg:aspect-[16/8.5]">
             <Image
               src="/images/hero-courtroom.jpg"
-              alt="溫暖陽光灑落的台灣法院旁聽席插畫，兩位民眾坐在木質旁聽席上靜心觀庭並用紙本筆記本記錄"
+              alt="溫暖陽光灑落的臺灣法院旁聽席插畫，兩位民眾坐在木質旁聽席上靜心觀庭並用紙本筆記本記錄"
               fill
               priority
               sizes="(max-width: 1120px) 100vw, 1120px"
               className="object-cover object-left-bottom"
             />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#191816]/55 via-[#191816]/15 to-transparent"
-            />
-            <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between gap-2 text-xs tracking-[0.04em] text-[#fcfbf8]/95 lg:right-[420px]">
-              <span>法院開庭原則公開，庭門敞開即可入座旁聽並以紙筆記錄</span>
-            </div>
           </div>
         </div>
 
-        {/* Anchored Docket Pass (Calendar Event Card) */}
+        {/* Floating Live Calendar Event Card */}
         {current && (
-          <div className="mt-4 lg:absolute lg:bottom-5 lg:right-5 lg:mt-0 lg:w-[400px]">
+          <div className="mt-4 lg:absolute lg:bottom-5 lg:right-5 lg:mt-0 lg:w-[390px]">
             <div className="overflow-hidden rounded-[2px] border border-[#191816] bg-[#fcfbf8]">
-              {/* Docket pass header strip */}
               <div className="flex items-center justify-between border-b border-[#191816] bg-[#191816] px-3.5 py-2 text-[#fcfbf8]">
-                <span className="flex items-center gap-2 text-[11px] tracking-[0.06em]">
-                  <span>近期精選開庭通知</span>
+                <span className="flex items-center gap-2 text-[11px] tracking-[0.04em]">
+                  <span>近期精選開庭</span>
                   <span className="font-tabular text-[#d6d0c4]">
                     {index + 1} / {spotlightHearings.length}
                   </span>
@@ -157,13 +147,12 @@ export function HomeHeroShowcase({
                 )}
               </div>
 
-              {/* Ticket body */}
               <div className="flex">
-                <div className="flex w-[92px] shrink-0 flex-col items-center justify-center border-r border-dashed border-[#191816]/30 bg-[#efece4] px-2.5 py-4 text-center">
-                  <span className="text-[11px] font-medium tracking-[0.04em] text-[#524e47]">
+                <div className="flex w-[90px] shrink-0 flex-col items-center justify-center border-r border-dashed border-[#191816]/30 bg-[#efece4] px-2.5 py-4 text-center">
+                  <span className="text-[11px] font-medium text-[#524e47]">
                     {mNum}月 · 週{weekday}
                   </span>
-                  <span className="mt-0.5 font-editorial text-[32px] leading-none font-semibold text-[#191816]">
+                  <span className="mt-0.5 font-editorial text-[30px] leading-none font-semibold text-[#191816]">
                     {dNum}
                   </span>
                   <span className="mt-1 font-tabular text-[10px] text-[#706b62]">
@@ -178,7 +167,7 @@ export function HomeHeroShowcase({
                   <div className="space-y-1.5">
                     <div className="flex flex-wrap items-center gap-1.5">
                       {current.isLayJudge && (
-                        <span className="border border-[#8f2d1c] bg-[#8f2d1c]/8 px-1.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] text-[#8f2d1c]">
+                        <span className="border border-[#8f2d1c] bg-[#8f2d1c]/6 px-1.5 py-0.5 text-[10px] font-semibold text-[#8f2d1c]">
                           國民法官
                         </span>
                       )}
@@ -236,54 +225,34 @@ export function HomeHeroShowcase({
         )}
       </div>
 
-      {/* 4-Column Structural Ledger Bar */}
-      <div className="grid grid-cols-2 divide-y divide-[#d6d0c4] border-y border-[#191816]/25 bg-[#fcfbf8] sm:grid-cols-4 sm:divide-x sm:divide-y-0">
-        {[
-          {
-            label: "未來 14 天公開庭期",
-            value: meta.totalHearings.toLocaleString("zh-TW"),
-            sub: `全台 ${meta.courts.length} 所主要法院`,
-          },
-          {
-            label: "審理與言詞辯論庭",
-            value: meta.trialCount.toLocaleString("zh-TW"),
-            sub: "實質攻防，適合旁聽",
-          },
-          {
-            label: "即將開庭國民法官",
-            value: meta.layJudgeCount.toLocaleString("zh-TW"),
-            sub: "程序完整、白話易懂",
-          },
-          {
-            label: "本次自動濾除不公開",
-            value: meta.filterStats.filteredTotal.toLocaleString("zh-TW"),
-            sub: `同步於 ${formatSyncedAt(meta.syncedAt).slice(5, 16)}`,
-          },
-        ].map((stat) => (
-          <div key={stat.label} className="px-4 py-3.5">
-            <p className="text-[11px] tracking-[0.04em] text-[#706b62]">
-              {stat.label}
-            </p>
-            <p className="mt-1 font-tabular text-2xl font-medium text-[#191816]">
-              {stat.value}
-            </p>
-            <p className="mt-0.5 text-[11px] text-[#706b62]">{stat.sub}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Colophon note */}
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[#706b62]">
-        <span>
-          資料同步時間：{formatSyncedAt(meta.syncedAt)}（每日 06:30、18:30
-          定時更新）
+      {/* Single Calm Summary Strip (replaces dense 4-card stat block) */}
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-[#d6d0c4] pb-4 text-xs text-[#524e47]">
+        <p>
+          未來 14 天共{" "}
+          <strong className="font-tabular font-medium text-[#191816]">
+            {meta.totalHearings.toLocaleString("zh-TW")}
+          </strong>{" "}
+          場公開庭期（含{" "}
+          <strong className="font-tabular font-medium text-[#191816]">
+            {meta.layJudgeCount}
+          </strong>{" "}
+          場國民法官），已自動排除{" "}
+          <span className="font-tabular">
+            {meta.filterStats.filteredTotal.toLocaleString("zh-TW")}
+          </span>{" "}
+          場調解與不公開案件。
+        </p>
+        <span className="flex items-center gap-4 text-[#706b62]">
+          <span className="font-tabular">
+            更新於 {formatSyncedAt(meta.syncedAt).slice(5, 16)}
+          </span>
+          <Link
+            href="/about"
+            className="font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
+          >
+            資料說明
+          </Link>
         </span>
-        <Link
-          href="/about"
-          className="font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
-        >
-          查閱不公開過濾規則與資料來源 →
-        </Link>
       </div>
     </section>
   );

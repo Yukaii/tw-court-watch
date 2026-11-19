@@ -16,50 +16,50 @@ import { HEARING_CATEGORY_META } from "@/lib/filter";
 export const metadata: Metadata = {
   title: "法庭旁聽守則",
   description:
-    "第一次去台灣法院旁聽必看：安檢流程、進法庭與起立禮儀、禁錄音拍照紅線、紙筆筆記方法，以及如何看懂審理、言詞辯論、準備程序與宣判。",
+    "第一次去臺灣法院旁聽必看：安檢流程、進法庭與起立禮儀、禁錄音拍照紅線、紙筆筆記方法，以及如何看懂審理、言詞辯論、準備程序與宣判。",
 };
 
 const SIX_RULES = [
   {
-    clause: "第一條",
+    clause: "一、",
     icon: ShieldCheck,
-    title: "免預約、免門票，入內須通過安全檢查",
-    body: "一般公開法庭無須事先預約或購票。抵達法院大門後，須通過金屬探測門並將隨身物品置於 X 光機檢查，建議比預定開庭時間提前 15 至 20 分鐘抵達。",
+    title: "免預約、免門票，先過安檢",
+    body: "一般公開法庭不需要事先預約或購票。進法院大門須通過金屬探測門，隨身包包要過 X 光機，建議比預定開庭時間提早 15 至 20 分鐘抵達。",
     alert: false,
   },
   {
-    clause: "第二條",
+    clause: "二、",
     icon: DoorOpen,
-    title: "庭門敞開即可靜步入座後方旁聽席",
-    body: "找到對應法庭後，請先確認門外電子看板的開庭順序與案號。凡庭門敞開且未標示「不公開審理」或「須領旁聽證」者，皆可輕推開門入座後方旁聽席。",
+    title: "門開著就能安靜走進旁聽席",
+    body: "找到對應法庭後，先看門外電子看板確認案號。只要門開著、沒有標示「不公開審理」或「需領旁聽證」，輕推開門坐進後方旁聽席即可。",
     alert: false,
   },
   {
-    clause: "第三條",
+    clause: "三、",
     icon: Scale,
-    title: "法官入庭、退庭及宣判時請起立致意",
-    body: "聽聞通譯或法警喊「起立」時（法官進場、退庭及宣判主文時），隨現場人員一同起身致意即可，無須過度拘謹。",
+    title: "法官進場、退庭與宣判請起立",
+    body: "聽到通譯或法警提醒「起立」時，跟著現場人員一起起身致意即可，不需要過度緊張。",
     alert: false,
   },
   {
-    clause: "第四條",
+    clause: "四、",
     icon: Ban,
-    title: "庭內嚴禁錄音、錄影及拍照（法定紅線）",
-    body: "依《法院組織法》及法庭旁聽規則，開庭期間一律禁止錄音、錄影或拍照，未開啟閃光燈亦同。建議入庭前直接將手機收妥於隨身包內。",
+    title: "庭內嚴禁錄音、錄影與拍照（紅線）",
+    body: "依《法院組織法》及法庭旁聽規則，開庭期間一律禁止錄音、錄影或拍照，就算沒開閃光燈也不行。建議進場前直接把手機收進包包。",
     alert: true,
   },
   {
-    clause: "第五條",
+    clause: "五、",
     icon: VolumeX,
     title: "手機靜音、禁飲食、禁喧嘩或鼓掌",
-    body: "進入法庭前請將手機切為完全靜音（建議一併關閉震動）；庭內禁止飲食、交談、鼓掌或對發言者發出聲響，共同維護法庭秩序。",
+    body: "進法庭前請將手機切為靜音（建議連震動一併關閉）；庭內不能吃東西、喝飲料、交談或鼓掌，共同維持審理秩序。",
     alert: false,
   },
   {
-    clause: "第六條",
+    clause: "六、",
     icon: NotebookPen,
-    title: "得攜帶紙本筆記本與筆記錄程序脈絡",
-    body: "旁聽席完全允許以紙本筆記本記錄問答順序與爭點脈絡。請避免使用會產生明顯敲擊聲之設備，並切勿記下當事人或證人之個人隱私資料。",
+    title: "可以帶紙本筆記本與筆做筆記",
+    body: "旁聽席歡迎用紙本筆記本記錄問答順序與爭點脈絡。請避免使用會發出明顯敲擊聲的設備，也請不要記下當事人或證人的個人資料。",
     alert: false,
   },
 ];
@@ -68,18 +68,15 @@ export default function GuidePage() {
   return (
     <div className="space-y-10">
       <header className="legal-rule-bottom space-y-2 pb-5">
-        <p className="text-xs font-medium tracking-[0.08em] text-[#8f2d1c]">
-          法庭旁聽入門指引
-        </p>
         <h1 className="font-editorial text-3xl font-semibold text-[#191816] sm:text-4xl">
           臺灣法院旁聽守則與行前指南
         </h1>
         <p className="max-w-2xl text-sm leading-relaxed text-[#524e47] sm:text-base">
-          憲法與《法院組織法》確立「公開審判原則」——法院本即開放公民進入旁聽之公共空間。掌握下列六則基本規範，即可安心完成初次觀庭。
+          憲法與《法院組織法》保障「公開審判原則」——法院本來就是開放給民眾走進去旁聽的公共空間。記住下面六個重點，就能安心完成第一次觀庭。
         </p>
       </header>
 
-      {/* 6 Clauses */}
+      {/* 6 Rules */}
       <section className="grid gap-px border border-[#191816]/25 bg-[#d6d0c4] sm:grid-cols-2">
         {SIX_RULES.map(({ clause, icon: Icon, title, body, alert }) => (
           <div
@@ -97,14 +94,12 @@ export default function GuidePage() {
                 <Icon className="h-4 w-4" aria-hidden="true" />
               </span>
               <div className="space-y-1">
-                <p
-                  className={`font-editorial text-xs font-semibold tracking-[0.08em] ${
-                    alert ? "text-[#8f2d1c]" : "text-[#1b382f]"
-                  }`}
-                >
-                  {clause}
-                </p>
                 <h2 className="font-editorial text-base font-semibold text-[#191816]">
+                  <span
+                    className={`mr-1 ${alert ? "text-[#8f2d1c]" : "text-[#1b382f]"}`}
+                  >
+                    {clause}
+                  </span>
                   {title}
                 </h2>
                 <p className="text-sm leading-relaxed text-[#524e47]">{body}</p>
@@ -118,10 +113,10 @@ export default function GuidePage() {
       <section className="space-y-4 rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8] p-6">
         <div className="border-b border-[#d6d0c4] pb-3">
           <h2 className="font-editorial text-xl font-semibold text-[#191816]">
-            如何挑選第一場庭？辨識「庭類」最為關鍵
+            怎麼挑第一場庭？看懂「庭類」最關鍵
           </h2>
           <p className="mt-1 text-sm text-[#524e47]">
-            若誤選「宣判」往往數十秒即告結束，誤赴「調解室」則無法進入旁聽。出發前先辨明庭類，觀庭收穫截然不同：
+            如果選到「宣判」可能不到 30 秒就散會，走到「調解室」則不開放旁聽。出發前先看庭類，體驗會差很多：
           </p>
         </div>
 
@@ -152,13 +147,13 @@ export default function GuidePage() {
 
           <div className="border border-[#8f2d1c]/35 bg-[#f9f3f1] p-4">
             <p className="font-editorial text-sm font-semibold text-[#8f2d1c]">
-              調解／家事／少年／性侵害（依法不公開）
+              調解／家事／少年／性侵害（不公開）
             </p>
             <p className="mt-0.5 text-xs font-medium text-[#8f2d1c]">
-              本工具已預設自動排除
+              本網站已預設自動排除
             </p>
             <p className="mt-1.5 text-xs leading-relaxed text-[#524e47]">
-              為保護當事人隱私與兒少權益，上開程序不開放一般民眾旁聽；即便屬普通公開案件，審判長仍得依法於當庭裁定不公開審理。
+              為保護當事人隱私與兒少權益，這些程序不開放一般民眾旁聽；就算是普通公開案件，審判長仍可依法在現場決定不公開審理。
             </p>
           </div>
         </div>
@@ -167,14 +162,14 @@ export default function GuidePage() {
       {/* Pre-departure checklist */}
       <section className="rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8] p-6">
         <h2 className="border-b border-[#d6d0c4] pb-3 font-editorial text-xl font-semibold text-[#191816]">
-          出發前確認事項
+          出發前檢查清單
         </h2>
         <ul className="mt-4 space-y-2.5 text-sm text-[#3a3630]">
           {[
-            "出門前點擊庭期詳情頁的「到司法院查詢頁確認」或「當日開庭進度」，確認無臨時改期或延遲。",
-            "留意院區地址：部分地院之簡易庭與本院分設於不同地址（本網站已依實際法庭前綴對應院區，出發前仍建議再行核對地圖）。",
-            "社會矚目案件或國民法官案件或須提早現場排隊領取旁聽證，請預先查閱該法院官網公告。",
-            "隨身攜帶小型紙本筆記本與筆，切勿攜帶剪刀、美工刀等可能遭安檢攔阻之物品。",
+            "出門前點一下庭期詳情頁的「到司法院查詢頁確認」或「當日開庭進度」，確認沒有臨時改期或延遲。",
+            "核對院區地址：部分地院的簡易庭與本院在不同地址（本網站已依實際法庭前綴對應，但出發前仍建議看一眼地圖）。",
+            "社會矚目案件或國民法官案件可能需要提早排隊領取旁聽證，請留意該法院官網最新公告。",
+            "帶一本小筆記本與筆，不要攜帶剪刀、美工刀等可能被安檢攔下的物品。",
           ].map((item) => (
             <li key={item} className="flex items-start gap-2.5">
               <CheckCircle2
@@ -188,7 +183,7 @@ export default function GuidePage() {
 
         <div className="mt-6 flex flex-wrap gap-2.5">
           <Link href="/search?category=trial" className="btn-formal-primary">
-            <span>檢索審理與言詞辯論庭 →</span>
+            <span>挑選審理與言詞辯論庭 →</span>
           </Link>
           <Link href="/search?mode=layjudge" className="btn-formal-secondary">
             <span>瀏覽全台國民法官案件</span>
@@ -198,15 +193,12 @@ export default function GuidePage() {
 
       {/* Attribution */}
       <section className="rounded-[2px] border border-[#191816]/25 bg-[#efece4] p-6">
-        <p className="text-xs font-medium tracking-[0.08em] text-[#8f2d1c]">
-          整理參考與致謝
-        </p>
-        <h2 className="mt-1 font-editorial text-lg font-semibold text-[#191816]">
+        <h2 className="font-editorial text-lg font-semibold text-[#191816]">
           旁聽入門守則參考來源：法律百科 @legispedia_tw
         </h2>
         <p className="mt-1.5 text-sm leading-relaxed text-[#524e47]">
-          本頁所載旁聽流程、安檢規定與法庭禮儀重點，參考並致謝法律百科（Legispedia）於
-          Threads 發表之旁聽實務整理貼文與《法科！輕鬆點》節目分享。
+          本頁整理的旁聽流程、安檢規定與法庭禮儀重點，參考並致謝法律百科於
+          Threads 發布的旁聽攻略貼文與《法科！輕鬆點》節目分享。
         </p>
         <a
           href={LEGISPEDIA_THREAD_URL}
