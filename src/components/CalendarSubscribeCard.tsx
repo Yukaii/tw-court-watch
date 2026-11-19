@@ -69,15 +69,15 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
   return (
     <section
       id="subscribe-calendar"
-      className="rounded-[2px] border border-[#191816]/25 bg-[#fcfbf8]"
+      className="rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-surface)]"
     >
       <div className="grid lg:grid-cols-12">
         {/* Left: Plain-language value prop */}
-        <div className="flex flex-col justify-center space-y-2.5 border-b border-[#d6d0c4] bg-[#efece4] p-6 lg:col-span-5 lg:border-b-0 lg:border-r lg:p-8">
-          <h2 className="font-editorial text-2xl font-semibold leading-snug text-[#191816]">
+        <div className="flex flex-col justify-center space-y-2.5 border-b border-[var(--rule)] bg-[var(--bg-tint)] p-6 lg:col-span-5 lg:border-b-0 lg:border-r lg:p-8">
+          <h2 className="font-editorial text-2xl font-semibold leading-snug text-[var(--ink)]">
             訂閱開庭日曆到個人行事曆
           </h2>
-          <p className="text-[15px] leading-relaxed text-[#5c574f]">
+          <p className="text-[15px] leading-relaxed text-[var(--ink-secondary)]">
             訂閱後，未來 14
             天的公開開庭會自動出現在你的行事曆中，每日定時更新，且不會發送擾人的通知提醒。
           </p>
@@ -85,14 +85,14 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
 
         {/* Right: Simple selector + clean buttons */}
         <div className="space-y-5 p-6 lg:col-span-7 lg:p-8">
-          <div className="grid divide-y divide-[#d6d0c4] border border-[#191816]/25 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          <div className="grid divide-y divide-[var(--rule)] border border-[var(--border-subtle)] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             <button
               type="button"
               onClick={() => setPreset("layjudge")}
               className={`px-4 py-3.5 text-left transition-colors ${
                 preset === "layjudge"
-                  ? "bg-[#1b382f] text-[#fcfbf8]"
-                  : "bg-[#fcfbf8] text-[#191816] hover:bg-[#f2efe8]"
+                  ? "bg-[var(--robe)] text-[#fcfbf8]"
+                  : "bg-[var(--bg-surface)] text-[var(--ink)] hover:bg-[var(--bg-hover)]"
               }`}
             >
               <p className="font-editorial text-base font-semibold">
@@ -100,7 +100,9 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
               </p>
               <p
                 className={`mt-1 font-tabular text-xs ${
-                  preset === "layjudge" ? "text-[#fcfbf8]/75" : "text-[#5c574f]"
+                  preset === "layjudge"
+                    ? "text-[#fcfbf8]/75"
+                    : "text-[var(--ink-secondary)]"
                 }`}
               >
                 約 {meta.layJudgeCount} 場（推薦）
@@ -112,8 +114,8 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
               onClick={() => setPreset("featured")}
               className={`px-4 py-3.5 text-left transition-colors ${
                 preset === "featured"
-                  ? "bg-[#1b382f] text-[#fcfbf8]"
-                  : "bg-[#fcfbf8] text-[#191816] hover:bg-[#f2efe8]"
+                  ? "bg-[var(--robe)] text-[#fcfbf8]"
+                  : "bg-[var(--bg-surface)] text-[var(--ink)] hover:bg-[var(--bg-hover)]"
               }`}
             >
               <p className="font-editorial text-base font-semibold">
@@ -121,7 +123,9 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
               </p>
               <p
                 className={`mt-1 font-tabular text-xs ${
-                  preset === "featured" ? "text-[#fcfbf8]/75" : "text-[#5c574f]"
+                  preset === "featured"
+                    ? "text-[#fcfbf8]/75"
+                    : "text-[var(--ink-secondary)]"
                 }`}
               >
                 每日精選 18 場
@@ -133,8 +137,8 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
               onClick={() => setPreset("court")}
               className={`px-4 py-3.5 text-left transition-colors ${
                 preset === "court"
-                  ? "bg-[#1b382f] text-[#fcfbf8]"
-                  : "bg-[#fcfbf8] text-[#191816] hover:bg-[#f2efe8]"
+                  ? "bg-[var(--robe)] text-[#fcfbf8]"
+                  : "bg-[var(--bg-surface)] text-[var(--ink)] hover:bg-[var(--bg-hover)]"
               }`}
             >
               <p className="font-editorial text-base font-semibold">
@@ -142,7 +146,9 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
               </p>
               <p
                 className={`mt-1 font-tabular text-xs ${
-                  preset === "court" ? "text-[#fcfbf8]/75" : "text-[#5c574f]"
+                  preset === "court"
+                    ? "text-[#fcfbf8]/75"
+                    : "text-[var(--ink-secondary)]"
                 }`}
               >
                 全台 {meta.courts.length} 所可選
@@ -151,12 +157,12 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
           </div>
 
           {preset === "court" && (
-            <div className="grid gap-3 border border-[#d6d0c4] bg-[#f7f5f0] p-3.5 sm:grid-cols-2">
+            <div className="grid gap-3 border border-[var(--rule)] bg-[var(--bg-paper)] p-3.5 sm:grid-cols-2">
               <select
                 aria-label="選擇法院"
                 value={selectedCourt}
                 onChange={(e) => setSelectedCourt(e.target.value)}
-                className="w-full rounded-[2px] border border-[#191816]/30 bg-[#fcfbf8] px-2.5 py-1.5 text-sm text-[#191816] focus:border-[#1b382f] focus:outline-none"
+                className="w-full rounded-[2px] border border-[var(--border-medium)] bg-[var(--bg-surface)] px-2.5 py-1.5 text-sm text-[var(--ink)] focus:border-[var(--robe-text)] focus:outline-none"
               >
                 {LEVEL_ORDER.map((level) => {
                   const group = MAJOR_COURTS.filter((c) => c.level === level);
@@ -173,14 +179,14 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
                 })}
               </select>
 
-              <div className="flex border border-[#191816]/30">
+              <div className="flex border border-[var(--border-medium)]">
                 <button
                   type="button"
                   onClick={() => setCourtCategory("trial")}
                   className={`flex-1 px-2.5 py-1.5 text-xs font-medium transition-colors ${
                     courtCategory === "trial"
-                      ? "bg-[#191816] text-[#fcfbf8]"
-                      : "bg-[#fcfbf8] text-[#524e47] hover:bg-[#efece4]"
+                      ? "bg-[var(--ink)] text-[var(--bg-surface)]"
+                      : "bg-[var(--bg-surface)] text-[var(--ink-secondary)] hover:bg-[var(--bg-tint)]"
                   }`}
                 >
                   僅審理／辯論
@@ -191,10 +197,10 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
                 <button
                   type="button"
                   onClick={() => setCourtCategory("all")}
-                  className={`flex-1 border-l border-[#191816]/30 px-2.5 py-1.5 text-xs font-medium transition-colors ${
+                  className={`flex-1 border-l border-[var(--border-medium)] px-2.5 py-1.5 text-xs font-medium transition-colors ${
                     courtCategory === "all"
-                      ? "bg-[#191816] text-[#fcfbf8]"
-                      : "bg-[#fcfbf8] text-[#524e47] hover:bg-[#efece4]"
+                      ? "bg-[var(--ink)] text-[var(--bg-surface)]"
+                      : "bg-[var(--bg-surface)] text-[var(--ink-secondary)] hover:bg-[var(--bg-tint)]"
                   }`}
                 >
                   全部公開庭
@@ -225,11 +231,11 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 px-2 py-2 text-xs font-medium text-[#524e47] underline decoration-[#191816]/30 underline-offset-4 hover:text-[#191816]"
+              className="inline-flex items-center gap-1.5 px-2 py-2 text-xs font-medium text-[var(--ink-secondary)] underline decoration-[var(--border-medium)] underline-offset-4 hover:text-[var(--ink)]"
             >
               {copied ? (
                 <>
-                  <Check className="h-3.5 w-3.5 text-[#1b382f]" />
+                  <Check className="h-3.5 w-3.5 text-[var(--robe-text)]" />
                   <span>已複製訂閱網址</span>
                 </>
               ) : (

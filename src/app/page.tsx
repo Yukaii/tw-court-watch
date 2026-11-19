@@ -79,11 +79,11 @@ export default async function HomePage() {
 
   if (!meta || !highlights) {
     return (
-      <div className="rounded-[2px] border border-[#191816]/25 bg-[#fcfbf8] p-8 text-center">
-        <h1 className="font-editorial text-xl font-semibold text-[#191816]">
+      <div className="rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 text-center">
+        <h1 className="font-editorial text-xl font-semibold text-[var(--ink)]">
           尚未同步庭期資料
         </h1>
-        <p className="mt-2 text-base text-[#5c574f]">
+        <p className="mt-2 text-base text-[var(--ink-secondary)]">
           請稍後重新整理，或前往司法院庭期表查詢系統確認最新開庭資訊。
         </p>
       </div>
@@ -111,9 +111,9 @@ export default async function HomePage() {
       {/* 4. One-click Calendar Subscription */}
       <CalendarSubscribeCard meta={meta} />
 
-      {/* 4. Lay Judge Spotlight */}
+      {/* 5. Lay Judge Spotlight */}
       {upcomingLayJudge.length > 0 && (
-        <section className="rounded-[2px] border border-[#191816] bg-[#162822] px-6 py-8 text-[#fcfbf8] sm:px-9 sm:py-10">
+        <section className="rounded-[2px] border border-[#191816] bg-[#162822] px-6 py-8 text-[#fcfbf8] sm:px-9 sm:py-10 dark:border-[#2e4a40]">
           <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#fcfbf8]/20 pb-5">
             <div className="space-y-1.5">
               <h2 className="font-editorial text-2xl font-semibold text-[#fcfbf8] sm:text-[28px]">
@@ -146,44 +146,46 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 5. Concise 4-Point Observer Essentials + Credit */}
+      {/* 6. Concise 4-Point Observer Essentials + Credit */}
       <section className="space-y-6">
         <div className="legal-rule-bottom flex flex-wrap items-end justify-between gap-3 pb-3.5">
           <div>
-            <h2 className="font-editorial text-2xl font-semibold text-[#191816] sm:text-[28px]">
+            <h2 className="font-editorial text-2xl font-semibold text-[var(--ink)] sm:text-[28px]">
               第一次旁聽？記住這四件事
             </h2>
-            <p className="mt-1 text-[15px] text-[#5c574f]">
+            <p className="mt-1 text-[15px] text-[var(--ink-secondary)]">
               公開審判是憲法保障的公民權利，遵守基本法庭禮儀就能安心入座。
             </p>
           </div>
           <Link
             href="/guide"
-            className="inline-flex items-center gap-1 text-sm font-medium text-[#191816] underline decoration-[#191816]/35 underline-offset-4 hover:text-[#1b382f]"
+            className="inline-flex items-center gap-1 text-sm font-medium text-[var(--ink)] underline decoration-[var(--border-medium)] underline-offset-4 hover:text-[var(--robe-text)]"
           >
             <span>完整旁聽指南與庭類說明</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
 
-        <div className="grid gap-px border border-[#191816]/25 bg-[#d6d0c4] sm:grid-cols-2">
+        <div className="grid gap-px border border-[var(--border-subtle)] bg-[var(--rule)] sm:grid-cols-2">
           {ESSENTIAL_RULES.map((rule) => (
             <div
               key={rule.num}
-              className={`p-6 sm:p-7 ${rule.alert ? "bg-[#f9f3f1]" : "bg-[#fcfbf8]"}`}
+              className={`p-6 sm:p-7 ${rule.alert ? "bg-[var(--bg-alert)]" : "bg-[var(--bg-surface)]"}`}
             >
               <div className="flex items-center justify-between gap-2">
-                <h3 className="font-editorial text-lg font-semibold text-[#191816]">
-                  <span className="mr-1 text-[#5c574f]">{rule.num}</span>
+                <h3 className="font-editorial text-lg font-semibold text-[var(--ink)]">
+                  <span className="mr-1 text-[var(--ink-secondary)]">
+                    {rule.num}
+                  </span>
                   {rule.title}
                 </h3>
                 {rule.alert && (
-                  <span className="shrink-0 border border-[#8f2d1c] px-2 py-0.5 text-xs font-medium text-[#8f2d1c]">
+                  <span className="shrink-0 border border-[var(--seal-text)] px-2 py-0.5 text-xs font-medium text-[var(--seal-text)]">
                     紅線
                   </span>
                 )}
               </div>
-              <p className="mt-2.5 text-[15px] leading-relaxed text-[#5c574f]">
+              <p className="mt-2.5 text-[15px] leading-relaxed text-[var(--ink-secondary)]">
                 {rule.body}
               </p>
             </div>
@@ -191,13 +193,15 @@ export default async function HomePage() {
         </div>
 
         {/* Compact Credit Strip */}
-        <div className="flex flex-col justify-between gap-3 rounded-[2px] border border-[#d6d0c4] bg-[#efece4] px-6 py-4 sm:flex-row sm:items-center">
-          <p className="text-sm leading-relaxed text-[#5c574f]">
-            <strong className="font-semibold text-[#191816]">
+        <div className="flex flex-col justify-between gap-3 rounded-[2px] border border-[var(--rule)] bg-[var(--bg-tint)] px-6 py-4 sm:flex-row sm:items-center">
+          <p className="text-sm leading-relaxed text-[var(--ink-secondary)]">
+            <strong className="font-semibold text-[var(--ink)]">
               靈感與整理致謝：
             </strong>
             本專案發想與旁聽入門守則參考自法律百科{" "}
-            <span className="font-tabular text-[#191816]">@legispedia_tw</span>{" "}
+            <span className="font-tabular text-[var(--ink)]">
+              @legispedia_tw
+            </span>{" "}
             於 Threads 分享的旁聽指南整理。
           </p>
           <a

@@ -27,8 +27,13 @@ import {
   haversineDistanceKm,
   sortCourtsByDistance,
 } from "@/lib/geo";
-import { JUDICIAL_MAP_STYLE } from "@/lib/map-style";
+import {
+  getCourtOverlayPalette,
+  getJudicialMapStyle,
+} from "@/lib/map-style";
+import type { ResolvedTheme } from "@/lib/theme";
 import type { CourtInfo, HearingsMeta } from "@/lib/types";
+import { useTheme } from "@/lib/use-theme";
 
 interface CourtMapExplorerProps {
   meta: HearingsMeta;
@@ -179,10 +184,179 @@ function buildConnectionGeoJson(
   };
 }
 
+function addCourtOverlayLayers(map: MapLibreMap, theme: ResolvedTheme): void {
+  const palette = getCourtOverlayPalette(theme);
+
+  if (!map.getSource("nearest-line")) {
+    map.addSource("nearest-line", {
+      type: "geojson",
+      data: buildConnectionGeoJson(null, undefined),
+    });
+  }
+
+  if (!map.getLayer("nearest-line-layer")) {
+    map.addLayer({
+      id: "nearest-line-layer",
+      type: "line",
+      source: "nearest-line",
+      paint: {
+        "line-color": palette.line,
+        "line-width": 1.6,
+        "line-opacity": 0.65,
+        "line-dasharray": [3, 3],
+      },
+    });
+  }
+
+  if (!map.getSource("user-location")) {
+    map.addSource("user-location", {
+      type: "geojson",
+      data: buildUserGeoJson(null),
+    });
+  }
+
+  if (!map.getLayer("user-location-halo")) {
+    map.addLayer({
+      id: "user-location-halo",
+      type: "circle",
+      source: "user-location",
+      paint: {
+        "circle-radius": 15,
+        "circle-color": palette.userHalo,
+        "circle-opacity": 0.2,
+      },
+    });
+  }
+
+  if (!map.getLayer("user-location-dot")) {
+    map.addLayer({
+      id: "user-location-dot",
+      type: "circle",
+      source: "user-location",
+      paint: {
+        "circle-radius": 5.5,
+        "circle-color": palette.userDot,
+        "circle-stroke-color": palette.userStroke,
+        "circle-stroke-width": 2.5,
+      },
+    });
+  }
+
+  if (!map.getLayer("user-location-label")) {
+    map.addLayer({
+      id: "user-location-label",
+      type: "symbol",
+      source: "user-location",
+      layout: {
+        "text-field": ["get", "label"],
+        "text-font": ["Noto Sans Bold"],
+        "text-size": 11.5,
+        "text-offset": [0, -1.5],
+        "text-allow-overlap": true,
+      },
+      paint: {
+        "text-color": palette.userLabel,
+        "text-halo-color": palette.labelHalo,
+        "text-halo-width": 1.8,
+      },
+    });
+  }
+
+  if (!map.getSource("courts")) {
+    map.addSource("courts", {
+      type: "geojson",
+      data: buildCourtsGeoJson(MAJOR_COURTS, "TPD", null),
+    });
+  }
+
+  if (!map.getLayer("courts-selected-halo")) {
+    map.addLayer({
+      id: "courts-selected-halo",
+      type: "circle",
+      source: "courts",
+      filter: ["==", ["get", "isSelected"], true],
+      paint: {
+        "circle-radius": 17,
+        "circle-color": palette.selectedHalo,
+        "circle-opacity": 0.2,
+      },
+    });
+  }
+
+  if (!map.getLayer("courts-points")) {
+    map.addLayer({
+      id: "courts-points",
+      type: "circle",
+      source: "courts",
+      paint: {
+        "circle-radius": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          6,
+          ["case", ["get", "isSelected"], 7.5, 5],
+          12,
+          ["case", ["get", "isSelected"], 9.5, 7],
+        ],
+        "circle-color": [
+          "case",
+          ["get", "isSelected"],
+          palette.courtSelectedDot,
+          palette.courtDot,
+        ],
+        "circle-stroke-color": palette.courtStroke,
+        "circle-stroke-width": [
+          "case",
+          ["get", "isSelected"],
+          2.5,
+          1.8,
+        ],
+      },
+    });
+  }
+
+  if (!map.getLayer("courts-labels")) {
+    map.addLayer({
+      id: "courts-labels",
+      type: "symbol",
+      source: "courts",
+      layout: {
+        "text-field": ["get", "shortName"],
+        "text-font": ["Noto Sans Bold"],
+        "text-size": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          6,
+          11,
+          12,
+          13,
+        ],
+        "text-offset": [0, 1.25],
+        "text-anchor": "top",
+        "symbol-sort-key": ["get", "sortKey"],
+        "text-padding": 3,
+      },
+      paint: {
+        "text-color": [
+          "case",
+          ["get", "isSelected"],
+          palette.labelSelectedText,
+          palette.labelText,
+        ],
+        "text-halo-color": palette.labelHalo,
+        "text-halo-width": 2,
+      },
+    });
+  }
+}
+
 export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
+  const { resolvedTheme, mounted: themeMounted } = useTheme();
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const mapReadyRef = useRef(false);
+  const appliedThemeRef = useRef<ResolvedTheme>("light");
 
   const [selectedId, setSelectedId] = useState<string>("TPD");
   const [regionFilter, setRegionFilter] = useState<MapRegionId>("all");
@@ -274,6 +448,9 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
     [selectedId, nearestId, userLocation, selectedCourt],
   );
 
+  const syncSourcesRef = useRef(syncSources);
+  syncSourcesRef.current = syncSources;
+
   useEffect(() => {
     let destroyed = false;
     let mapInstance: MapLibreMap | null = null;
@@ -283,9 +460,16 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
       const maplibregl = await import("maplibre-gl");
       if (destroyed || !mapContainerRef.current) return;
 
+      const initialTheme: ResolvedTheme =
+        typeof document !== "undefined" &&
+        document.documentElement.classList.contains("dark")
+          ? "dark"
+          : "light";
+      appliedThemeRef.current = initialTheme;
+
       mapInstance = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: JUDICIAL_MAP_STYLE,
+        style: getJudicialMapStyle(initialTheme),
         center: [120.85, 23.62],
         zoom: 6.45,
         minZoom: 5.5,
@@ -299,182 +483,37 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
 
       mapRef.current = mapInstance;
 
+      const handlePick = (e: { features?: Array<{ properties?: Record<string, unknown> }> }) => {
+        const crtid = e.features?.[0]?.properties?.crtid;
+        if (typeof crtid === "string" && COURT_BY_ID[crtid]) {
+          setSelectedId(crtid);
+          const target = COURT_BY_ID[crtid];
+          mapInstance?.easeTo({
+            center: [target.lng, target.lat],
+            zoom: Math.max(mapInstance.getZoom(), 11.8),
+            duration: 550,
+          });
+        }
+      };
+
+      const setPointer = () => {
+        if (mapInstance) mapInstance.getCanvas().style.cursor = "pointer";
+      };
+      const clearPointer = () => {
+        if (mapInstance) mapInstance.getCanvas().style.cursor = "";
+      };
+
+      mapInstance.on("click", "courts-points", handlePick);
+      mapInstance.on("click", "courts-labels", handlePick);
+      mapInstance.on("mouseenter", "courts-points", setPointer);
+      mapInstance.on("mouseleave", "courts-points", clearPointer);
+      mapInstance.on("mouseenter", "courts-labels", setPointer);
+      mapInstance.on("mouseleave", "courts-labels", clearPointer);
+
       mapInstance.on("load", () => {
         if (destroyed || !mapInstance) return;
-
-        mapInstance.addSource("nearest-line", {
-          type: "geojson",
-          data: buildConnectionGeoJson(null, undefined),
-        });
-
-        mapInstance.addLayer({
-          id: "nearest-line-layer",
-          type: "line",
-          source: "nearest-line",
-          paint: {
-            "line-color": "#8f2d1c",
-            "line-width": 1.6,
-            "line-opacity": 0.65,
-            "line-dasharray": [3, 3],
-          },
-        });
-
-        mapInstance.addSource("user-location", {
-          type: "geojson",
-          data: buildUserGeoJson(null),
-        });
-
-        mapInstance.addLayer({
-          id: "user-location-halo",
-          type: "circle",
-          source: "user-location",
-          paint: {
-            "circle-radius": 15,
-            "circle-color": "#8f2d1c",
-            "circle-opacity": 0.16,
-          },
-        });
-
-        mapInstance.addLayer({
-          id: "user-location-dot",
-          type: "circle",
-          source: "user-location",
-          paint: {
-            "circle-radius": 5.5,
-            "circle-color": "#8f2d1c",
-            "circle-stroke-color": "#fcfbf8",
-            "circle-stroke-width": 2.5,
-          },
-        });
-
-        mapInstance.addLayer({
-          id: "user-location-label",
-          type: "symbol",
-          source: "user-location",
-          layout: {
-            "text-field": ["get", "label"],
-            "text-font": ["Noto Sans Bold"],
-            "text-size": 11.5,
-            "text-offset": [0, -1.5],
-            "text-allow-overlap": true,
-          },
-          paint: {
-            "text-color": "#8f2d1c",
-            "text-halo-color": "#fcfbf8",
-            "text-halo-width": 1.8,
-          },
-        });
-
-        mapInstance.addSource("courts", {
-          type: "geojson",
-          data: buildCourtsGeoJson(MAJOR_COURTS, "TPD", null),
-        });
-
-        // Subtle vermilion seal halo behind selected courthouse
-        mapInstance.addLayer({
-          id: "courts-selected-halo",
-          type: "circle",
-          source: "courts",
-          filter: ["==", ["get", "isSelected"], true],
-          paint: {
-            "circle-radius": 17,
-            "circle-color": "#8f2d1c",
-            "circle-opacity": 0.18,
-          },
-        });
-
-        // Courthouse dots
-        mapInstance.addLayer({
-          id: "courts-points",
-          type: "circle",
-          source: "courts",
-          paint: {
-            "circle-radius": [
-              "interpolate",
-              ["linear"],
-              ["zoom"],
-              6,
-              ["case", ["get", "isSelected"], 7.5, 5],
-              12,
-              ["case", ["get", "isSelected"], 9.5, 7],
-            ],
-            "circle-color": [
-              "case",
-              ["get", "isSelected"],
-              "#8f2d1c",
-              "#1b382f",
-            ],
-            "circle-stroke-color": "#fcfbf8",
-            "circle-stroke-width": [
-              "case",
-              ["get", "isSelected"],
-              2.5,
-              1.8,
-            ],
-          },
-        });
-
-        // Courthouse Traditional Chinese labels (smart collision avoidance)
-        mapInstance.addLayer({
-          id: "courts-labels",
-          type: "symbol",
-          source: "courts",
-          layout: {
-            "text-field": ["get", "shortName"],
-            "text-font": ["Noto Sans Bold"],
-            "text-size": [
-              "interpolate",
-              ["linear"],
-              ["zoom"],
-              6,
-              11,
-              12,
-              13,
-            ],
-            "text-offset": [0, 1.25],
-            "text-anchor": "top",
-            "symbol-sort-key": ["get", "sortKey"],
-            "text-padding": 3,
-          },
-          paint: {
-            "text-color": [
-              "case",
-              ["get", "isSelected"],
-              "#8f2d1c",
-              "#191816",
-            ],
-            "text-halo-color": "#fcfbf8",
-            "text-halo-width": 2,
-          },
-        });
-
-        const handlePick = (e: { features?: Array<{ properties?: Record<string, unknown> }> }) => {
-          const crtid = e.features?.[0]?.properties?.crtid;
-          if (typeof crtid === "string" && COURT_BY_ID[crtid]) {
-            setSelectedId(crtid);
-            const target = COURT_BY_ID[crtid];
-            mapInstance?.easeTo({
-              center: [target.lng, target.lat],
-              zoom: Math.max(mapInstance.getZoom(), 11.8),
-              duration: 550,
-            });
-          }
-        };
-
-        mapInstance.on("click", "courts-points", handlePick);
-        mapInstance.on("click", "courts-labels", handlePick);
-
-        const setPointer = () => {
-          if (mapInstance) mapInstance.getCanvas().style.cursor = "pointer";
-        };
-        const clearPointer = () => {
-          if (mapInstance) mapInstance.getCanvas().style.cursor = "";
-        };
-        mapInstance.on("mouseenter", "courts-points", setPointer);
-        mapInstance.on("mouseleave", "courts-points", clearPointer);
-        mapInstance.on("mouseenter", "courts-labels", setPointer);
-        mapInstance.on("mouseleave", "courts-labels", clearPointer);
-
+        addCourtOverlayLayers(mapInstance, appliedThemeRef.current);
+        syncSourcesRef.current(mapInstance);
         mapReadyRef.current = true;
         setMapLoaded(true);
       });
@@ -495,6 +534,27 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
       syncSources(mapRef.current);
     }
   }, [syncSources, mapLoaded]);
+
+  // Swap vector map style cleanly when theme switches between light & dark
+  useEffect(() => {
+    if (!themeMounted || !mapLoaded || !mapRef.current) return;
+    if (appliedThemeRef.current === resolvedTheme) return;
+
+    const map = mapRef.current;
+    appliedThemeRef.current = resolvedTheme;
+
+    const handleStyleLoad = () => {
+      addCourtOverlayLayers(map, resolvedTheme);
+      syncSourcesRef.current(map);
+    };
+
+    map.once("style.load", handleStyleLoad);
+    map.setStyle(getJudicialMapStyle(resolvedTheme));
+
+    return () => {
+      map.off("style.load", handleStyleLoad);
+    };
+  }, [resolvedTheme, themeMounted, mapLoaded]);
 
   const focusCourt = (court: CourtInfo) => {
     setSelectedId(court.crtid);
@@ -620,10 +680,10 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
       {/* Header matching HomeCalendarExplorer */}
       <div className="legal-rule-bottom flex flex-wrap items-end justify-between gap-4 pb-3.5">
         <div>
-          <h2 className="font-editorial text-2xl font-semibold text-[#191816] sm:text-[28px]">
+          <h2 className="font-editorial text-2xl font-semibold text-[var(--ink)] sm:text-[28px]">
             找離你最近的法院
           </h2>
-          <p className="mt-1 text-[15px] text-[#5c574f]">
+          <p className="mt-1 text-[15px] text-[var(--ink-secondary)]">
             開啟定位自動計算距離，或直接點選地圖上的全台 38 所主要法院。
           </p>
         </div>
@@ -650,13 +710,13 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
       </div>
 
       {geoMessage && (
-        <p className="border-l-2 border-[#8f2d1c] bg-[#f9f3f1] px-4 py-2.5 text-sm text-[#5c574f]">
+        <p className="border-l-2 border-[var(--seal-text)] bg-[var(--bg-alert)] px-4 py-2.5 text-sm text-[var(--ink-secondary)]">
           {geoMessage}
         </p>
       )}
 
       {/* Region quick-jump bar */}
-      <div className="flex flex-wrap items-center border-b border-[#d6d0c4]">
+      <div className="flex flex-wrap items-center border-b border-[var(--rule)]">
         {REGION_PRESETS.map((r) => {
           const active = regionFilter === r.id;
           return (
@@ -666,8 +726,8 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
               onClick={() => handleRegionChange(r.id)}
               className={`-mb-px border-b-2 px-3.5 py-2 text-sm transition-colors ${
                 active
-                  ? "border-[#191816] font-semibold text-[#191816]"
-                  : "border-transparent font-normal text-[#5c574f] hover:border-[#d6d0c4] hover:text-[#191816]"
+                  ? "border-[var(--ink)] font-semibold text-[var(--ink)]"
+                  : "border-transparent font-normal text-[var(--ink-secondary)] hover:border-[var(--rule)] hover:text-[var(--ink)]"
               }`}
             >
               {r.label}
@@ -677,9 +737,9 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
       </div>
 
       {/* Architectural Split Frame: Vector Map + Selected Court & Nearest List */}
-      <div className="grid overflow-hidden rounded-[2px] border border-[#191816]/25 bg-[#fcfbf8] lg:grid-cols-12">
+      <div className="grid overflow-hidden rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] lg:grid-cols-12">
         {/* Map Canvas */}
-        <div className="relative h-[360px] border-b border-[#d6d0c4] bg-[#f3efe6] sm:h-[440px] lg:col-span-7 lg:h-[520px] lg:border-b-0 lg:border-r">
+        <div className="relative h-[360px] border-b border-[var(--rule)] bg-[var(--map-canvas)] sm:h-[440px] lg:col-span-7 lg:h-[520px] lg:border-b-0 lg:border-r">
           <div
             ref={mapContainerRef}
             className="h-full w-full"
@@ -687,10 +747,10 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
           />
 
           {!mapLoaded && (
-            <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-[#f3efe6]/80 text-sm text-[#5c574f]">
-              <span className="inline-flex items-center gap-2 border border-[#191816]/20 bg-[#fcfbf8] px-3.5 py-2">
+            <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-[#f3efe6]/80 text-sm text-[var(--ink-secondary)] dark:bg-[#161614]/80">
+              <span className="inline-flex items-center gap-2 border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3.5 py-2">
                 <Loader2
-                  className="h-4 w-4 animate-spin text-[#1b382f]"
+                  className="h-4 w-4 animate-spin text-[var(--robe-text)]"
                   aria-hidden="true"
                 />
                 <span>載入法院地圖中…</span>
@@ -699,12 +759,12 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
           )}
 
           {/* Custom flat architectural zoom/reset controls */}
-          <div className="absolute right-3 top-3 z-10 flex flex-col divide-y divide-[#d6d0c4] border border-[#191816]/25 bg-[#fcfbf8]">
+          <div className="absolute right-3 top-3 z-10 flex flex-col divide-y divide-[var(--rule)] border border-[var(--border-subtle)] bg-[var(--bg-surface)]">
             <button
               type="button"
               onClick={handleZoomIn}
               aria-label="放大地圖"
-              className="flex h-8 w-8 items-center justify-center text-[#191816] transition-colors hover:bg-[#efece4]"
+              className="flex h-8 w-8 items-center justify-center text-[var(--ink)] transition-colors hover:bg-[var(--bg-tint)]"
             >
               <Plus className="h-4 w-4" />
             </button>
@@ -712,7 +772,7 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
               type="button"
               onClick={handleZoomOut}
               aria-label="縮小地圖"
-              className="flex h-8 w-8 items-center justify-center text-[#191816] transition-colors hover:bg-[#efece4]"
+              className="flex h-8 w-8 items-center justify-center text-[var(--ink)] transition-colors hover:bg-[var(--bg-tint)]"
             >
               <Minus className="h-4 w-4" />
             </button>
@@ -721,25 +781,25 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
               onClick={handleResetView}
               aria-label="回到全臺視野"
               title="回到全臺視野"
-              className="flex h-8 w-8 items-center justify-center text-[#191816] transition-colors hover:bg-[#efece4]"
+              className="flex h-8 w-8 items-center justify-center text-[var(--ink)] transition-colors hover:bg-[var(--bg-tint)]"
             >
               <Compass className="h-4 w-4" />
             </button>
           </div>
 
           {/* Quiet legend + attribution */}
-          <div className="pointer-events-none absolute bottom-2.5 left-3 right-3 z-10 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#5c574f]">
-            <div className="flex items-center gap-3 border border-[#191816]/15 bg-[#fcfbf8]/92 px-2.5 py-1">
+          <div className="pointer-events-none absolute bottom-2.5 left-3 right-3 z-10 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[var(--ink-secondary)]">
+            <div className="flex items-center gap-3 border border-[var(--border-subtle)] bg-[#fcfbf8]/92 px-2.5 py-1 dark:bg-[#1a1917]/92">
               <span className="inline-flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full border border-[#fcfbf8] bg-[#1b382f]" />
+                <span className="h-2.5 w-2.5 rounded-full border border-[var(--bg-surface)] bg-[#1b382f] dark:bg-[#4c967f]" />
                 <span>法院</span>
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full border border-[#fcfbf8] bg-[#8f2d1c]" />
+                <span className="h-2.5 w-2.5 rounded-full border border-[var(--bg-surface)] bg-[#8f2d1c] dark:bg-[#e07b66]" />
                 <span>已選取{userLocation ? "／你的位置" : ""}</span>
               </span>
             </div>
-            <span className="border border-[#191816]/12 bg-[#fcfbf8]/85 px-2 py-0.5 font-tabular text-[10px] text-[#706b62]">
+            <span className="border border-[var(--border-subtle)] bg-[#fcfbf8]/85 px-2 py-0.5 font-tabular text-[10px] text-[var(--ink-muted)] dark:bg-[#1a1917]/85">
               © OpenFreeMap · OpenStreetMap
             </span>
           </div>
@@ -748,51 +808,51 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
         {/* Right Panel: Selected Court Details + Nearest List */}
         <div className="flex flex-col lg:col-span-5 lg:h-[520px]">
           {/* Selected Court Detail Card */}
-          <div className="border-b border-[#d6d0c4] bg-[#efece4]/55 p-5 sm:p-6">
+          <div className="border-b border-[var(--rule)] bg-[#efece4]/55 p-5 sm:p-6 dark:bg-[#23211e]/75">
             <div className="flex flex-wrap items-center gap-2 text-xs">
               {nearestId === selectedCourt.crtid && (
-                <span className="border border-[#8f2d1c] bg-[#8f2d1c] px-1.5 py-0.5 font-medium text-[#fcfbf8]">
+                <span className="border border-[var(--seal)] bg-[var(--seal)] px-1.5 py-0.5 font-medium text-[#fcfbf8]">
                   離你最近
                 </span>
               )}
               {selectedDistanceKm !== null && (
-                <span className="border border-[#191816]/30 bg-[#fcfbf8] px-1.5 py-0.5 font-tabular font-medium text-[#191816]">
+                <span className="border border-[var(--border-medium)] bg-[var(--bg-surface)] px-1.5 py-0.5 font-tabular font-medium text-[var(--ink)]">
                   直線約 {formatDistanceZh(selectedDistanceKm)}
                 </span>
               )}
-              <span className="text-[#5c574f]">
+              <span className="text-[var(--ink-secondary)]">
                 {COURT_LEVEL_LABELS[selectedCourt.level]}
               </span>
             </div>
 
-            <h3 className="mt-2 font-editorial text-xl font-semibold text-[#191816]">
+            <h3 className="mt-2 font-editorial text-xl font-semibold text-[var(--ink)]">
               {selectedCourt.name}
             </h3>
 
             {selectedStats && (
-              <p className="mt-1 font-tabular text-xs text-[#5c574f]">
+              <p className="mt-1 font-tabular text-xs text-[var(--ink-secondary)]">
                 今日{" "}
-                <strong className="font-semibold text-[#191816]">
+                <strong className="font-semibold text-[var(--ink)]">
                   {selectedStats.today}
                 </strong>{" "}
                 場公開開庭 · 未來 14 天共{" "}
-                <strong className="font-semibold text-[#191816]">
+                <strong className="font-semibold text-[var(--ink)]">
                   {selectedStats.total}
                 </strong>{" "}
                 場
               </p>
             )}
 
-            <div className="mt-3 space-y-1 text-sm text-[#191816]">
+            <div className="mt-3 space-y-1 text-sm text-[var(--ink)]">
               <p className="flex items-start gap-1.5">
                 <MapPin
-                  className="mt-1 h-3.5 w-3.5 shrink-0 text-[#5c574f]"
+                  className="mt-1 h-3.5 w-3.5 shrink-0 text-[var(--ink-secondary)]"
                   aria-hidden="true"
                 />
                 <span>{selectedMainCampus.address}</span>
               </p>
               {selectedMainCampus.transit && (
-                <p className="flex items-start gap-1.5 text-xs leading-relaxed text-[#5c574f]">
+                <p className="flex items-start gap-1.5 text-xs leading-relaxed text-[var(--ink-secondary)]">
                   <Train
                     className="mt-0.5 h-3.5 w-3.5 shrink-0"
                     aria-hidden="true"
@@ -803,14 +863,14 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
             </div>
 
             {colocatedCourts.length > 0 && (
-              <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs text-[#5c574f]">
+              <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs text-[var(--ink-secondary)]">
                 <span>同院區法院：</span>
                 {colocatedCourts.map((c) => (
                   <button
                     key={c.crtid}
                     type="button"
                     onClick={() => focusCourt(c)}
-                    className="border border-[#191816]/25 bg-[#fcfbf8] px-2 py-0.5 font-medium text-[#191816] transition-colors hover:border-[#1b382f] hover:text-[#1b382f]"
+                    className="border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2 py-0.5 font-medium text-[var(--ink)] transition-colors hover:border-[var(--robe-text)] hover:text-[var(--robe-text)]"
                   >
                     {c.shortName}
                   </button>
@@ -837,14 +897,14 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
 
           {/* Scrollable Court Directory / Nearest List */}
           <div className="flex min-h-0 flex-1 flex-col">
-            <div className="flex items-center justify-between border-b border-[#d6d0c4] bg-[#fcfbf8] px-5 py-2.5 text-xs text-[#5c574f]">
-              <span className="font-medium text-[#191816]">
+            <div className="flex items-center justify-between border-b border-[var(--rule)] bg-[var(--bg-surface)] px-5 py-2.5 text-xs text-[var(--ink-secondary)]">
+              <span className="font-medium text-[var(--ink)]">
                 {userLocation ? "依距離排序" : "法院索引"}
               </span>
               <span className="font-tabular">{listItems.length} 所法院</span>
             </div>
 
-            <div className="max-h-[250px] flex-1 divide-y divide-[#e6e0d4] overflow-y-auto lg:max-h-none">
+            <div className="max-h-[250px] flex-1 divide-y divide-[var(--rule-soft)] overflow-y-auto lg:max-h-none">
               {listItems.map(({ court, distanceKm }) => {
                 const active = court.crtid === selectedCourt.crtid;
                 const stats = courtStatsMap[court.crtid];
@@ -855,31 +915,31 @@ export function CourtMapExplorer({ meta }: CourtMapExplorerProps) {
                     onClick={() => focusCourt(court)}
                     className={`flex w-full items-center justify-between gap-3 px-5 py-3 text-left transition-colors ${
                       active
-                        ? "border-l-2 border-l-[#8f2d1c] bg-[#efece4]/70"
-                        : "hover:bg-[#f7f5f0]"
+                        ? "border-l-2 border-l-[var(--seal-text)] bg-[#efece4]/70 dark:bg-[#23211e]"
+                        : "hover:bg-[var(--bg-paper)]"
                     }`}
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-[#191816]">
+                      <p className="truncate text-sm font-semibold text-[var(--ink)]">
                         {court.shortName}
                         {nearestId === court.crtid && (
-                          <span className="ml-2 text-xs font-medium text-[#8f2d1c]">
+                          <span className="ml-2 text-xs font-medium text-[var(--seal-text)]">
                             最近
                           </span>
                         )}
                       </p>
-                      <p className="truncate text-xs text-[#5c574f]">
+                      <p className="truncate text-xs text-[var(--ink-secondary)]">
                         {court.campuses[court.campuses.length - 1].address}
                       </p>
                     </div>
 
                     <div className="shrink-0 text-right font-tabular text-xs">
                       {distanceKm !== null ? (
-                        <p className="font-semibold text-[#191816]">
+                        <p className="font-semibold text-[var(--ink)]">
                           {formatDistanceZh(distanceKm)}
                         </p>
                       ) : null}
-                      <p className="text-[#5c574f]">
+                      <p className="text-[var(--ink-secondary)]">
                         {stats ? `${stats.total} 場` : "—"}
                       </p>
                     </div>

@@ -41,7 +41,7 @@ export function HearingLiveStatusBadge({
         className={`inline-flex items-center gap-1.5 border px-1.5 py-0.5 text-xs font-medium ${
           isDark
             ? "border-[#d4b06a] bg-[#d4b06a]/15 text-[#e7ca8b]"
-            : "border-[#1b382f] bg-[#1b382f] text-[#fcfbf8]"
+            : "border-[var(--robe)] bg-[var(--robe)] text-[#fcfbf8]"
         }`}
       >
         <span
@@ -61,7 +61,7 @@ export function HearingLiveStatusBadge({
         className={`inline-flex items-center border px-1.5 py-0.5 text-xs font-medium ${
           isDark
             ? "border-[#fcfbf8]/45 text-[#fcfbf8]"
-            : "border-[#191816]/45 bg-[#efece4] text-[#191816]"
+            : "border-[var(--border-medium)] bg-[var(--bg-tint)] text-[var(--ink)]"
         }`}
       >
         {status.label}
@@ -73,7 +73,7 @@ export function HearingLiveStatusBadge({
   return (
     <span
       className={`text-xs ${
-        isDark ? "text-[#fcfbf8]/50" : "text-[#706b62]"
+        isDark ? "text-[#fcfbf8]/50" : "text-[var(--ink-muted)]"
       }`}
     >
       {status.label}

@@ -34,6 +34,18 @@ import {
   generateHearingIcs,
   toWebcalUrl,
 } from "../ics";
+import {
+  getCourtOverlayPalette,
+  getJudicialMapStyle,
+  JUDICIAL_MAP_STYLE_DARK,
+  JUDICIAL_MAP_STYLE_LIGHT,
+} from "../map-style";
+import {
+  parseThemePreference,
+  resolveTheme,
+  THEME_INIT_SCRIPT,
+  THEME_STORAGE_KEY,
+} from "../theme";
 
 describe("ROC <-> Gregorian date conversion", () => {
   it("converts 7-digit and slash ROC dates to ISO", () => {
@@ -410,3 +422,55 @@ describe("ICS generation & PII guard", () => {
     );
   });
 });
+
+describe("Theme preference & judicial map style palettes", () => {
+  it("parses stored theme preferences safely with system fallback", () => {
+    expect(parseThemePreference("system")).toBe("system");
+    expect(parseThemePreference("light")).toBe("light");
+    expect(parseThemePreference("dark")).toBe("dark");
+    expect(parseThemePreference(null)).toBe("system");
+    expect(parseThemePreference(undefined)).toBe("system");
+    expect(parseThemePreference("sepia")).toBe("system");
+  });
+
+  it("resolves theme preference against system color scheme", () => {
+    expect(resolveTheme("system", false)).toBe("light");
+    expect(resolveTheme("system", true)).toBe("dark");
+    expect(resolveTheme("light", false)).toBe("light");
+    expect(resolveTheme("light", true)).toBe("light");
+    expect(resolveTheme("dark", false)).toBe("dark");
+    expect(resolveTheme("dark", true)).toBe("dark");
+  });
+
+  it("generates an inline head init script referencing the storage key", () => {
+    expect(THEME_INIT_SCRIPT).toContain(THEME_STORAGE_KEY);
+    expect(THEME_INIT_SCRIPT).toContain("prefers-color-scheme: dark");
+    expect(THEME_INIT_SCRIPT).toContain("classList.toggle");
+  });
+
+  it("provides distinct light and dark vector map styles and overlay palettes", () => {
+    expect(getJudicialMapStyle("light")).toBe(JUDICIAL_MAP_STYLE_LIGHT);
+    expect(getJudicialMapStyle("dark")).toBe(JUDICIAL_MAP_STYLE_DARK);
+
+    const lightBg = JUDICIAL_MAP_STYLE_LIGHT.layers.find(
+      (layer) => layer.id === "background",
+    );
+    const darkBg = JUDICIAL_MAP_STYLE_DARK.layers.find(
+      (layer) => layer.id === "background",
+    );
+    expect(lightBg?.type).toBe("background");
+    expect(darkBg?.type).toBe("background");
+    if (lightBg?.type === "background" && darkBg?.type === "background") {
+      expect(lightBg.paint?.["background-color"]).not.toBe(
+        darkBg.paint?.["background-color"],
+      );
+    }
+
+    const lightOverlay = getCourtOverlayPalette("light");
+    const darkOverlay = getCourtOverlayPalette("dark");
+    expect(lightOverlay.courtDot).not.toBe(darkOverlay.courtDot);
+    expect(lightOverlay.labelText).not.toBe(darkOverlay.labelText);
+    expect(lightOverlay.labelHalo).not.toBe(darkOverlay.labelHalo);
+  });
+});
+

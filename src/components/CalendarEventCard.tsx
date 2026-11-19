@@ -78,7 +78,7 @@ export function CalendarEventCard({
       className={`group relative flex flex-col overflow-hidden rounded-[2px] border transition-[border-color,opacity] sm:flex-row ${
         isDark
           ? "border-[#fcfbf8]/22 bg-[#1c322b] text-[#fcfbf8] hover:border-[#fcfbf8]/55"
-          : "border-[#191816]/20 bg-[#fcfbf8] text-[#191816] hover:border-[#191816]/60"
+          : "border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--ink)] hover:border-[var(--border-hover)]"
       } ${isEnded ? "opacity-70 hover:opacity-100" : ""}`}
     >
       {/* Left Calendar Date Spine — Priority 1: When */}
@@ -86,27 +86,27 @@ export function CalendarEventCard({
         className={`flex shrink-0 items-center justify-between border-b border-dashed px-5 py-4 sm:w-[118px] sm:flex-col sm:justify-center sm:border-b-0 sm:border-r sm:px-3.5 sm:py-5 ${
           isDark
             ? "border-[#fcfbf8]/25 bg-[#13241e]"
-            : "border-[#191816]/20 bg-[#efece4]"
+            : "border-[var(--border-subtle)] bg-[var(--bg-tint)]"
         }`}
       >
         <div className="flex items-baseline gap-2.5 sm:flex-col sm:items-center sm:gap-0">
           <span
             className={`text-xs font-medium ${
-              isDark ? "text-[#fcfbf8]/70" : "text-[#5c574f]"
+              isDark ? "text-[#fcfbf8]/70" : "text-[var(--ink-secondary)]"
             }`}
           >
             {monthNum}月 週{weekday}
           </span>
           <span
             className={`font-editorial text-3xl leading-none font-semibold sm:mt-1.5 sm:text-[38px] ${
-              isDark ? "text-[#fcfbf8]" : "text-[#191816]"
+              isDark ? "text-[#fcfbf8]" : "text-[var(--ink)]"
             }`}
           >
             {dayNum}
           </span>
           <span
             className={`font-tabular text-xs sm:mt-1.5 ${
-              isDark ? "text-[#fcfbf8]/55" : "text-[#5c574f]"
+              isDark ? "text-[#fcfbf8]/55" : "text-[var(--ink-secondary)]"
             }`}
           >
             民{rocYear}/{monthStr}/{dayStr}
@@ -117,7 +117,7 @@ export function CalendarEventCard({
           className={`border px-2.5 py-0.5 font-tabular text-sm font-medium sm:mt-3 ${
             isDark
               ? "border-[#fcfbf8]/35 bg-[#1c322b] text-[#fcfbf8]"
-              : "border-[#191816]/35 bg-[#fcfbf8] text-[#191816]"
+              : "border-[var(--border-medium)] bg-[var(--bg-surface)] text-[var(--ink)]"
           }`}
         >
           {hearing.time}
@@ -143,14 +143,16 @@ export function CalendarEventCard({
                   className={`border px-1.5 py-0.5 font-medium ${
                     isDark
                       ? "border-[#d4b06a] text-[#e7ca8b]"
-                      : "border-[#8f2d1c] text-[#8f2d1c]"
+                      : "border-[var(--seal-text)] text-[var(--seal-text)]"
                   }`}
                 >
                   國民法官
                 </span>
               )}
               <span
-                className={isDark ? "text-[#fcfbf8]/70" : "text-[#5c574f]"}
+                className={
+                  isDark ? "text-[#fcfbf8]/70" : "text-[var(--ink-secondary)]"
+                }
               >
                 {hearing.dukd} · {hearing.sysLabel}
               </span>
@@ -164,10 +166,10 @@ export function CalendarEventCard({
                 saved
                   ? isDark
                     ? "border-[#fcfbf8] bg-[#fcfbf8] text-[#13241e]"
-                    : "border-[#191816] bg-[#191816] text-[#fcfbf8]"
+                    : "border-[var(--ink)] bg-[var(--ink)] text-[var(--bg-surface)]"
                   : isDark
                     ? "border-transparent text-[#fcfbf8]/60 hover:border-[#fcfbf8]/30 hover:text-[#fcfbf8]"
-                    : "border-transparent text-[#5c574f] hover:border-[#191816]/25 hover:text-[#191816]"
+                    : "border-transparent text-[var(--ink-secondary)] hover:border-[var(--border-subtle)] hover:text-[var(--ink)]"
               }`}
             >
               {saved ? (
@@ -182,7 +184,7 @@ export function CalendarEventCard({
           <Link
             href={`/hearings/${hearing.id}`}
             className={`mt-2 block no-underline ${
-              isDark ? "text-[#fcfbf8]" : "text-[#191816]"
+              isDark ? "text-[#fcfbf8]" : "text-[var(--ink)]"
             }`}
           >
             <h3 className="font-editorial text-xl leading-snug font-semibold group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">
@@ -193,7 +195,7 @@ export function CalendarEventCard({
           {/* Tier 2: Where (Comfortable 14px, Primary Ink) */}
           <p
             className={`mt-2.5 truncate text-sm font-medium ${
-              isDark ? "text-[#fcfbf8]/90" : "text-[#191816]"
+              isDark ? "text-[#fcfbf8]/90" : "text-[var(--ink)]"
             }`}
           >
             {showCourt ? `${hearing.courtShortName} · ` : ""}
@@ -203,7 +205,7 @@ export function CalendarEventCard({
           {/* Tier 3: Reference metadata (Quiet 12px, Muted Ink) */}
           <p
             className={`mt-1 font-tabular text-xs ${
-              isDark ? "text-[#fcfbf8]/60" : "text-[#5c574f]"
+              isDark ? "text-[#fcfbf8]/60" : "text-[var(--ink-secondary)]"
             }`}
           >
             {hearing.caseNo}
@@ -213,7 +215,7 @@ export function CalendarEventCard({
         {/* Clean Action Bar */}
         <div
           className={`mt-5 flex items-center justify-between gap-3 border-t pt-3.5 text-sm ${
-            isDark ? "border-[#fcfbf8]/15" : "border-[#d6d0c4]"
+            isDark ? "border-[#fcfbf8]/15" : "border-[var(--rule)]"
           }`}
         >
           <button
@@ -222,7 +224,7 @@ export function CalendarEventCard({
             className={`inline-flex items-center gap-1.5 border px-3 py-1.5 text-xs font-medium transition-colors ${
               isDark
                 ? "border-[#fcfbf8]/30 text-[#fcfbf8] hover:bg-[#fcfbf8] hover:text-[#13241e]"
-                : "border-[#191816]/25 bg-[#f7f5f0] text-[#191816] hover:border-[#1b382f] hover:bg-[#1b382f] hover:text-[#fcfbf8]"
+                : "border-[var(--border-subtle)] bg-[var(--bg-paper)] text-[var(--ink)] hover:border-[var(--robe)] hover:bg-[var(--robe)] hover:text-[#fcfbf8]"
             }`}
           >
             <CalendarPlus className="h-3.5 w-3.5" aria-hidden="true" />
@@ -234,7 +236,7 @@ export function CalendarEventCard({
             className={`inline-flex items-center gap-0.5 text-xs font-medium underline underline-offset-4 ${
               isDark
                 ? "text-[#fcfbf8]/85 decoration-[#fcfbf8]/40 hover:text-white"
-                : "text-[#191816] decoration-[#191816]/35 hover:text-[#1b382f]"
+                : "text-[var(--ink)] decoration-[var(--border-medium)] hover:text-[var(--robe-text)]"
             }`}
           >
             <span>詳情與交通</span>

@@ -1,18 +1,60 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  color-scheme: light;
   --bg-paper: #f7f5f0;
   --bg-surface: #fcfbf8;
   --bg-tint: #efece4;
+  --bg-hover: #f2efe8;
+  --bg-alert: #f9f3f1;
+  --bg-sage: #f4f7f5;
   --ink: #191816;
-  --ink-secondary: #524e47;
+  --ink-body: #3a3630;
+  --ink-secondary: #5c574f;
   --ink-muted: #706b62;
+  --ink-faint: #8a8478;
   --robe: #1b382f;
   --robe-hover: #132922;
+  --robe-text: #1b382f;
   --seal: #8f2d1c;
+  --seal-text: #8f2d1c;
   --brass: #8a6216;
   --rule: #d6d0c4;
+  --rule-soft: #e6e0d4;
   --rule-strong: #191816;
+  --border-subtle: rgba(25, 24, 22, 0.22);
+  --border-medium: rgba(25, 24, 22, 0.32);
+  --border-hover: rgba(25, 24, 22, 0.6);
+  --map-canvas: #f3efe6;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg-paper: #121210;
+  --bg-surface: #1a1917;
+  --bg-tint: #23211e;
+  --bg-hover: #2a2824;
+  --bg-alert: #261916;
+  --bg-sage: #182520;
+  --ink: #ebe7df;
+  --ink-body: #d2ccc2;
+  --ink-secondary: #aba59b;
+  --ink-muted: #8c867c;
+  --ink-faint: #6e6961;
+  --robe: #23473c;
+  --robe-hover: #2d5a4c;
+  --robe-text: #7ec0a9;
+  --seal: #9e3522;
+  --seal-text: #e07b66;
+  --brass: #d4b06a;
+  --rule: #312e29;
+  --rule-soft: #282622;
+  --rule-strong: #d8d2c6;
+  --border-subtle: rgba(235, 231, 223, 0.16);
+  --border-medium: rgba(235, 231, 223, 0.28);
+  --border-hover: rgba(235, 231, 223, 0.5);
+  --map-canvas: #161614;
 }
 
 @theme inline {
@@ -96,7 +138,7 @@ body {
   justify-content: center;
   gap: 0.5rem;
   border-radius: 2px;
-  border: 1px solid rgba(25, 24, 22, 0.32);
+  border: 1px solid var(--border-medium);
   background-color: var(--bg-surface);
   color: var(--ink);
   font-size: 0.875rem;
@@ -119,17 +161,18 @@ body {
   border-radius: 2px;
   border: 1px solid var(--ink);
   background-color: var(--ink);
-  color: #fcfbf8;
+  color: var(--bg-surface);
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.03em;
   padding: 0.5rem 0.95rem;
-  transition: background-color 140ms ease, border-color 140ms ease;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
 }
 
 .btn-formal-ink:hover {
   background-color: var(--robe);
   border-color: var(--robe);
+  color: #fcfbf8;
 }
 
 /* Subtle hairline scrollbars for horizontal date ledger */

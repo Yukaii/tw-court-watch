@@ -32,8 +32,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   if (!meta || !highlights) {
     return (
-      <div className="rounded-2xl border border-stone-200 bg-white p-8 text-center">
-        <p className="text-base font-semibold text-stone-800">
+      <div className="rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 text-center">
+        <p className="text-base font-semibold text-[var(--ink)]">
           尚未同步庭期資料，請先執行 <code>bun run sync</code>。
         </p>
       </div>
@@ -42,11 +42,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className="space-y-5">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-stone-900">
+      <header className="legal-rule-bottom space-y-1.5 pb-4">
+        <h1 className="font-editorial text-2xl font-semibold text-[var(--ink)] sm:text-3xl">
           找可旁聽的庭
         </h1>
-        <p className="text-sm text-stone-500">
+        <p className="text-sm text-[var(--ink-secondary)]">
           涵蓋全台 {meta.courts.length} 所主要法院未來 14 天公開庭期 · 資料同步於{" "}
           {formatSyncedAt(meta.syncedAt)}
         </p>
@@ -54,7 +54,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       <Suspense
         fallback={
-          <div className="rounded-2xl border border-stone-200 bg-white p-8 text-center text-sm text-stone-500">
+          <div className="rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 text-center text-sm text-[var(--ink-secondary)]">
             載入篩選介面中…
           </div>
         }

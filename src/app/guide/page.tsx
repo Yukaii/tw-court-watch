@@ -68,41 +68,43 @@ export default function GuidePage() {
   return (
     <div className="space-y-10">
       <header className="legal-rule-bottom space-y-2 pb-5">
-        <h1 className="font-editorial text-3xl font-semibold text-[#191816] sm:text-4xl">
+        <h1 className="font-editorial text-3xl font-semibold text-[var(--ink)] sm:text-4xl">
           臺灣法院旁聽守則與行前指南
         </h1>
-        <p className="max-w-2xl text-sm leading-relaxed text-[#524e47] sm:text-base">
+        <p className="max-w-2xl text-sm leading-relaxed text-[var(--ink-secondary)] sm:text-base">
           憲法與《法院組織法》保障「公開審判原則」——法院本來就是開放給民眾走進去旁聽的公共空間。記住下面六個重點，就能安心完成第一次觀庭。
         </p>
       </header>
 
       {/* 6 Rules */}
-      <section className="grid gap-px border border-[#191816]/25 bg-[#d6d0c4] sm:grid-cols-2">
+      <section className="grid gap-px border border-[var(--border-subtle)] bg-[var(--rule)] sm:grid-cols-2">
         {SIX_RULES.map(({ clause, icon: Icon, title, body, alert }) => (
           <div
             key={clause}
-            className={`p-5 ${alert ? "bg-[#f9f3f1]" : "bg-[#fcfbf8]"}`}
+            className={`p-5 ${alert ? "bg-[var(--bg-alert)]" : "bg-[var(--bg-surface)]"}`}
           >
             <div className="flex items-start gap-3.5">
               <span
                 className={`flex h-9 w-9 shrink-0 items-center justify-center border ${
                   alert
-                    ? "border-[#8f2d1c] bg-[#8f2d1c] text-[#fcfbf8]"
-                    : "border-[#1b382f]/30 bg-[#f4f7f5] text-[#1b382f]"
+                    ? "border-[var(--seal)] bg-[var(--seal)] text-[#fcfbf8]"
+                    : "border-[var(--robe-text)]/30 bg-[var(--bg-sage)] text-[var(--robe-text)]"
                 }`}
               >
                 <Icon className="h-4 w-4" aria-hidden="true" />
               </span>
               <div className="space-y-1">
-                <h2 className="font-editorial text-base font-semibold text-[#191816]">
+                <h2 className="font-editorial text-base font-semibold text-[var(--ink)]">
                   <span
-                    className={`mr-1 ${alert ? "text-[#8f2d1c]" : "text-[#1b382f]"}`}
+                    className={`mr-1 ${alert ? "text-[var(--seal-text)]" : "text-[var(--robe-text)]"}`}
                   >
                     {clause}
                   </span>
                   {title}
                 </h2>
-                <p className="text-sm leading-relaxed text-[#524e47]">{body}</p>
+                <p className="text-sm leading-relaxed text-[var(--ink-secondary)]">
+                  {body}
+                </p>
               </div>
             </div>
           </div>
@@ -110,12 +112,12 @@ export default function GuidePage() {
       </section>
 
       {/* Decoding dukd */}
-      <section className="space-y-4 rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8] p-6">
-        <div className="border-b border-[#d6d0c4] pb-3">
-          <h2 className="font-editorial text-xl font-semibold text-[#191816]">
+      <section className="space-y-4 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6">
+        <div className="border-b border-[var(--rule)] pb-3">
+          <h2 className="font-editorial text-xl font-semibold text-[var(--ink)]">
             怎麼挑第一場庭？看懂「庭類」最關鍵
           </h2>
-          <p className="mt-1 text-sm text-[#524e47]">
+          <p className="mt-1 text-sm text-[var(--ink-secondary)]">
             如果選到「宣判」可能不到 30 秒就散會，走到「調解室」則不開放旁聽。出發前先看庭類，體驗會差很多：
           </p>
         </div>
@@ -128,31 +130,31 @@ export default function GuidePage() {
                 key={key}
                 className={`border p-4 ${
                   info.recommended
-                    ? "border-[#1b382f]/40 bg-[#f4f7f5]"
-                    : "border-[#d6d0c4] bg-[#f7f5f0]"
+                    ? "border-[var(--robe-text)]/40 bg-[var(--bg-sage)]"
+                    : "border-[var(--rule)] bg-[var(--bg-paper)]"
                 }`}
               >
-                <p className="font-editorial text-sm font-semibold text-[#191816]">
+                <p className="font-editorial text-sm font-semibold text-[var(--ink)]">
                   {info.label}
                 </p>
-                <p className="mt-0.5 font-tabular text-xs font-medium text-[#1b382f]">
+                <p className="mt-0.5 font-tabular text-xs font-medium text-[var(--robe-text)]">
                   預估時長：{info.durationHint}
                 </p>
-                <p className="mt-1.5 text-xs leading-relaxed text-[#524e47]">
+                <p className="mt-1.5 text-xs leading-relaxed text-[var(--ink-secondary)]">
                   {info.beginnerHint}
                 </p>
               </div>
             );
           })}
 
-          <div className="border border-[#8f2d1c]/35 bg-[#f9f3f1] p-4">
-            <p className="font-editorial text-sm font-semibold text-[#8f2d1c]">
+          <div className="border border-[var(--seal-text)]/35 bg-[var(--bg-alert)] p-4">
+            <p className="font-editorial text-sm font-semibold text-[var(--seal-text)]">
               調解／家事／少年／性侵害（不公開）
             </p>
-            <p className="mt-0.5 text-xs font-medium text-[#8f2d1c]">
+            <p className="mt-0.5 text-xs font-medium text-[var(--seal-text)]">
               本網站已預設自動排除
             </p>
-            <p className="mt-1.5 text-xs leading-relaxed text-[#524e47]">
+            <p className="mt-1.5 text-xs leading-relaxed text-[var(--ink-secondary)]">
               為保護當事人隱私與兒少權益，這些程序不開放一般民眾旁聽；就算是普通公開案件，審判長仍可依法在現場決定不公開審理。
             </p>
           </div>
@@ -160,11 +162,11 @@ export default function GuidePage() {
       </section>
 
       {/* Pre-departure checklist */}
-      <section className="rounded-[2px] border border-[#191816]/20 bg-[#fcfbf8] p-6">
-        <h2 className="border-b border-[#d6d0c4] pb-3 font-editorial text-xl font-semibold text-[#191816]">
+      <section className="rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6">
+        <h2 className="border-b border-[var(--rule)] pb-3 font-editorial text-xl font-semibold text-[var(--ink)]">
           出發前檢查清單
         </h2>
-        <ul className="mt-4 space-y-2.5 text-sm text-[#3a3630]">
+        <ul className="mt-4 space-y-2.5 text-sm text-[var(--ink-body)]">
           {[
             "出門前點一下庭期詳情頁的「到司法院查詢頁確認」或「當日開庭進度」，確認沒有臨時改期或延遲。",
             "核對院區地址：部分地院的簡易庭與本院在不同地址（本網站已依實際法庭前綴對應，但出發前仍建議看一眼地圖）。",
@@ -173,7 +175,7 @@ export default function GuidePage() {
           ].map((item) => (
             <li key={item} className="flex items-start gap-2.5">
               <CheckCircle2
-                className="mt-0.5 h-4 w-4 shrink-0 text-[#1b382f]"
+                className="mt-0.5 h-4 w-4 shrink-0 text-[var(--robe-text)]"
                 aria-hidden="true"
               />
               <span>{item}</span>
@@ -192,11 +194,11 @@ export default function GuidePage() {
       </section>
 
       {/* Attribution */}
-      <section className="rounded-[2px] border border-[#191816]/25 bg-[#efece4] p-6">
-        <h2 className="font-editorial text-lg font-semibold text-[#191816]">
+      <section className="rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-tint)] p-6">
+        <h2 className="font-editorial text-lg font-semibold text-[var(--ink)]">
           旁聽入門守則參考來源：法律百科 @legispedia_tw
         </h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-[#524e47]">
+        <p className="mt-1.5 text-sm leading-relaxed text-[var(--ink-secondary)]">
           本頁整理的旁聽流程、安檢規定與法庭禮儀重點，參考並致謝法律百科於
           Threads 發布的旁聽攻略貼文與《法科！輕鬆點》節目分享。
         </p>

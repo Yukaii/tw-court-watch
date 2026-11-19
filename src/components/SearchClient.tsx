@@ -369,19 +369,22 @@ export function SearchClient({
       {/* Filter card */}
       <section
         aria-label="庭期篩選條件"
-        className="space-y-4 rounded-2xl border border-stone-200 bg-white p-4 shadow-2xs sm:p-5"
+        className="space-y-4 rounded-[2px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5"
       >
         {/* Mode / Popular courts shortcuts */}
         <div className="space-y-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="inline-flex items-center gap-1.5 text-sm font-bold text-stone-900">
-              <Filter className="h-4 w-4 text-emerald-800" aria-hidden="true" />
+            <span className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--ink)]">
+              <Filter
+                className="h-4 w-4 text-[var(--robe-text)]"
+                aria-hidden="true"
+              />
               選擇法院或專區
             </span>
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex items-center gap-1 text-xs font-medium text-stone-500 hover:text-stone-900"
+              className="inline-flex items-center gap-1 text-xs font-medium text-[var(--ink-secondary)] hover:text-[var(--ink)]"
             >
               <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
               重設條件
@@ -398,10 +401,10 @@ export function SearchClient({
                 setEndDate(maxDate);
                 updateUrl({ mode: "layjudge", start: today, end: maxDate });
               }}
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+              className={`inline-flex items-center gap-1 rounded-[2px] border px-3 py-1.5 text-xs font-semibold transition-colors ${
                 mode === "layjudge"
-                  ? "border-amber-600 bg-amber-600 text-white"
-                  : "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
+                  ? "border-[var(--seal)] bg-[var(--seal)] text-[#fcfbf8]"
+                  : "border-[var(--seal-text)]/45 bg-[var(--bg-alert)] text-[var(--seal-text)] hover:border-[var(--seal-text)]"
               }`}
             >
               <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
@@ -421,16 +424,16 @@ export function SearchClient({
                     setOnlyLayJudge(false);
                     updateUrl({ mode: "court", court: c.crtid });
                   }}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  className={`rounded-[2px] border px-3 py-1.5 text-xs font-medium transition-colors ${
                     active
-                      ? "border-emerald-800 bg-emerald-800 text-white"
-                      : "border-stone-200 bg-stone-50 text-stone-700 hover:border-stone-300 hover:bg-stone-100"
+                      ? "border-[var(--robe)] bg-[var(--robe)] text-[#fcfbf8]"
+                      : "border-[var(--rule)] bg-[var(--bg-paper)] text-[var(--ink-body)] hover:border-[var(--border-medium)] hover:bg-[var(--bg-tint)]"
                   }`}
                 >
                   {c.shortName}
                   {stats ? (
                     <span
-                      className={`ml-1 ${active ? "text-emerald-100" : "text-stone-400"}`}
+                      className={`ml-1 font-tabular ${active ? "text-[#fcfbf8]/75" : "text-[var(--ink-muted)]"}`}
                     >
                       {stats.total}
                     </span>
@@ -447,7 +450,7 @@ export function SearchClient({
             type="button"
             onClick={() => setCourtPickerOpen((o) => !o)}
             aria-expanded={courtPickerOpen}
-            className="flex w-full items-center justify-between rounded-xl border border-stone-300 bg-stone-50/50 px-3.5 py-2.5 text-left text-sm font-medium text-stone-900 hover:border-emerald-700/60"
+            className="flex w-full items-center justify-between rounded-[2px] border border-[var(--border-medium)] bg-[var(--bg-paper)] px-3.5 py-2.5 text-left text-sm font-medium text-[var(--ink)] hover:border-[var(--robe-text)]"
           >
             <span>
               {mode === "layjudge"
@@ -455,17 +458,17 @@ export function SearchClient({
                 : `${currentCourtInfo.name}（未來 14 天 ${courtCountMap[selectedCourt]?.total ?? 0} 場）`}
             </span>
             <ChevronDown
-              className={`h-4 w-4 text-stone-500 transition-transform ${courtPickerOpen ? "rotate-180" : ""}`}
+              className={`h-4 w-4 text-[var(--ink-secondary)] transition-transform ${courtPickerOpen ? "rotate-180" : ""}`}
               aria-hidden="true"
             />
           </button>
 
           {courtPickerOpen && (
-            <div className="absolute left-0 right-0 z-20 mt-1.5 max-h-80 overflow-y-auto rounded-xl border border-stone-300 bg-white p-2 shadow-lg">
-              <div className="sticky top-0 bg-white pb-2">
+            <div className="absolute left-0 right-0 z-20 mt-1.5 max-h-80 overflow-y-auto rounded-[2px] border border-[var(--border-medium)] bg-[var(--bg-surface)] p-2 shadow-lg">
+              <div className="sticky top-0 bg-[var(--bg-surface)] pb-2">
                 <div className="relative">
                   <Search
-                    className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-stone-400"
+                    className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-[var(--ink-muted)]"
                     aria-hidden="true"
                   />
                   <input
@@ -473,7 +476,7 @@ export function SearchClient({
                     value={courtSearch}
                     onChange={(e) => setCourtSearch(e.target.value)}
                     placeholder="搜尋法院名稱（如：新竹、高院、行政）"
-                    className="w-full rounded-lg border border-stone-200 bg-stone-50 py-2 pl-9 pr-8 text-sm focus:border-emerald-700 focus:bg-white focus:outline-none"
+                    className="w-full rounded-[2px] border border-[var(--rule)] bg-[var(--bg-paper)] py-2 pl-9 pr-8 text-sm text-[var(--ink)] placeholder:text-[var(--ink-muted)] focus:border-[var(--robe-text)] focus:bg-[var(--bg-surface)] focus:outline-none"
                     autoFocus
                   />
                   {courtSearch && (
@@ -481,7 +484,7 @@ export function SearchClient({
                       type="button"
                       onClick={() => setCourtSearch("")}
                       aria-label="清除法院搜尋"
-                      className="absolute right-2 top-2 text-stone-400 hover:text-stone-700"
+                      className="absolute right-2 top-2 text-[var(--ink-muted)] hover:text-[var(--ink)]"
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -497,7 +500,7 @@ export function SearchClient({
                   if (list.length === 0) return null;
                   return (
                     <div key={lvl}>
-                      <p className="px-2 py-1 text-[11px] font-bold tracking-wide text-stone-400">
+                      <p className="px-2 py-1 text-[11px] font-bold tracking-wide text-[var(--ink-muted)]">
                         {COURT_LEVEL_LABELS[lvl]}
                       </p>
                       <div className="grid gap-1 sm:grid-cols-2">
@@ -517,15 +520,15 @@ export function SearchClient({
                                 setCourtSearch("");
                                 updateUrl({ mode: "court", court: c.crtid });
                               }}
-                              className={`flex items-center justify-between rounded-lg px-2.5 py-2 text-left text-sm transition-colors ${
+                              className={`flex items-center justify-between rounded-[2px] px-2.5 py-2 text-left text-sm transition-colors ${
                                 active
-                                  ? "bg-emerald-800 font-semibold text-white"
-                                  : "text-stone-800 hover:bg-stone-100"
+                                  ? "bg-[var(--robe)] font-semibold text-[#fcfbf8]"
+                                  : "text-[var(--ink)] hover:bg-[var(--bg-tint)]"
                               }`}
                             >
                               <span className="truncate">{c.name}</span>
                               <span
-                                className={`ml-2 shrink-0 text-xs ${active ? "text-emerald-100" : "text-stone-400"}`}
+                                className={`ml-2 shrink-0 font-tabular text-xs ${active ? "text-[#fcfbf8]/75" : "text-[var(--ink-muted)]"}`}
                               >
                                 {stats?.total ?? 0}
                               </span>
@@ -542,9 +545,9 @@ export function SearchClient({
         </div>
 
         {/* Date range controls */}
-        <div className="space-y-2.5 border-t border-stone-100 pt-3.5">
+        <div className="space-y-2.5 border-t border-[var(--rule)] pt-3.5">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="mr-1 text-xs font-semibold text-stone-600">
+            <span className="mr-1 text-xs font-semibold text-[var(--ink-secondary)]">
               日期快捷：
             </span>
             {[
@@ -559,7 +562,7 @@ export function SearchClient({
                 onClick={() =>
                   applyQuickDate(p.id as "today" | "tomorrow" | "7d" | "14d")
                 }
-                className="rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-xs font-medium text-stone-700 hover:border-emerald-700/50 hover:bg-emerald-50 hover:text-emerald-900"
+                className="rounded-[2px] border border-[var(--rule)] bg-[var(--bg-paper)] px-2.5 py-1 text-xs font-medium text-[var(--ink-body)] hover:border-[var(--robe-text)] hover:bg-[var(--bg-sage)] hover:text-[var(--ink)]"
               >
                 {p.label}
               </button>
@@ -570,7 +573,7 @@ export function SearchClient({
             <div>
               <label
                 htmlFor="filter-start"
-                className="block text-xs font-medium text-stone-600"
+                className="block text-xs font-medium text-[var(--ink-secondary)]"
               >
                 開始日期（西元／民國 {isoToRoc(startDate) ?? "—"}）
               </label>
@@ -584,14 +587,14 @@ export function SearchClient({
                   setStartDate(e.target.value);
                   updateUrl({ start: e.target.value });
                 }}
-                className="mt-1 w-full rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm focus:border-emerald-700 focus:outline-none"
+                className="mt-1 w-full rounded-[2px] border border-[var(--border-medium)] bg-[var(--bg-surface)] px-2.5 py-2 text-sm text-[var(--ink)] focus:border-[var(--robe-text)] focus:outline-none"
               />
             </div>
 
             <div>
               <label
                 htmlFor="filter-end"
-                className="block text-xs font-medium text-stone-600"
+                className="block text-xs font-medium text-[var(--ink-secondary)]"
               >
                 結束日期（西元／民國 {isoToRoc(endDate) ?? "—"}）
               </label>
@@ -605,14 +608,14 @@ export function SearchClient({
                   setEndDate(e.target.value);
                   updateUrl({ end: e.target.value });
                 }}
-                className="mt-1 w-full rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm focus:border-emerald-700 focus:outline-none"
+                className="mt-1 w-full rounded-[2px] border border-[var(--border-medium)] bg-[var(--bg-surface)] px-2.5 py-2 text-sm text-[var(--ink)] focus:border-[var(--robe-text)] focus:outline-none"
               />
             </div>
 
             <form onSubmit={handleRocJump}>
               <label
                 htmlFor="roc-jump"
-                className="block text-xs font-medium text-stone-600"
+                className="block text-xs font-medium text-[var(--ink-secondary)]"
               >
                 單日快速輸入（支援民國 1151120）
               </label>
@@ -623,26 +626,28 @@ export function SearchClient({
                   value={rocJump}
                   onChange={(e) => setRocJump(e.target.value)}
                   placeholder="1151120 或 2026-11-20"
-                  className="min-w-0 flex-1 rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm focus:border-emerald-700 focus:outline-none"
+                  className="min-w-0 flex-1 rounded-[2px] border border-[var(--border-medium)] bg-[var(--bg-surface)] px-2.5 py-2 text-sm text-[var(--ink)] placeholder:text-[var(--ink-muted)] focus:border-[var(--robe-text)] focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="shrink-0 rounded-lg border border-stone-300 bg-stone-50 px-2.5 py-2 text-xs font-semibold text-stone-700 hover:bg-stone-100"
+                  className="shrink-0 rounded-[2px] border border-[var(--border-medium)] bg-[var(--bg-paper)] px-2.5 py-2 text-xs font-semibold text-[var(--ink)] hover:bg-[var(--bg-tint)]"
                 >
                   套用
                 </button>
               </div>
               {rocJumpError && (
-                <p className="mt-1 text-[11px] text-red-700">{rocJumpError}</p>
+                <p className="mt-1 text-[11px] text-[var(--seal-text)]">
+                  {rocJumpError}
+                </p>
               )}
             </form>
           </div>
         </div>
 
         {/* Category (庭類) + Sys (案件類別) */}
-        <div className="space-y-3 border-t border-stone-100 pt-3.5">
+        <div className="space-y-3 border-t border-[var(--rule)] pt-3.5">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="mr-1 text-xs font-semibold text-stone-600">
+            <span className="mr-1 text-xs font-semibold text-[var(--ink-secondary)]">
               庭類：
             </span>
             {(
@@ -660,10 +665,10 @@ export function SearchClient({
                   setCategory(opt.id);
                   updateUrl({ category: opt.id });
                 }}
-                className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                className={`rounded-[2px] border px-3 py-1 text-xs font-medium transition-colors ${
                   category === opt.id
-                    ? "border-emerald-800 bg-emerald-800 text-white"
-                    : "border-stone-200 bg-stone-50 text-stone-700 hover:bg-stone-100"
+                    ? "border-[var(--robe)] bg-[var(--robe)] text-[#fcfbf8]"
+                    : "border-[var(--rule)] bg-[var(--bg-paper)] text-[var(--ink-body)] hover:bg-[var(--bg-tint)]"
                 }`}
               >
                 {opt.label}
@@ -674,10 +679,10 @@ export function SearchClient({
               <button
                 type="button"
                 onClick={() => setOnlyLayJudge((v) => !v)}
-                className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                className={`inline-flex items-center gap-1 rounded-[2px] border px-3 py-1 text-xs font-medium transition-colors ${
                   onlyLayJudge
-                    ? "border-amber-600 bg-amber-600 text-white"
-                    : "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
+                    ? "border-[var(--seal)] bg-[var(--seal)] text-[#fcfbf8]"
+                    : "border-[var(--seal-text)]/45 bg-[var(--bg-alert)] text-[var(--seal-text)] hover:border-[var(--seal-text)]"
                 }`}
               >
                 <Sparkles className="h-3 w-3" aria-hidden="true" />
@@ -687,7 +692,7 @@ export function SearchClient({
           </div>
 
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="mr-1 text-xs font-semibold text-stone-600">
+            <span className="mr-1 text-xs font-semibold text-[var(--ink-secondary)]">
               案件類別：
             </span>
             {ALL_SYS.filter((s) => availableSys.includes(s)).map((code) => {
@@ -698,10 +703,10 @@ export function SearchClient({
                   key={code}
                   type="button"
                   onClick={() => toggleSys(code)}
-                  className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                  className={`rounded-[2px] border px-3 py-1 text-xs font-medium transition-colors ${
                     active
-                      ? "border-stone-800 bg-stone-800 text-white"
-                      : "border-stone-200 bg-stone-50 text-stone-500 hover:bg-stone-100"
+                      ? "border-[var(--ink)] bg-[var(--ink)] text-[var(--bg-surface)]"
+                      : "border-[var(--rule)] bg-[var(--bg-paper)] text-[var(--ink-secondary)] hover:bg-[var(--bg-tint)]"
                   }`}
                 >
                   {SYS_LABELS[code]}
@@ -712,7 +717,7 @@ export function SearchClient({
             <button
               type="button"
               onClick={() => setShowNonPublicHelp((v) => !v)}
-              className="ml-1 inline-flex items-center gap-1 text-xs text-stone-500 underline decoration-stone-300 underline-offset-2 hover:text-stone-800"
+              className="ml-1 inline-flex items-center gap-1 text-xs text-[var(--ink-secondary)] underline decoration-[var(--border-medium)] underline-offset-2 hover:text-[var(--ink)]"
             >
               <HelpCircle className="h-3.5 w-3.5" aria-hidden="true" />
               為何沒有少年、家事、調解？
@@ -720,25 +725,30 @@ export function SearchClient({
           </div>
 
           {showNonPublicHelp && (
-            <div className="rounded-lg border border-stone-200 bg-stone-50 p-3 text-xs leading-relaxed text-stone-700">
-              依《家事事件法》、《少年事件處理法》及調解程序相關規定，<strong>家事、少年、調解／調解室、協商程序及依法不公開之性侵害／兒少案件原則上不開放旁聽</strong>。本工具在每日同步時已自動濾除這類庭期（本次同步共濾除{" "}
-              {meta.filterStats.filteredTotal.toLocaleString("zh-TW")} 筆），避免民眾白跑一趟。
+            <div className="rounded-[2px] border border-[var(--rule)] bg-[var(--bg-paper)] p-3 text-xs leading-relaxed text-[var(--ink-body)]">
+              依《家事事件法》、《少年事件處理法》及調解程序相關規定，
+              <strong className="text-[var(--ink)]">
+                家事、少年、調解／調解室、協商程序及依法不公開之性侵害／兒少案件原則上不開放旁聽
+              </strong>
+              。本工具在每日同步時已自動濾除這類庭期（本次同步共濾除{" "}
+              {meta.filterStats.filteredTotal.toLocaleString("zh-TW")}{" "}
+              筆），避免民眾白跑一趟。
             </div>
           )}
         </div>
 
         {/* Keyword + Courtroom filter */}
-        <div className="grid gap-2.5 border-t border-stone-100 pt-3.5 sm:grid-cols-3">
+        <div className="grid gap-2.5 border-t border-[var(--rule)] pt-3.5 sm:grid-cols-3">
           <div className="sm:col-span-2">
             <label
               htmlFor="filter-keyword"
-              className="block text-xs font-medium text-stone-600"
+              className="block text-xs font-medium text-[var(--ink-secondary)]"
             >
               關鍵字（案由、案號、字別、股別）
             </label>
             <div className="relative mt-1">
               <Search
-                className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-stone-400"
+                className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-[var(--ink-muted)]"
                 aria-hidden="true"
               />
               <input
@@ -747,14 +757,14 @@ export function SearchClient({
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="例如：詐欺、損害賠償、115、訴、和股、國審"
-                className="w-full rounded-lg border border-stone-300 bg-white py-2 pl-9 pr-8 text-sm focus:border-emerald-700 focus:outline-none"
+                className="w-full rounded-[2px] border border-[var(--border-medium)] bg-[var(--bg-surface)] py-2 pl-9 pr-8 text-sm text-[var(--ink)] placeholder:text-[var(--ink-muted)] focus:border-[var(--robe-text)] focus:outline-none"
               />
               {keyword && (
                 <button
                   type="button"
                   onClick={() => setKeyword("")}
                   aria-label="清除關鍵字"
-                  className="absolute right-2.5 top-2.5 text-stone-400 hover:text-stone-700"
+                  className="absolute right-2.5 top-2.5 text-[var(--ink-muted)] hover:text-[var(--ink)]"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -765,7 +775,7 @@ export function SearchClient({
           <div>
             <label
               htmlFor="filter-room"
-              className="block text-xs font-medium text-stone-600"
+              className="block text-xs font-medium text-[var(--ink-secondary)]"
             >
               法庭（{availableCourtrooms.length} 間）
             </label>
@@ -773,7 +783,7 @@ export function SearchClient({
               id="filter-room"
               value={courtroomFilter}
               onChange={(e) => setCourtroomFilter(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-stone-300 bg-white px-2.5 py-2 text-sm focus:border-emerald-700 focus:outline-none"
+              className="mt-1 w-full rounded-[2px] border border-[var(--border-medium)] bg-[var(--bg-surface)] px-2.5 py-2 text-sm text-[var(--ink)] focus:border-[var(--robe-text)] focus:outline-none"
             >
               <option value="">全部法庭</option>
               {availableCourtrooms.map((r) => (
@@ -792,21 +802,21 @@ export function SearchClient({
         aria-live="polite"
         className="flex flex-wrap items-center justify-between gap-2 px-1 text-sm"
       >
-        <p className="font-semibold text-stone-800">
+        <p className="font-semibold text-[var(--ink)]">
           {loading ? (
-            <span className="inline-flex items-center gap-1.5 text-stone-500">
+            <span className="inline-flex items-center gap-1.5 text-[var(--ink-secondary)]">
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
               載入{currentCourtInfo.shortName}庭期中…
             </span>
           ) : (
             <>
               找到{" "}
-              <span className="text-emerald-800">
+              <span className="font-tabular text-[var(--robe-text)]">
                 {filtered.length.toLocaleString("zh-TW")}
               </span>{" "}
               場可旁聽庭期
               {inProgressCount > 0 && (
-                <span className="ml-2 inline-flex items-center gap-1.5 border border-[#1b382f] bg-[#1b382f] px-1.5 py-0.5 text-xs font-medium text-[#fcfbf8]">
+                <span className="ml-2 inline-flex items-center gap-1.5 border border-[var(--robe)] bg-[var(--robe)] px-1.5 py-0.5 text-xs font-medium text-[#fcfbf8]">
                   <span
                     aria-hidden="true"
                     className="h-1.5 w-1.5 rounded-full bg-[#fcfbf8] motion-safe:animate-pulse"
@@ -814,7 +824,7 @@ export function SearchClient({
                   {inProgressCount} 場開庭中
                 </span>
               )}
-              <span className="ml-2 text-xs font-normal text-stone-500">
+              <span className="ml-2 text-xs font-normal text-[var(--ink-secondary)]">
                 （{formatCompactDualDate(startDate)}
                 {endDate !== startDate
                   ? ` ～ ${formatCompactDualDate(endDate)}`
@@ -842,7 +852,7 @@ export function SearchClient({
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-[2px] border border-[#1b382f] bg-[#f4f7f5] px-2.5 py-1 text-xs font-medium text-[#1b382f] transition-colors hover:bg-[#1b382f] hover:text-[#fcfbf8]"
+            className="inline-flex items-center gap-1.5 rounded-[2px] border border-[var(--robe-text)]/50 bg-[var(--bg-sage)] px-2.5 py-1 text-xs font-medium text-[var(--robe-text)] transition-colors hover:border-[var(--robe)] hover:bg-[var(--robe)] hover:text-[#fcfbf8]"
           >
             <CalendarPlus className="h-3.5 w-3.5" aria-hidden="true" />
             <span>
@@ -855,7 +865,7 @@ export function SearchClient({
             href={officialConfirmUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs font-medium text-[#1b382f] underline decoration-[#1b382f]/40 underline-offset-4 hover:text-[#191816]"
+            className="inline-flex items-center gap-1 text-xs font-medium text-[var(--robe-text)] underline decoration-[var(--robe-text)]/40 underline-offset-4 hover:text-[var(--ink)]"
           >
             <span>司法院官方系統查詢</span>
             <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -865,30 +875,30 @@ export function SearchClient({
 
       {/* Results list / Empty state */}
       {loadError ? (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-center text-sm text-red-900">
+        <div className="rounded-[2px] border border-[var(--seal-text)]/40 bg-[var(--bg-alert)] p-5 text-center text-sm text-[var(--seal-text)]">
           <p>{loadError}</p>
           <a
             href={officialConfirmUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-1 rounded-lg bg-red-800 px-3.5 py-2 text-xs font-semibold text-white"
+            className="mt-3 inline-flex items-center gap-1 rounded-[2px] bg-[var(--seal)] px-3.5 py-2 text-xs font-semibold text-[#fcfbf8]"
           >
             前往司法院查詢頁 <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </div>
       ) : !loading && filtered.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-stone-300 bg-white px-5 py-10 text-center">
-          <p className="text-base font-semibold text-stone-800">
+        <div className="rounded-[2px] border border-dashed border-[var(--border-subtle)] bg-[var(--bg-surface)] px-5 py-10 text-center">
+          <p className="text-base font-semibold text-[var(--ink)]">
             這個區間查無尚未開庭的公開庭期
           </p>
-          <p className="mt-1.5 text-sm text-stone-500">
+          <p className="mt-1.5 text-sm text-[var(--ink-secondary)]">
             試試放寬日期區間、改選「全部公開庭」或切換其他法院；周末與國定假日法院通常不開庭。
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
             <button
               type="button"
               onClick={() => applyQuickDate("14d")}
-              className="rounded-lg bg-emerald-800 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-900"
+              className="btn-formal-primary !px-4 !py-2 !text-xs"
             >
               放寬至未來 14 天
             </button>
@@ -896,7 +906,7 @@ export function SearchClient({
               href={officialConfirmUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 rounded-lg border border-stone-300 bg-white px-4 py-2 text-xs font-semibold text-stone-700 hover:bg-stone-50"
+              className="btn-formal-secondary !px-4 !py-2 !text-xs"
             >
               到司法院官方頁確認
               <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -919,7 +929,7 @@ export function SearchClient({
               <button
                 type="button"
                 onClick={() => setVisibleCount((n) => n + PAGE_STEP)}
-                className="rounded-xl border border-stone-300 bg-white px-5 py-2.5 text-sm font-semibold text-stone-800 hover:bg-stone-50"
+                className="btn-formal-secondary"
               >
                 載入更多（還有{" "}
                 {(filtered.length - visibleCount).toLocaleString("zh-TW")} 場）
