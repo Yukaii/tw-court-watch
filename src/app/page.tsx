@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { CalendarEventCard } from "@/components/CalendarEventCard";
+import { CalendarSubscribeCard } from "@/components/CalendarSubscribeCard";
 import { HomeCalendarExplorer } from "@/components/HomeCalendarExplorer";
 import { HomeHeroShowcase } from "@/components/HomeHeroShowcase";
 import { LEGISPEDIA_THREAD_URL } from "@/components/SiteFooter";
@@ -143,6 +144,9 @@ export default async function HomePage() {
 
       {/* Band 2: Interactive 14-Day Calendar Strip & Calendar Event Cards */}
       <HomeCalendarExplorer meta={meta} highlights={highlights} />
+
+      {/* Band 2.5: Subscribe via Google Calendar / Apple Calendar / iCal feed */}
+      <CalendarSubscribeCard meta={meta} />
 
       {/* Band 3: Contrasting Forest-Ink Editorial Band — 國民法官專區 */}
       {upcomingLayJudge.length > 0 && (

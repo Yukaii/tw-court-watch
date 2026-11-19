@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CalendarPlus,
   ChevronDown,
   ExternalLink,
   Filter,
@@ -28,6 +29,11 @@ import {
 } from "@/lib/date";
 import { HEARING_CATEGORY_META, SYS_LABELS } from "@/lib/filter";
 import { hydrateHearing } from "@/lib/hydrate";
+import {
+  DEFAULT_SITE_ORIGIN,
+  buildCalendarFeedPath,
+  buildGoogleCalendarSubscribeUrl,
+} from "@/lib/ics";
 import type {
   CourtHearingsFile,
   CourtLevel,
@@ -782,15 +788,42 @@ export function SearchClient({
           )}
         </p>
 
-        <a
-          href={officialConfirmUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-xs font-medium text-emerald-900 underline decoration-emerald-700/40 underline-offset-2 hover:text-emerald-700"
-        >
-          <span>到司法院官方系統查詢</span>
-          <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-        </a>
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href={buildGoogleCalendarSubscribeUrl(
+              `${DEFAULT_SITE_ORIGIN}${buildCalendarFeedPath(
+                mode === "layjudge"
+                  ? { mode: "layjudge" }
+                  : {
+                      mode: "court",
+                      court: selectedCourt,
+                      category: category === "all" ? "trial" : category,
+                      sys: selectedSys,
+                      layjudge: onlyLayJudge,
+                    },
+              )}`,
+            )}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[#1f4b3b]/30 bg-[#f2f7f4] px-2.5 py-1 text-xs font-semibold text-[#1f4b3b] transition-colors hover:bg-[#1f4b3b] hover:text-[#f6f2e9]"
+          >
+            <CalendarPlus className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>
+              訂閱{mode === "layjudge" ? "國民法官" : currentCourtInfo.shortName}
+              到 Google 日曆
+            </span>
+          </a>
+
+          <a
+            href={officialConfirmUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs font-medium text-emerald-900 underline decoration-emerald-700/40 underline-offset-2 hover:text-emerald-700"
+          >
+            <span>到司法院官方系統查詢</span>
+            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+        </div>
       </div>
 
       {/* Results list / Empty state */}

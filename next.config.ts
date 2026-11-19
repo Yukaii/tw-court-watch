@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     "/": ["./public/data/hearings/**/*"],
     "/search": ["./public/data/hearings/**/*"],
     "/about": ["./public/data/hearings/**/*"],
+    "/api/calendar.ics": ["./public/data/hearings/**/*"],
   },
 };
 

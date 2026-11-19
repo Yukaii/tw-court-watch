@@ -17,7 +17,14 @@ import {
   isLayJudgeCase,
 } from "../filter";
 import { compactHearing, hydrateHearing } from "../hydrate";
-import { generateHearingIcs } from "../ics";
+import {
+  buildCalendarFeedPath,
+  buildGoogleCalendarSubscribeUrl,
+  foldIcsLine,
+  generateBatchIcs,
+  generateHearingIcs,
+  toWebcalUrl,
+} from "../ics";
 
 describe("ROC <-> Gregorian date conversion", () => {
   it("converts 7-digit and slash ROC dates to ISO", () => {
@@ -231,5 +238,62 @@ describe("ICS generation & PII guard", () => {
     expect(hydrated.caseNo).toBe("115年度國審訴字第2號");
     expect(hydrated.rocDate).toBe("1151119");
     expect(compactHearing(hydrated)[0]).toBe("TPD-1151119-0930-abcd1234");
+  });
+
+  it("folds long UTF-8 ICS lines cleanly within 75 octets and builds subscription feed metadata", () => {
+    const longLine = `SUMMARY:${"臺灣臺北地方法院國民法官審理程序".repeat(5)}`;
+    const folded = foldIcsLine(longLine);
+    const encoder = new TextEncoder();
+    const physicalLines = folded.split("\r\n");
+    expect(physicalLines.length).toBeGreaterThan(1);
+    for (const part of physicalLines) {
+      expect(encoder.encode(part).length).toBeLessThanOrEqual(75);
+    }
+    // Unfolding (removing CRLF + single space) restores original exact string
+    expect(folded.replaceAll("\r\n ", "")).toBe(longLine);
+
+    const feed = generateBatchIcs(
+      [
+        {
+          id: "TPD-1151119-0930-abcd1234",
+          courtName: "臺灣臺北地方法院",
+          courtroom: "第11法庭",
+          caseNo: "115年度國審訴字第2號",
+          dukd: "審理",
+          reason: "傷害致死",
+          date: "2026-11-19",
+          time: "09:30",
+          campusName: "臺灣臺北地方法院（博愛路本院）",
+          address: "臺北市中正區博愛路131號",
+          sourceUrl: "https://csdi3.judicial.gov.tw/judbp/wkw/WHD1A03.htm?crtid=TPD",
+          division: "和",
+        },
+      ],
+      new Date("2026-11-19T00:00:00Z"),
+      {
+        calName: "旁聽小幫手｜全台國民法官開庭日曆",
+        calDesc: "每日自動同步",
+        refreshHours: 12,
+        siteOrigin: "https://court.yukai.dev",
+        includeAlarm: false,
+      },
+    );
+
+    expect(feed).toContain("X-WR-TIMEZONE:Asia/Taipei");
+    expect(feed).toContain("REFRESH-INTERVAL;VALUE=DURATION:PT12H");
+    expect(feed).toContain("X-PUBLISHED-TTL:PT12H");
+    expect(feed).toContain("URL:https://court.yukai.dev/hearings/TPD-1151119-0930-abcd1234");
+    expect(feed).not.toContain("BEGIN:VALARM");
+
+    const path = buildCalendarFeedPath({ mode: "layjudge" });
+    expect(path).toBe("/api/calendar.ics?mode=layjudge");
+    expect(toWebcalUrl(`https://court.yukai.dev${path}`)).toBe(
+      "webcal://court.yukai.dev/api/calendar.ics?mode=layjudge",
+    );
+    expect(
+      buildGoogleCalendarSubscribeUrl(`https://court.yukai.dev${path}`),
+    ).toBe(
+      "https://calendar.google.com/calendar/render?cid=webcal%3A%2F%2Fcourt.yukai.dev%2Fapi%2Fcalendar.ics%3Fmode%3Dlayjudge",
+    );
   });
 });
