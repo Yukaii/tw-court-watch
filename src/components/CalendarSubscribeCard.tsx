@@ -73,34 +73,34 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
     >
       <div className="grid lg:grid-cols-12">
         {/* Left: Plain-language value prop */}
-        <div className="flex flex-col justify-center space-y-2.5 border-b border-[#d6d0c4] bg-[#efece4] p-6 lg:col-span-5 lg:border-b-0 lg:border-r lg:p-7">
+        <div className="flex flex-col justify-center space-y-2.5 border-b border-[#d6d0c4] bg-[#efece4] p-6 lg:col-span-5 lg:border-b-0 lg:border-r lg:p-8">
           <h2 className="font-editorial text-2xl font-semibold leading-snug text-[#191816]">
             訂閱開庭日曆到個人行事曆
           </h2>
-          <p className="text-sm leading-relaxed text-[#524e47]">
+          <p className="text-[15px] leading-relaxed text-[#5c574f]">
             訂閱後，未來 14
             天的公開開庭會自動出現在你的行事曆中，每日定時更新，且不會發送擾人的通知提醒。
           </p>
         </div>
 
-        {/* Right: Simple selector + clean buttons (no raw URL box or tech jargon) */}
-        <div className="space-y-4 p-6 lg:col-span-7 lg:p-7">
+        {/* Right: Simple selector + clean buttons */}
+        <div className="space-y-5 p-6 lg:col-span-7 lg:p-8">
           <div className="grid divide-y divide-[#d6d0c4] border border-[#191816]/25 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             <button
               type="button"
               onClick={() => setPreset("layjudge")}
-              className={`px-3.5 py-3 text-left transition-colors ${
+              className={`px-4 py-3.5 text-left transition-colors ${
                 preset === "layjudge"
                   ? "bg-[#1b382f] text-[#fcfbf8]"
                   : "bg-[#fcfbf8] text-[#191816] hover:bg-[#f2efe8]"
               }`}
             >
-              <p className="font-editorial text-sm font-semibold">
+              <p className="font-editorial text-base font-semibold">
                 全台國民法官
               </p>
               <p
-                className={`mt-0.5 font-tabular text-[11px] ${
-                  preset === "layjudge" ? "text-[#fcfbf8]/75" : "text-[#706b62]"
+                className={`mt-1 font-tabular text-xs ${
+                  preset === "layjudge" ? "text-[#fcfbf8]/75" : "text-[#5c574f]"
                 }`}
               >
                 約 {meta.layJudgeCount} 場（推薦）
@@ -110,18 +110,18 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
             <button
               type="button"
               onClick={() => setPreset("featured")}
-              className={`px-3.5 py-3 text-left transition-colors ${
+              className={`px-4 py-3.5 text-left transition-colors ${
                 preset === "featured"
                   ? "bg-[#1b382f] text-[#fcfbf8]"
                   : "bg-[#fcfbf8] text-[#191816] hover:bg-[#f2efe8]"
               }`}
             >
-              <p className="font-editorial text-sm font-semibold">
+              <p className="font-editorial text-base font-semibold">
                 全台精選審理庭
               </p>
               <p
-                className={`mt-0.5 font-tabular text-[11px] ${
-                  preset === "featured" ? "text-[#fcfbf8]/75" : "text-[#706b62]"
+                className={`mt-1 font-tabular text-xs ${
+                  preset === "featured" ? "text-[#fcfbf8]/75" : "text-[#5c574f]"
                 }`}
               >
                 每日精選 18 場
@@ -131,18 +131,18 @@ export function CalendarSubscribeCard({ meta }: CalendarSubscribeCardProps) {
             <button
               type="button"
               onClick={() => setPreset("court")}
-              className={`px-3.5 py-3 text-left transition-colors ${
+              className={`px-4 py-3.5 text-left transition-colors ${
                 preset === "court"
                   ? "bg-[#1b382f] text-[#fcfbf8]"
                   : "bg-[#fcfbf8] text-[#191816] hover:bg-[#f2efe8]"
               }`}
             >
-              <p className="font-editorial text-sm font-semibold">
+              <p className="font-editorial text-base font-semibold">
                 指定單一法院
               </p>
               <p
-                className={`mt-0.5 font-tabular text-[11px] ${
-                  preset === "court" ? "text-[#fcfbf8]/75" : "text-[#706b62]"
+                className={`mt-1 font-tabular text-xs ${
+                  preset === "court" ? "text-[#fcfbf8]/75" : "text-[#5c574f]"
                 }`}
               >
                 全台 {meta.courts.length} 所可選

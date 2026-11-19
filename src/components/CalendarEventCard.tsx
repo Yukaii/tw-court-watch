@@ -5,7 +5,6 @@ import {
   Bookmark,
   BookmarkCheck,
   CalendarPlus,
-  MapPin,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -67,42 +66,36 @@ export function CalendarEventCard({
     <article
       className={`group relative flex flex-col overflow-hidden rounded-[2px] border transition-colors sm:flex-row ${
         isDark
-          ? "border-[#fcfbf8]/22 bg-[#1c322b] text-[#fcfbf8] hover:border-[#d4b06a]"
-          : "border-[#191816]/20 bg-[#fcfbf8] text-[#191816] hover:border-[#191816]/65"
+          ? "border-[#fcfbf8]/22 bg-[#1c322b] text-[#fcfbf8] hover:border-[#fcfbf8]/55"
+          : "border-[#191816]/20 bg-[#fcfbf8] text-[#191816] hover:border-[#191816]/60"
       }`}
     >
-      {/* Left Date Spine (Formal Court Notice Stub) */}
+      {/* Left Calendar Date Spine — Priority 1: When */}
       <div
-        className={`relative flex shrink-0 items-center justify-between border-b border-dashed px-4 py-3 sm:w-[104px] sm:flex-col sm:justify-center sm:border-b-0 sm:border-r sm:px-3 sm:py-4 ${
+        className={`flex shrink-0 items-center justify-between border-b border-dashed px-5 py-4 sm:w-[118px] sm:flex-col sm:justify-center sm:border-b-0 sm:border-r sm:px-3.5 sm:py-5 ${
           isDark
             ? "border-[#fcfbf8]/25 bg-[#13241e]"
-            : hearing.isLayJudge
-              ? "border-[#8f2d1c]/35 bg-[#f5efe6]"
-              : "border-[#191816]/25 bg-[#efece4]"
+            : "border-[#191816]/20 bg-[#efece4]"
         }`}
       >
-        <div className="flex items-baseline gap-2 sm:flex-col sm:items-center sm:gap-0">
+        <div className="flex items-baseline gap-2.5 sm:flex-col sm:items-center sm:gap-0">
           <span
-            className={`text-[11px] font-medium tracking-[0.04em] ${
-              isDark
-                ? "text-[#d4b06a]"
-                : hearing.isLayJudge
-                  ? "text-[#8f2d1c]"
-                  : "text-[#524e47]"
+            className={`text-xs font-medium ${
+              isDark ? "text-[#fcfbf8]/70" : "text-[#5c574f]"
             }`}
           >
-            {monthNum}月 · 週{weekday}
+            {monthNum}月 週{weekday}
           </span>
           <span
-            className={`font-editorial text-3xl leading-none font-semibold sm:mt-1 sm:text-[34px] ${
+            className={`font-editorial text-3xl leading-none font-semibold sm:mt-1.5 sm:text-[38px] ${
               isDark ? "text-[#fcfbf8]" : "text-[#191816]"
             }`}
           >
             {dayNum}
           </span>
           <span
-            className={`font-tabular text-[10px] sm:mt-1 ${
-              isDark ? "text-[#fcfbf8]/60" : "text-[#706b62]"
+            className={`font-tabular text-xs sm:mt-1.5 ${
+              isDark ? "text-[#fcfbf8]/55" : "text-[#5c574f]"
             }`}
           >
             民{rocYear}/{monthStr}/{dayStr}
@@ -110,50 +103,37 @@ export function CalendarEventCard({
         </div>
 
         <span
-          className={`border px-2 py-0.5 font-tabular text-xs font-medium tracking-tight sm:mt-2.5 ${
+          className={`border px-2.5 py-0.5 font-tabular text-sm font-medium sm:mt-3 ${
             isDark
-              ? "border-[#d4b06a] bg-[#d4b06a] text-[#13241e]"
-              : "border-[#191816] bg-[#fcfbf8] text-[#191816]"
+              ? "border-[#fcfbf8]/35 bg-[#1c322b] text-[#fcfbf8]"
+              : "border-[#191816]/35 bg-[#fcfbf8] text-[#191816]"
           }`}
         >
           {hearing.time}
         </span>
       </div>
 
-      {/* Right Docket Body */}
-      <div className="flex min-w-0 flex-1 flex-col justify-between p-4">
-        <div className="space-y-1.5">
-          {/* Formal stamp row */}
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex flex-wrap items-center gap-1.5">
+      {/* Right Event Body — Clean 3-tier hierarchy & restrained 2-ink palette */}
+      <div className="flex min-w-0 flex-1 flex-col justify-between p-5 sm:p-6">
+        <div>
+          {/* Top quiet context line + bookmark */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2 text-xs">
               {hearing.isLayJudge && (
                 <span
-                  className={`border px-1.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] ${
+                  className={`border px-1.5 py-0.5 font-medium ${
                     isDark
                       ? "border-[#d4b06a] text-[#e7ca8b]"
-                      : "border-[#8f2d1c] bg-[#8f2d1c]/6 text-[#8f2d1c]"
+                      : "border-[#8f2d1c] text-[#8f2d1c]"
                   }`}
                 >
                   國民法官
                 </span>
               )}
               <span
-                className={`border px-1.5 py-0.5 text-[10px] font-medium tracking-[0.04em] ${
-                  isDark
-                    ? "border-[#fcfbf8]/25 text-[#fcfbf8]/90"
-                    : hearing.category === "trial"
-                      ? "border-[#1b382f]/40 bg-[#1b382f]/6 text-[#1b382f]"
-                      : "border-[#191816]/20 bg-[#f7f5f0] text-[#524e47]"
-                }`}
+                className={isDark ? "text-[#fcfbf8]/70" : "text-[#5c574f]"}
               >
-                {hearing.dukd}
-              </span>
-              <span
-                className={`text-[11px] ${
-                  isDark ? "text-[#fcfbf8]/65" : "text-[#706b62]"
-                }`}
-              >
-                {hearing.sysLabel}
+                {hearing.dukd} · {hearing.sysLabel}
               </span>
             </div>
 
@@ -161,94 +141,81 @@ export function CalendarEventCard({
               type="button"
               onClick={handleSave}
               aria-label={saved ? "取消收藏" : "收藏這場庭"}
-              className={`border p-1 transition-colors ${
+              className={`border p-1.5 transition-colors ${
                 saved
                   ? isDark
-                    ? "border-[#d4b06a] bg-[#d4b06a] text-[#13241e]"
-                    : "border-[#1b382f] bg-[#1b382f] text-[#fcfbf8]"
+                    ? "border-[#fcfbf8] bg-[#fcfbf8] text-[#13241e]"
+                    : "border-[#191816] bg-[#191816] text-[#fcfbf8]"
                   : isDark
-                    ? "border-[#fcfbf8]/20 text-[#fcfbf8]/65 hover:border-[#fcfbf8]/50 hover:text-white"
-                    : "border-transparent text-[#706b62] hover:border-[#191816]/25 hover:text-[#191816]"
+                    ? "border-transparent text-[#fcfbf8]/60 hover:border-[#fcfbf8]/30 hover:text-[#fcfbf8]"
+                    : "border-transparent text-[#5c574f] hover:border-[#191816]/25 hover:text-[#191816]"
               }`}
             >
               {saved ? (
-                <BookmarkCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                <BookmarkCheck className="h-4 w-4" aria-hidden="true" />
               ) : (
-                <Bookmark className="h-3.5 w-3.5" aria-hidden="true" />
+                <Bookmark className="h-4 w-4" aria-hidden="true" />
               )}
             </button>
           </div>
 
-          {/* Main Case Title */}
+          {/* Tier 1: What (Largest, Primary Ink) */}
           <Link
             href={`/hearings/${hearing.id}`}
-            className={`block no-underline ${
-              isDark
-                ? "text-[#fcfbf8] group-hover:text-[#e7ca8b]"
-                : "text-[#191816] group-hover:text-[#1b382f]"
+            className={`mt-2 block no-underline ${
+              isDark ? "text-[#fcfbf8]" : "text-[#191816]"
             }`}
           >
-            <h3 className="font-editorial text-[17px] leading-snug font-semibold">
+            <h3 className="font-editorial text-xl leading-snug font-semibold group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">
               {hearing.reason || `${hearing.sysLabel}${hearing.dukd}`}
             </h3>
           </Link>
 
-          {/* Case number & division */}
+          {/* Tier 2: Where (Comfortable 14px, Primary Ink) */}
           <p
-            className={`font-tabular text-xs ${
-              isDark ? "text-[#fcfbf8]/70" : "text-[#706b62]"
+            className={`mt-2.5 truncate text-sm font-medium ${
+              isDark ? "text-[#fcfbf8]/90" : "text-[#191816]"
+            }`}
+          >
+            {showCourt ? `${hearing.courtShortName} · ` : ""}
+            {hearing.courtroom}
+          </p>
+
+          {/* Tier 3: Reference metadata (Quiet 12px, Muted Ink) */}
+          <p
+            className={`mt-1 font-tabular text-xs ${
+              isDark ? "text-[#fcfbf8]/60" : "text-[#5c574f]"
             }`}
           >
             {hearing.caseNo}
-            {hearing.division ? ` · ${hearing.division}股` : ""}
-          </p>
-
-          {/* Courtroom */}
-          <p
-            className={`flex items-center gap-1.5 pt-0.5 text-xs ${
-              isDark ? "text-[#fcfbf8]/85" : "text-[#524e47]"
-            }`}
-          >
-            <MapPin
-              className={`h-3.5 w-3.5 shrink-0 ${
-                isDark ? "text-[#d4b06a]" : "text-[#8f2d1c]"
-              }`}
-              aria-hidden="true"
-            />
-            <span className="truncate">
-              {showCourt ? `${hearing.courtShortName} · ` : ""}
-              <strong className="font-medium text-current">
-                {hearing.courtroom}
-              </strong>
-            </span>
           </p>
         </div>
 
-        {/* Structural footer action bar */}
+        {/* Clean Action Bar */}
         <div
-          className={`mt-3.5 flex items-center justify-between gap-2 border-t pt-2.5 text-xs ${
+          className={`mt-5 flex items-center justify-between gap-3 border-t pt-3.5 text-sm ${
             isDark ? "border-[#fcfbf8]/15" : "border-[#d6d0c4]"
           }`}
         >
           <button
             type="button"
             onClick={handleDownloadIcs}
-            className={`inline-flex items-center gap-1.5 border px-2.5 py-1 text-[11px] font-medium transition-colors ${
+            className={`inline-flex items-center gap-1.5 border px-3 py-1.5 text-xs font-medium transition-colors ${
               isDark
-                ? "border-[#fcfbf8]/25 text-[#fcfbf8]/90 hover:border-[#d4b06a] hover:bg-[#d4b06a] hover:text-[#13241e]"
+                ? "border-[#fcfbf8]/30 text-[#fcfbf8] hover:bg-[#fcfbf8] hover:text-[#13241e]"
                 : "border-[#191816]/25 bg-[#f7f5f0] text-[#191816] hover:border-[#1b382f] hover:bg-[#1b382f] hover:text-[#fcfbf8]"
             }`}
           >
-            <CalendarPlus className="h-3 w-3" aria-hidden="true" />
+            <CalendarPlus className="h-3.5 w-3.5" aria-hidden="true" />
             <span>加入行事曆</span>
           </button>
 
           <Link
             href={`/hearings/${hearing.id}`}
-            className={`inline-flex items-center gap-0.5 font-medium underline underline-offset-4 ${
+            className={`inline-flex items-center gap-0.5 text-xs font-medium underline underline-offset-4 ${
               isDark
-                ? "text-[#e7ca8b] decoration-[#e7ca8b]/40 hover:text-white"
-                : "text-[#1b382f] decoration-[#1b382f]/40 hover:text-[#191816]"
+                ? "text-[#fcfbf8]/85 decoration-[#fcfbf8]/40 hover:text-white"
+                : "text-[#191816] decoration-[#191816]/35 hover:text-[#1b382f]"
             }`}
           >
             <span>詳情與交通</span>
