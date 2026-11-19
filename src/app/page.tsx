@@ -2,6 +2,7 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { CalendarEventCard } from "@/components/CalendarEventCard";
 import { CalendarSubscribeCard } from "@/components/CalendarSubscribeCard";
+import { CourtMapExplorer } from "@/components/CourtMapExplorer";
 import { HomeCalendarExplorer } from "@/components/HomeCalendarExplorer";
 import { HomeHeroShowcase } from "@/components/HomeHeroShowcase";
 import { LEGISPEDIA_THREAD_URL } from "@/components/SiteFooter";
@@ -104,7 +105,10 @@ export default async function HomePage() {
       {/* 2. Interactive 14-Day Calendar Strip & 4 Featured Calendar Event Cards */}
       <HomeCalendarExplorer meta={meta} highlights={highlights} />
 
-      {/* 3. One-click Calendar Subscription */}
+      {/* 3. Interactive Judicial-Gazette Map to Find the Nearest Court */}
+      <CourtMapExplorer meta={meta} />
+
+      {/* 4. One-click Calendar Subscription */}
       <CalendarSubscribeCard meta={meta} />
 
       {/* 4. Lay Judge Spotlight */}

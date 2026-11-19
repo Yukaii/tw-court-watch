@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { COURT_BY_ID, resolveCampusLocation } from "../courts";
+import { COURT_BY_ID, MAJOR_COURTS, resolveCampusLocation } from "../courts";
 import {
   estimateHearingDurationMinutes,
   formatCompactDualDate,
@@ -20,6 +20,11 @@ import {
   formatCaseNo,
   isLayJudgeCase,
 } from "../filter";
+import {
+  formatDistanceZh,
+  haversineDistanceKm,
+  sortCourtsByDistance,
+} from "../geo";
 import { compactHearing, hydrateHearing } from "../hydrate";
 import {
   buildCalendarFeedPath,
@@ -266,6 +271,35 @@ describe("Multi-campus courtroom address resolution", () => {
 
     const mainCampus = resolveCampusLocation(tpd, "第11法庭");
     expect(mainCampus.address).toContain("博愛路");
+  });
+
+  it("has valid Taiwan-region coordinates for all 38 major courts and ranks nearest court accurately", () => {
+    expect(MAJOR_COURTS).toHaveLength(38);
+    for (const c of MAJOR_COURTS) {
+      expect(c.lat).toBeGreaterThan(21.5);
+      expect(c.lat).toBeLessThan(26.5);
+      expect(c.lng).toBeGreaterThan(118);
+      expect(c.lng).toBeLessThan(122.2);
+    }
+
+    // Distance between Taipei Main Station (~25.0478, 121.5170) and TPD (~25.0369, 121.5112) is ~1.35 km
+    const taipeiStation = { lat: 25.0478, lng: 121.517 };
+    const distToTpd = haversineDistanceKm(taipeiStation, {
+      lat: COURT_BY_ID.TPD.lat,
+      lng: COURT_BY_ID.TPD.lng,
+    });
+    expect(distToTpd).toBeGreaterThan(1);
+    expect(distToTpd).toBeLessThan(2);
+
+    // Standing right next to Taichung District Court ranks TCD first
+    const nearTcd = sortCourtsByDistance(MAJOR_COURTS, {
+      lat: 24.1348,
+      lng: 120.6758,
+    });
+    expect(nearTcd[0].court.crtid).toBe("TCD");
+    expect(formatDistanceZh(0.32)).toBe("320 公尺");
+    expect(formatDistanceZh(2.46)).toBe("2.5 公里");
+    expect(formatDistanceZh(142.8)).toBe("143 公里");
   });
 });
 

@@ -35,6 +35,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "最高法院",
     level: "supreme",
     region: "north",
+    lat: 25.039908,
+    lng: 121.509934,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -50,6 +52,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "最高行政",
     level: "supreme",
     region: "north",
+    lat: 25.037317,
+    lng: 121.512309,
     sysCodes: ["A"],
     campuses: [
       {
@@ -65,6 +69,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "懲戒法院",
     level: "supreme",
     region: "north",
+    lat: 25.037598,
+    lng: 121.512177,
     sysCodes: ["P", "D"],
     campuses: [
       {
@@ -82,6 +88,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "臺灣高院",
     level: "high",
     region: "north",
+    lat: 25.038005,
+    lng: 121.511694,
     sysCodes: ["H", "V"],
     popular: true,
     campuses: [
@@ -104,6 +112,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "臺中高分院",
     level: "high",
     region: "central",
+    lat: 24.127725,
+    lng: 120.668663,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -119,6 +129,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "臺南高分院",
     level: "high",
     region: "south",
+    lat: 22.995717,
+    lng: 120.210852,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -134,6 +146,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "高雄高分院",
     level: "high",
     region: "south",
+    lat: 22.661994,
+    lng: 120.299051,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -149,6 +163,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "花蓮高分院",
     level: "high",
     region: "east",
+    lat: 23.990982,
+    lng: 121.627592,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -164,6 +180,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "金門高分院",
     level: "high",
     region: "islands",
+    lat: 24.437729,
+    lng: 118.318483,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -180,6 +198,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "北高行高等庭",
     level: "admin_ip",
     region: "north",
+    lat: 25.101362,
+    lng: 121.518572,
     sysCodes: ["A"],
     popular: true,
     campuses: [
@@ -196,6 +216,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "北高行地方庭",
     level: "admin_ip",
     region: "north",
+    lat: 25.101362,
+    lng: 121.518572,
     sysCodes: ["A"],
     campuses: [
       {
@@ -211,6 +233,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "中高行高等庭",
     level: "admin_ip",
     region: "central",
+    lat: 24.127725,
+    lng: 120.668663,
     sysCodes: ["A"],
     campuses: [
       {
@@ -226,6 +250,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "中高行地方庭",
     level: "admin_ip",
     region: "central",
+    lat: 24.127725,
+    lng: 120.668663,
     sysCodes: ["A"],
     campuses: [
       {
@@ -241,6 +267,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "高高行高等庭",
     level: "admin_ip",
     region: "south",
+    lat: 22.731589,
+    lng: 120.335674,
     sysCodes: ["A"],
     campuses: [
       {
@@ -256,6 +284,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "高高行地方庭",
     level: "admin_ip",
     region: "south",
+    lat: 22.731589,
+    lng: 120.335674,
     sysCodes: ["A"],
     campuses: [
       {
@@ -270,6 +300,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "智財及商業法院",
     level: "admin_ip",
     region: "north",
+    lat: 25.014197,
+    lng: 121.463391,
     sysCodes: ["B", "V", "H", "A"],
     campuses: [
       {
@@ -287,6 +319,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "臺北地院",
     level: "district",
     region: "north",
+    lat: 25.036863,
+    lng: 121.511213,
     sysCodes: ["H", "V"],
     popular: true,
     campuses: [
@@ -321,6 +355,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "新北地院",
     level: "district",
     region: "north",
+    lat: 24.984979,
+    lng: 121.458114,
     sysCodes: ["H", "V"],
     popular: true,
     campuses: [
@@ -349,6 +385,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "士林地院",
     level: "district",
     region: "north",
+    lat: 25.111779,
+    lng: 121.533205,
     sysCodes: ["H", "V"],
     popular: true,
     campuses: [
@@ -377,6 +415,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "桃園地院",
     level: "district",
     region: "north",
+    lat: 25.00692,
+    lng: 121.288387,
     sysCodes: ["H", "V"],
     popular: true,
     campuses: [
@@ -403,6 +443,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "新竹地院",
     level: "district",
     region: "north",
+    lat: 24.812514,
+    lng: 121.019075,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -418,6 +460,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "苗栗地院",
     level: "district",
     region: "central",
+    lat: 24.546036,
+    lng: 120.817256,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -432,6 +476,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "臺中地院",
     level: "district",
     region: "central",
+    lat: 24.134699,
+    lng: 120.675757,
     sysCodes: ["H", "V"],
     popular: true,
     campuses: [
@@ -458,6 +504,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "南投地院",
     level: "district",
     region: "central",
+    lat: 23.900488,
+    lng: 120.688804,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -472,6 +520,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "彰化地院",
     level: "district",
     region: "central",
+    lat: 23.949413,
+    lng: 120.577041,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -486,6 +536,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "雲林地院",
     level: "district",
     region: "central",
+    lat: 23.715641,
+    lng: 120.433754,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -500,6 +552,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "嘉義地院",
     level: "district",
     region: "south",
+    lat: 23.487095,
+    lng: 120.461816,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -514,6 +568,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "臺南地院",
     level: "district",
     region: "south",
+    lat: 22.985029,
+    lng: 120.171931,
     sysCodes: ["H", "V"],
     popular: true,
     campuses: [
@@ -530,6 +586,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "高雄地院",
     level: "district",
     region: "south",
+    lat: 22.626266,
+    lng: 120.290109,
     sysCodes: ["H", "V"],
     popular: true,
     campuses: [
@@ -551,6 +609,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "橋頭地院",
     level: "district",
     region: "south",
+    lat: 22.737382,
+    lng: 120.304917,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -566,6 +626,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "屏東地院",
     level: "district",
     region: "south",
+    lat: 22.656296,
+    lng: 120.483274,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -580,6 +642,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "臺東地院",
     level: "district",
     region: "east",
+    lat: 22.761803,
+    lng: 121.152902,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -594,6 +658,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "花蓮地院",
     level: "district",
     region: "east",
+    lat: 23.989279,
+    lng: 121.619478,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -608,6 +674,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "宜蘭地院",
     level: "district",
     region: "east",
+    lat: 24.727427,
+    lng: 121.761198,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -622,6 +690,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "基隆地院",
     level: "district",
     region: "north",
+    lat: 25.128992,
+    lng: 121.764297,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -636,6 +706,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "澎湖地院",
     level: "district",
     region: "islands",
+    lat: 23.568667,
+    lng: 119.584057,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -650,6 +722,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "金門地院",
     level: "district",
     region: "islands",
+    lat: 24.437729,
+    lng: 118.318483,
     sysCodes: ["H", "V"],
     campuses: [
       {
@@ -664,6 +738,8 @@ export const MAJOR_COURTS: CourtInfo[] = [
     shortName: "連江地院",
     level: "district",
     region: "islands",
+    lat: 26.160986,
+    lng: 119.949923,
     sysCodes: ["H", "V"],
     campuses: [
       {

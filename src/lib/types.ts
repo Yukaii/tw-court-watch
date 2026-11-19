@@ -16,6 +16,8 @@ export interface CampusLocation {
   name: string;
   address: string;
   transit?: string;
+  lat?: number;
+  lng?: number;
   /** Courtroom prefixes or substrings that map to this campus */
   roomMatchers?: string[];
 }
@@ -26,6 +28,9 @@ export interface CourtInfo {
   shortName: string;
   level: CourtLevel;
   region: "north" | "central" | "south" | "east" | "islands";
+  /** Main courthouse WGS84 coordinates */
+  lat: number;
+  lng: number;
   sysCodes: SysCode[];
   popular?: boolean;
   campuses: CampusLocation[];
