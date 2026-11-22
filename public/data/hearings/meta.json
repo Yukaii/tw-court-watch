@@ -1,13 +1,13 @@
 {
-  "syncedAt": "2026-11-21T22:32:44.399Z",
+  "syncedAt": "2026-11-22T10:32:15.410Z",
   "dateRange": {
     "start": "2026-11-22",
     "end": "2026-12-05"
   },
   "totalHearings": 32244,
   "todayDate": "2026-11-22",
-  "todayCount": 0,
-  "trialCount": 11355,
+  "todayCount": 1,
+  "trialCount": 11358,
   "layJudgeCount": 88,
   "filterStats": {
     "totalRaw": 41548,
@@ -62,7 +62,7 @@
       "shortName": "臺灣高院",
       "level": "high",
       "region": "north",
-      "total": 3093,
+      "total": 3092,
       "today": 0,
       "trialCount": 185,
       "layJudgeCount": 12
@@ -218,7 +218,7 @@
       "region": "north",
       "total": 3201,
       "today": 0,
-      "trialCount": 1064,
+      "trialCount": 1065,
       "layJudgeCount": 18
     },
     {
@@ -238,9 +238,9 @@
       "shortName": "桃園地院",
       "level": "district",
       "region": "north",
-      "total": 3148,
+      "total": 3149,
       "today": 0,
-      "trialCount": 996,
+      "trialCount": 997,
       "layJudgeCount": 8
     },
     {
@@ -260,9 +260,9 @@
       "shortName": "苗栗地院",
       "level": "district",
       "region": "central",
-      "total": 716,
-      "today": 0,
-      "trialCount": 313,
+      "total": 717,
+      "today": 1,
+      "trialCount": 314,
       "layJudgeCount": 1
     },
     {
@@ -414,7 +414,7 @@
       "shortName": "澎湖地院",
       "level": "district",
       "region": "islands",
-      "total": 40,
+      "total": 39,
       "today": 0,
       "trialCount": 16,
       "layJudgeCount": 0
@@ -447,13 +447,14 @@
     "2026-12-01": 3316,
     "2026-12-04": 1706,
     "2026-12-03": 3037,
-    "2026-11-23": 2455,
-    "2026-11-25": 4196,
+    "2026-11-23": 2454,
+    "2026-11-25": 4195,
     "2026-11-26": 3948,
     "2026-11-27": 2538,
-    "2026-11-30": 3491,
+    "2026-11-30": 3492,
     "2026-12-02": 3374,
-    "2026-12-05": 1
+    "2026-12-05": 1,
+    "2026-11-22": 1
   },
   "failedRequests": []
 }
