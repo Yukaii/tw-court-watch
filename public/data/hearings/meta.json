@@ -1,25 +1,25 @@
 {
-  "syncedAt": "2026-11-23T22:32:30.022Z",
+  "syncedAt": "2026-11-24T10:32:21.550Z",
   "dateRange": {
     "start": "2026-11-24",
     "end": "2026-12-07"
   },
-  "totalHearings": 32197,
+  "totalHearings": 32377,
   "todayDate": "2026-11-24",
-  "todayCount": 4198,
-  "trialCount": 11299,
-  "layJudgeCount": 83,
+  "todayCount": 4272,
+  "trialCount": 11350,
+  "layJudgeCount": 85,
   "filterStats": {
-    "totalRaw": 41529,
-    "keptPublic": 32197,
-    "filteredTotal": 9303,
+    "totalRaw": 41730,
+    "keptPublic": 32377,
+    "filteredTotal": 9327,
     "byReason": {
       "juvenile": 5,
-      "family": 3181,
-      "mediation": 5337,
+      "family": 3187,
+      "mediation": 5353,
       "non_public_procedure": 48,
-      "non_public_room": 193,
-      "sensitive_case": 539
+      "non_public_room": 194,
+      "sensitive_case": 540
     }
   },
   "courts": [
@@ -40,9 +40,9 @@
       "shortName": "最高行政",
       "level": "supreme",
       "region": "north",
-      "total": 4,
+      "total": 5,
       "today": 1,
-      "trialCount": 3,
+      "trialCount": 4,
       "layJudgeCount": 0
     },
     {
@@ -62,8 +62,8 @@
       "shortName": "臺灣高院",
       "level": "high",
       "region": "north",
-      "total": 3106,
-      "today": 482,
+      "total": 3109,
+      "today": 483,
       "trialCount": 185,
       "layJudgeCount": 13
     },
@@ -73,9 +73,9 @@
       "shortName": "臺中高分院",
       "level": "high",
       "region": "central",
-      "total": 1203,
-      "today": 209,
-      "trialCount": 431,
+      "total": 1196,
+      "today": 204,
+      "trialCount": 429,
       "layJudgeCount": 2
     },
     {
@@ -84,9 +84,9 @@
       "shortName": "臺南高分院",
       "level": "high",
       "region": "south",
-      "total": 633,
+      "total": 631,
       "today": 103,
-      "trialCount": 204,
+      "trialCount": 203,
       "layJudgeCount": 0
     },
     {
@@ -95,7 +95,7 @@
       "shortName": "高雄高分院",
       "level": "high",
       "region": "south",
-      "total": 648,
+      "total": 644,
       "today": 71,
       "trialCount": 181,
       "layJudgeCount": 4
@@ -117,8 +117,8 @@
       "shortName": "金門高分院",
       "level": "high",
       "region": "islands",
-      "total": 14,
-      "today": 0,
+      "total": 15,
+      "today": 1,
       "trialCount": 3,
       "layJudgeCount": 0
     },
@@ -139,9 +139,9 @@
       "shortName": "北高行地方庭",
       "level": "admin_ip",
       "region": "north",
-      "total": 315,
+      "total": 314,
       "today": 25,
-      "trialCount": 109,
+      "trialCount": 108,
       "layJudgeCount": 0
     },
     {
@@ -194,9 +194,9 @@
       "shortName": "智財及商業法院",
       "level": "admin_ip",
       "region": "north",
-      "total": 112,
+      "total": 110,
       "today": 18,
-      "trialCount": 32,
+      "trialCount": 31,
       "layJudgeCount": 0
     },
     {
@@ -205,9 +205,9 @@
       "shortName": "臺北地院",
       "level": "district",
       "region": "north",
-      "total": 3041,
-      "today": 342,
-      "trialCount": 1558,
+      "total": 3057,
+      "today": 348,
+      "trialCount": 1562,
       "layJudgeCount": 1
     },
     {
@@ -216,10 +216,10 @@
       "shortName": "新北地院",
       "level": "district",
       "region": "north",
-      "total": 3165,
-      "today": 296,
-      "trialCount": 1055,
-      "layJudgeCount": 13
+      "total": 3183,
+      "today": 305,
+      "trialCount": 1054,
+      "layJudgeCount": 14
     },
     {
       "crtid": "SLD",
@@ -227,9 +227,9 @@
       "shortName": "士林地院",
       "level": "district",
       "region": "north",
-      "total": 1534,
-      "today": 195,
-      "trialCount": 598,
+      "total": 1542,
+      "today": 197,
+      "trialCount": 600,
       "layJudgeCount": 1
     },
     {
@@ -238,9 +238,9 @@
       "shortName": "桃園地院",
       "level": "district",
       "region": "north",
-      "total": 3190,
-      "today": 415,
-      "trialCount": 1016,
+      "total": 3225,
+      "today": 433,
+      "trialCount": 1038,
       "layJudgeCount": 8
     },
     {
@@ -249,9 +249,9 @@
       "shortName": "新竹地院",
       "level": "district",
       "region": "north",
-      "total": 1154,
-      "today": 154,
-      "trialCount": 508,
+      "total": 1158,
+      "today": 158,
+      "trialCount": 511,
       "layJudgeCount": 1
     },
     {
@@ -260,7 +260,7 @@
       "shortName": "苗栗地院",
       "level": "district",
       "region": "central",
-      "total": 730,
+      "total": 734,
       "today": 116,
       "trialCount": 324,
       "layJudgeCount": 1
@@ -271,9 +271,9 @@
       "shortName": "臺中地院",
       "level": "district",
       "region": "central",
-      "total": 2891,
-      "today": 437,
-      "trialCount": 1275,
+      "total": 2908,
+      "today": 448,
+      "trialCount": 1276,
       "layJudgeCount": 5
     },
     {
@@ -282,7 +282,7 @@
       "shortName": "南投地院",
       "level": "district",
       "region": "central",
-      "total": 366,
+      "total": 367,
       "today": 71,
       "trialCount": 123,
       "layJudgeCount": 1
@@ -293,9 +293,9 @@
       "shortName": "彰化地院",
       "level": "district",
       "region": "central",
-      "total": 1203,
-      "today": 135,
-      "trialCount": 520,
+      "total": 1215,
+      "today": 139,
+      "trialCount": 523,
       "layJudgeCount": 3
     },
     {
@@ -304,9 +304,9 @@
       "shortName": "雲林地院",
       "level": "district",
       "region": "central",
-      "total": 652,
-      "today": 97,
-      "trialCount": 239,
+      "total": 656,
+      "today": 99,
+      "trialCount": 241,
       "layJudgeCount": 0
     },
     {
@@ -315,9 +315,9 @@
       "shortName": "嘉義地院",
       "level": "district",
       "region": "south",
-      "total": 747,
+      "total": 755,
       "today": 85,
-      "trialCount": 356,
+      "trialCount": 357,
       "layJudgeCount": 0
     },
     {
@@ -326,9 +326,9 @@
       "shortName": "臺南地院",
       "level": "district",
       "region": "south",
-      "total": 1572,
-      "today": 177,
-      "trialCount": 849,
+      "total": 1582,
+      "today": 181,
+      "trialCount": 854,
       "layJudgeCount": 10
     },
     {
@@ -337,9 +337,9 @@
       "shortName": "高雄地院",
       "level": "district",
       "region": "south",
-      "total": 1616,
-      "today": 243,
-      "trialCount": 343,
+      "total": 1632,
+      "today": 250,
+      "trialCount": 348,
       "layJudgeCount": 6
     },
     {
@@ -348,9 +348,9 @@
       "shortName": "橋頭地院",
       "level": "district",
       "region": "south",
-      "total": 1031,
-      "today": 107,
-      "trialCount": 179,
+      "total": 1041,
+      "today": 110,
+      "trialCount": 183,
       "layJudgeCount": 10
     },
     {
@@ -359,9 +359,9 @@
       "shortName": "屏東地院",
       "level": "district",
       "region": "south",
-      "total": 773,
-      "today": 104,
-      "trialCount": 244,
+      "total": 777,
+      "today": 107,
+      "trialCount": 243,
       "layJudgeCount": 0
     },
     {
@@ -370,9 +370,9 @@
       "shortName": "臺東地院",
       "level": "district",
       "region": "east",
-      "total": 181,
-      "today": 16,
-      "trialCount": 75,
+      "total": 184,
+      "today": 18,
+      "trialCount": 74,
       "layJudgeCount": 0
     },
     {
@@ -381,9 +381,9 @@
       "shortName": "花蓮地院",
       "level": "district",
       "region": "east",
-      "total": 459,
-      "today": 57,
-      "trialCount": 149,
+      "total": 466,
+      "today": 58,
+      "trialCount": 152,
       "layJudgeCount": 1
     },
     {
@@ -392,10 +392,10 @@
       "shortName": "宜蘭地院",
       "level": "district",
       "region": "east",
-      "total": 411,
-      "today": 61,
-      "trialCount": 178,
-      "layJudgeCount": 1
+      "total": 423,
+      "today": 62,
+      "trialCount": 181,
+      "layJudgeCount": 2
     },
     {
       "crtid": "KLD",
@@ -414,7 +414,7 @@
       "shortName": "澎湖地院",
       "level": "district",
       "region": "islands",
-      "total": 36,
+      "total": 38,
       "today": 3,
       "trialCount": 16,
       "layJudgeCount": 0
@@ -443,16 +443,16 @@
     }
   ],
   "countsByDate": {
-    "2026-11-24": 4198,
-    "2026-12-01": 3330,
-    "2026-12-04": 1737,
-    "2026-12-07": 2026,
-    "2026-12-03": 3055,
-    "2026-11-25": 4339,
-    "2026-11-26": 4018,
-    "2026-11-27": 2563,
-    "2026-11-30": 3553,
-    "2026-12-02": 3378
+    "2026-11-24": 4272,
+    "2026-12-01": 3337,
+    "2026-12-04": 1748,
+    "2026-12-07": 2045,
+    "2026-12-03": 3061,
+    "2026-11-25": 4338,
+    "2026-11-26": 4024,
+    "2026-11-27": 2574,
+    "2026-11-30": 3592,
+    "2026-12-02": 3386
   },
   "failedRequests": []
 }
