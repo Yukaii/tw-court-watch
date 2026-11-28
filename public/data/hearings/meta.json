@@ -1,21 +1,21 @@
 {
-  "syncedAt": "2026-11-27T22:32:09.414Z",
+  "syncedAt": "2026-11-28T10:32:02.364Z",
   "dateRange": {
     "start": "2026-11-28",
     "end": "2026-12-11"
   },
-  "totalHearings": 29776,
+  "totalHearings": 29804,
   "todayDate": "2026-11-28",
-  "todayCount": 0,
-  "trialCount": 10823,
+  "todayCount": 21,
+  "trialCount": 10846,
   "layJudgeCount": 87,
   "filterStats": {
-    "totalRaw": 38864,
-    "keptPublic": 29776,
-    "filteredTotal": 9067,
+    "totalRaw": 38893,
+    "keptPublic": 29804,
+    "filteredTotal": 9068,
     "byReason": {
       "juvenile": 6,
-      "family": 3040,
+      "family": 3041,
       "mediation": 5307,
       "non_public_procedure": 41,
       "non_public_room": 180,
@@ -62,7 +62,7 @@
       "shortName": "臺灣高院",
       "level": "high",
       "region": "north",
-      "total": 2555,
+      "total": 2557,
       "today": 0,
       "trialCount": 190,
       "layJudgeCount": 11
@@ -205,7 +205,7 @@
       "shortName": "臺北地院",
       "level": "district",
       "region": "north",
-      "total": 2852,
+      "total": 2853,
       "today": 0,
       "trialCount": 1467,
       "layJudgeCount": 5
@@ -216,9 +216,9 @@
       "shortName": "新北地院",
       "level": "district",
       "region": "north",
-      "total": 3083,
+      "total": 3085,
       "today": 0,
-      "trialCount": 1089,
+      "trialCount": 1090,
       "layJudgeCount": 16
     },
     {
@@ -260,9 +260,9 @@
       "shortName": "苗栗地院",
       "level": "district",
       "region": "central",
-      "total": 643,
-      "today": 0,
-      "trialCount": 306,
+      "total": 646,
+      "today": 3,
+      "trialCount": 309,
       "layJudgeCount": 1
     },
     {
@@ -271,9 +271,9 @@
       "shortName": "臺中地院",
       "level": "district",
       "region": "central",
-      "total": 2656,
-      "today": 0,
-      "trialCount": 1223,
+      "total": 2675,
+      "today": 18,
+      "trialCount": 1241,
       "layJudgeCount": 5
     },
     {
@@ -348,7 +348,7 @@
       "shortName": "橋頭地院",
       "level": "district",
       "region": "south",
-      "total": 1021,
+      "total": 1022,
       "today": 0,
       "trialCount": 191,
       "layJudgeCount": 6
@@ -359,7 +359,7 @@
       "shortName": "屏東地院",
       "level": "district",
       "region": "south",
-      "total": 657,
+      "total": 656,
       "today": 0,
       "trialCount": 219,
       "layJudgeCount": 0
@@ -392,9 +392,9 @@
       "shortName": "宜蘭地院",
       "level": "district",
       "region": "east",
-      "total": 393,
+      "total": 394,
       "today": 0,
-      "trialCount": 183,
+      "trialCount": 184,
       "layJudgeCount": 3
     },
     {
@@ -443,16 +443,17 @@
     }
   ],
   "countsByDate": {
-    "2026-12-01": 3422,
+    "2026-12-01": 3423,
     "2026-12-08": 3461,
     "2026-12-11": 1877,
     "2026-12-04": 1794,
     "2026-12-07": 2092,
-    "2026-12-03": 3118,
-    "2026-11-30": 3863,
+    "2026-12-03": 3119,
+    "2026-11-30": 3864,
     "2026-12-02": 3458,
-    "2026-12-09": 3590,
-    "2026-12-10": 3101
+    "2026-12-09": 3591,
+    "2026-12-10": 3104,
+    "2026-11-28": 21
   },
   "failedRequests": []
 }
